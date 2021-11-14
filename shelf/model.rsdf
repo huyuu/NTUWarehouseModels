@@ -25,27 +25,29 @@
 <model name="shelf">
   <static>true</static>
   <% for layerIndex in (0..1) %>
-    <link name="layer0_pillar_leftDown">
-      <pose><%=leftDownPillarPosition_x%> <%=leftDownPillarPosition_y%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
+    <% for corner in (0..4) %>
+      <link name=<%="layer#{layerIndex}_pillar#{corner}"%>>
+        <pose><%=leftDownPillarPosition_x%> <%=leftDownPillarPosition_y%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
 
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
-          </box>
-        </geometry>
-      </collision>
+        <collision name='collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+            </box>
+          </geometry>
+        </collision>
 
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
+        <visual name='visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    <% end %>
   <% end %>
 
 </model>
