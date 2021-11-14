@@ -14,7 +14,7 @@
   shelfHalfLength = layerLength/2
   shelfHalfWidth = layerWidth/2
   legPositionDict = {
-    "leftDown" => [-shelfHalfLength + pillarLength, -shelfHalfWidth + pillarLength3],
+    "leftDown" => [-shelfHalfLength + pillarLength, -shelfHalfWidth + pillarLength],
     "rightDown" => [shelfHalfLength - pillarLength, -shelfHalfWidth + pillarLength],
     "leftUp" => [-shelfHalfLength + pillarLength, shelfHalfWidth - pillarLength],
     "rightUp" => [shelfHalfLength - pillarLength, shelfHalfWidth - pillarLength]
@@ -57,7 +57,7 @@
           </geometry>
         </visual>
       </link>
-      
+
     <% end %>
   <% end %>
 
