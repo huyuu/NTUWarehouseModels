@@ -107,6 +107,17 @@
   <% end %>
 
 
+  <!-- link for joints between tables and pillars -->
+  <% for layerIndex in (0...tableCenterAltitudes.size) %>
+    <% for pillarIndex in (0...pillarNames.size) %>
+      <joint name='<%="joint_layer#{layerIndex}_pillar#{pillarNames[pillarIndex]}"%>' type="fixed">
+        <parent>'<%="pillar_#{pillarNames[pillarIndex]}"%>'</parent>
+        <child>'<%="table_layer#{layerIndex}"%>'</child>
+      </joint>
+    <% end %>
+  <% end %>
+
+
   <!-- link for packages -->
   <% for layerIndex in (0...packageBottomSurfaceAltitudes.size) %>
     <% for itemIndex in (0...packageAmount) %>
