@@ -2,19 +2,32 @@
 
 <!-- Variables -->
 <!-- primary variables -->
-<% layerWidth=1.1 %>
-<% layerLength=3.3 %>
-<% pillarLength=0.2 %>
-<% pillarHeight=12.5 %>
+<%
+  # pillars
+  layerWidth=1.1
+  layerLength=3.3
+  pillarLength=0.2
+  pillarHeight=12.5
+
+  # table
+  layerSpaces = [20.1, 16.1, 16.1, 16.1, 16.1, 16.1, 13.3]
+  tableHeight = (12.5 - layerSpaces.sum) / 7
+  tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35]
+
+%>
 
 <!-- derived variables -->
 <%
-  # legs
-  legNames = ["leftDown", "rightDown", "leftUp", "rightUp"]
+  # pillars
+  pillarNames = ["leftDown", "rightDown", "leftUp", "rightUp"]
   shelfHalfLength = layerLength/2
   shelfHalfWidth = layerWidth/2
-  legPositionXs = [-shelfHalfLength + pillarLength, shelfHalfLength - pillarLength, -shelfHalfLength + pillarLength, shelfHalfLength - pillarLength]
-  legPositionYs = [-shelfHalfWidth + pillarLength, -shelfHalfWidth + pillarLength, shelfHalfWidth - pillarLength, shelfHalfWidth - pillarLength]
+  pillarPositionXs = [-shelfHalfLength + pillarLength, shelfHalfLength - pillarLength, -shelfHalfLength + pillarLength, shelfHalfLength - pillarLength]
+  pillarPositionYs = [-shelfHalfWidth + pillarLength, -shelfHalfWidth + pillarLength, shelfHalfWidth - pillarLength, shelfHalfWidth - pillarLength]
+
+  # table
+  tableLength = layerLength - pillarLength*2
+  tableWidth = layerWidth - pillarLength*2
 %>
 
 
@@ -23,9 +36,9 @@
   <static>true</static>
 
   <!-- link for the four legs -->
-  <% for legIndex in (0..4) %>
-    <link name='<%="pillar_#{legNames[legIndex]}"%>'>
-      <pose><%=legPositionXs[legIndex]%> <%=legPositionYs[legIndex]%> <%=pillarHeight%> 0 0 1</pose>
+  <% for pillarIndex in (0...4) %>
+    <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
+      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight%> 0 0 1</pose>
 
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
@@ -47,8 +60,30 @@
     </link>
   <% end %>
 
-  <% for layerIndex in (0..1) %>
-    <!-- link for table -->
+
+  <!-- link for table -->
+  <% for layerIndex in (0...8) %>
+    <link name='<%="table_layer#{layerIndex}"%>'>
+      <pose>0 0 <%=tableTopSurfaceAltitudes[layerIndex]-tableHeight/2%> 0 0 1</pose>
+
+      <collision name='collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=tableLength%> <%=tableWidth%> <%=tableHeightHeight%></size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=tableLength%> <%=tableWidth%> <%=tableHeightHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
   <% end %>
 
 </model>
