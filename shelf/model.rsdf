@@ -59,6 +59,8 @@
   <% for pillarIndex in (0...pillarNames.size) %>
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
       <self_collide>true</self_collide>
+      <!-- set kinematic to true to avoid it from being affected by external forces -->
+      <kinematic>true</kinematic>
 
       <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
 
