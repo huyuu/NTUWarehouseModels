@@ -107,7 +107,7 @@
 
   <!-- link for packages -->
   <% for layerIndex in (0...packageBottomSurfaceAltitudes.size) %>
-    <% for itemIndex in (0...packageAmount.size) %>
+    <% for itemIndex in (0...packageAmount) %>
       <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
         <pose><%=packagePositionXs[itemIndex]%> 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
