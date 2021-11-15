@@ -20,7 +20,7 @@
   tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
 
   # packages
-  spaceBetweenPackages = 0.5 # [m]
+  spaceBetweenPackages = 0.05 # [m]
   packageHeight = 1.2
   packageAmount = 3
   packageLength = 1.0
@@ -53,7 +53,7 @@
 
 <sdf version='1.6'>
 <model name="shelf">
-  <static>true</static>
+  <!-- <static>true</static> -->
 
   <!-- link for the four pillars -->
   <% for pillarIndex in (0...pillarNames.size) %>
@@ -77,6 +77,10 @@
           </box>
         </geometry>
       </visual>
+
+      <inertial>
+        <mass>20</mass>
+      </inertial>
     </link>
   <% end %>
 
@@ -103,6 +107,10 @@
           </box>
         </geometry>
       </visual>
+
+      <inertial>
+        <mass>2</mass>
+      </inertial>
     </link>
   <% end %>
 
@@ -141,6 +149,10 @@
             </box>
           </geometry>
         </visual>
+
+        <inertial>
+          <mass>1000</mass>
+        </inertial>
       </link>
     <% end %>
   <% end %>

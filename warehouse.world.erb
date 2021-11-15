@@ -93,7 +93,7 @@
         <% if (rowInfo['isShelf'] == true) %>
           <include>
             <uri>shelf</uri>
-            <name>'<%="shelf_row#{rowIndex}_column#{columnIndex}"%>'</name>
+            <name><%="shelf_row#{rowIndex}_column#{columnIndex}"%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
           </include>
         <% end %>
