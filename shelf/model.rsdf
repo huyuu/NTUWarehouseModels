@@ -10,7 +10,7 @@
   pillarHeight=12.5
 
   # table
-  layerSpaces = [20.1, 16.1, 16.1, 16.1, 16.1, 16.1, 13.3]
+  layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33]
   tableHeight = (12.5 - layerSpaces.sum) / 7
   tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35]
 
