@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- http://sdformat.org/tutorials?tut=spec_world&cat=specification& -->
+
+
+<!-- MARK: - Primary Variables -->
+
+<%
+  shelfWidth = 1.1 # [m]
+  shelfLength = 3.3 # [m]
+  spaceBetweenShelves = 0.3 # [m]
+  columnInfos = [
+    {'space' => 3.6, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => 3.1, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => 3.1, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => 3.1, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => 3.1, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => 3.1, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true},
+    {'space' => spaceBetweenShelves, 'doesContainShelf' => false},
+    {'space' => shelfWidth, 'doesContainShelf' => true}
+  ]
+  rowInfos = [
+    {'space' => 1.0, 'isShelf' => false},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => false},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => false},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => shelfLength, 'isShelf' => false},
+    {'space' => shelfLength, 'isShelf' => true},
+    {'space' => 1.0, 'isShelf' => false}
+  ]
+%>
+
+
+<!-- MARK: - Secondary Variables -->
+<%
+  halfShelfHeight = shelfHeight/2.0
+  halfShelfLength = shelfLength/2.0
+  halfShelfWidth = shelfWidth/2.0
+%>
+
+
+<!-- MARK: - Dummy Variables -->
+
+<%
+  cursorX = 0.0
+  cursorY = 0.0
+  columnIndex = 0
+  rowIndex = 0
+%>
+
+<!-- Main -->
+
+<sdf version='1.6'>
+<world name="warehouse">
+  <% for columnInfo in columnInfos %>
+    <% if (columnInfo['doesContainShelf'] == true) %>
+      <!-- reset cursorY position and rowIndex -->
+      <%
+        cursorY = 0.0
+        rowIndex = 0
+      %>
+      <!-- loop for all rows -->
+      <% for rowInfo in rowInfos %>
+        <!-- if the position is shelf, spawn a shelf -->
+        <% if (rowInfo['isShelf'] == true) %>
+          <include>
+            <uri>shelf</uri>
+            <name>'<%="shelf_row#{rowIndex}_column#{columnIndex}"%>'</name>
+            <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> <%=halfShelfHeight%> 0 0 0</pose>
+          </include>
+        <% end %>
+        <!-- prepare for next row -->
+        <%
+          cursorY += rowInfo['space']
+          rowIndex += 1
+        %>
+      <% end %>
+    <% end %>
+    <!-- prepare for next column -->
+    <%
+      cursorX += columnInfo['space']
+      columnIndex += 1
+    %>
+  <% end %>
+
+</world>
+</sdf>

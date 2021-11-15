@@ -23,6 +23,8 @@
   spaceBetweenPackages = 0.10 # [m]
   packageHeight = 1.2
   packageAmount = 3
+  packageLength = 1.0
+  packageWidth = 1.2
 %>
 
 
@@ -43,8 +45,8 @@
   # packages
   packageBottomSurfaceAltitudes = [0.0] + tableTopSurfaceAltitudes
   packageCenterAltitudes = packageBottomSurfaceAltitudes.map { |bottomAltitude| bottomAltitude+packageHeight/2 }
-  packageLength = (tableLength - spaceBetweenPackages*(packageAmount+1)) / packageAmount
-  packageWidth = tableWidth - spaceBetweenPackages*2
+  # packageLength = (tableLength - spaceBetweenPackages*(packageAmount+1)) / packageAmount
+  # packageWidth = tableWidth - spaceBetweenPackages*2
   packagePositionXs = [-(packageLength+spaceBetweenPackages), 0, packageLength+spaceBetweenPackages]
 %>
 
