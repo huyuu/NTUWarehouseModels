@@ -38,9 +38,9 @@
   <static>true</static>
 
   <!-- link for the four legs -->
-  <% for pillarIndex in (0...4) %>
+  <% for pillarIndex in (0...pillarNames.size) %>
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
-      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight%> 0 0 1</pose>
+      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight%> 0 0 0</pose>
 
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
@@ -64,9 +64,9 @@
 
 
   <!-- link for table -->
-  <% for layerIndex in (0...8) %>
+  <% for layerIndex in (0...tableCenterAltitudes.size) %>
     <link name='<%="table_layer#{layerIndex}"%>'>
-      <pose>0 0 <%=tableCenterAltitudes[layerIndex]%> 0 0 1</pose>
+      <pose>0 0 <%=tableCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
