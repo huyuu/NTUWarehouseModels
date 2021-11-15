@@ -20,7 +20,7 @@
   tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
 
   # packages
-  spaceBetweenPackages = 0.05 # [m]
+  spaceBetweenPackages = 0.03 # [m]
   packageHeight = 1.2
   packageAmount = 3
   packageLength = 1.0
@@ -59,7 +59,6 @@
   <% for pillarIndex in (0...pillarNames.size) %>
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
       <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
 
       <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
 
@@ -92,7 +91,6 @@
   <% for layerIndex in (0...tableCenterAltitudes.size) %>
     <link name='<%="table_layer#{layerIndex}"%>'>
       <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
 
       <pose>0 0 <%=tableCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
@@ -137,7 +135,6 @@
     <% for itemIndex in (0...packageAmount) %>
       <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
         <self_collide>true</self_collide>
-        <kinematic>true</kinematic>
 
         <pose><%=packagePositionXs[itemIndex]%> 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
