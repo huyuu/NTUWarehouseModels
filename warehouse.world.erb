@@ -52,6 +52,7 @@
   halfShelfHeight = shelfHeight/2.0
   halfShelfLength = shelfLength/2.0
   halfShelfWidth = shelfWidth/2.0
+  initialYawAngle = Math::PI/4.0
 %>
 
 
@@ -82,7 +83,7 @@
           <include>
             <uri>shelf</uri>
             <name>'<%="shelf_row#{rowIndex}_column#{columnIndex}"%>'</name>
-            <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> <%=halfShelfHeight%> 0 0 0</pose>
+            <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
           </include>
         <% end %>
         <!-- prepare for next row -->
