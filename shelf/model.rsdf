@@ -187,6 +187,14 @@
 
         <inertial>
           <mass>1000</mass>
+          <inertia>
+            <ixx><%=2.492*10**11%></ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy><%=2.111*10**11%></iyy>
+            <iyz>0.0</iyz>
+            <izz><%=2.111*10**11%></izz>
+          </inertia>
         </inertial>
       </link>
     <% end %>
