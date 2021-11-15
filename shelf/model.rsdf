@@ -5,7 +5,7 @@
 <% layerWidth=1.1 %>
 <% layerLength=3.3 %>
 <% pillarLength=0.2 %>
-<% pillarHeight=2.01 %>
+<% pillarHeight=12.5 %>
 
 <!-- derived variables -->
 <%
@@ -15,53 +15,40 @@
   shelfHalfWidth = layerWidth/2
   legPositionXs = [-shelfHalfLength + pillarLength, shelfHalfLength - pillarLength, -shelfHalfLength + pillarLength, shelfHalfLength - pillarLength]
   legPositionYs = [-shelfHalfWidth + pillarLength, -shelfHalfWidth + pillarLength, shelfHalfWidth - pillarLength, shelfHalfWidth - pillarLength]
-  legPositionDict = {
-    "leftDown" => [-shelfHalfLength + pillarLength, -shelfHalfWidth + pillarLength],
-    "rightDown" => [shelfHalfLength - pillarLength, -shelfHalfWidth + pillarLength],
-    "leftUp" => [-shelfHalfLength + pillarLength, shelfHalfWidth - pillarLength],
-    "rightUp" => [shelfHalfLength - pillarLength, shelfHalfWidth - pillarLength]
-  }
-  leftDownPillarPosition_x = -shelfHalfLength + pillarLength
-  leftDownPillarPosition_y = -shelfHalfWidth + pillarLength
-  rightDownPillarPosition_x = shelfHalfLength - pillarLength
-  rightDownPillarPosition_y = -shelfHalfWidth + pillarLength
-  leftUpPillarPosition_x = -shelfHalfLength + pillarLength
-  leftUpPillarPosition_y = shelfHalfWidth - pillarLength
-  rightUpPillarPosition_x = shelfHalfLength - pillarLength
-  rightUpPillarPosition_y = shelfHalfWidth - pillarLength
 %>
 
 
 <sdf version='1.6'>
 <model name="shelf">
   <static>true</static>
+
+  <!-- link for the four legs -->
+  <% for legIndex in (0..4) %>
+    <link name='<%="layer#{layerIndex}_pillar_#{legNames[legIndex]}"%>'>
+      <pose><%=legPositionXs[legIndex]%> <%=legPositionYs[legIndex]%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
+
+      <collision name='collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+  <% end %>
+
   <% for layerIndex in (0..1) %>
-    <!-- link for the four legs on the layer -->
-    <% for legIndex in (0..4) %>
-      <link name='<%="layer#{layerIndex}_pillar_#{legNames[legIndex]}"%>'>
-        <pose><%=legPositionXs[legIndex]%> <%=legPositionYs[legIndex]%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
-
-        <collision name='collision'>
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <box>
-              <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
-            </box>
-          </geometry>
-        </collision>
-
-        <visual name='visual'>
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <box>
-              <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
-            </box>
-          </geometry>
-        </visual>
-      </link>
-    <% end %>
-
-    <!-- table -->
+    <!-- link for table -->
   <% end %>
 
 </model>
