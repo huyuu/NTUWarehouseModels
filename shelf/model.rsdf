@@ -34,10 +34,12 @@
 <model name="shelf">
   <static>true</static>
   <% for layerIndex in (0..1) %>
+    <!-- link for the four legs on the layer -->
     <% for legName in legNames %>
-
       <link name='<%="layer#{layerIndex}_pillar#{legName}"%>'>
-        <pose><%=legPositionDict['legName'][0]%> <%=legPositionDict['legName'][1]%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
+        <% positionX = legPositionDict['legName'][0] %>
+        <% positionY = legPositionDict['legName'][1] %>
+        <pose><%=positionX%> <%=positionY%> <%=pillarHeight*layerIndex%> 0 0 1</pose>
 
         <collision name='collision'>
           <pose>0 0 0 0 0 0</pose>
@@ -57,8 +59,9 @@
           </geometry>
         </visual>
       </link>
-
     <% end %>
+
+    <!-- table -->
   <% end %>
 
 </model>
