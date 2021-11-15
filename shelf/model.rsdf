@@ -39,7 +39,7 @@
 
   # table
   tableLength = layerLength - pillarLength*2
-  tableWidth = layerWidth - pillarLength*2
+  tableWidth = layerWidth
   tableCenterAltitudes = tableTopSurfaceAltitudes.map { |surfaceAltitude| surfaceAltitude-tableHeight/2 }
 
   # packages
@@ -55,7 +55,7 @@
 <model name="shelf">
   <static>true</static>
 
-  <!-- link for the four legs -->
+  <!-- link for the four pillars -->
   <% for pillarIndex in (0...pillarNames.size) %>
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
       <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
