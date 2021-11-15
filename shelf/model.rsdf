@@ -109,7 +109,7 @@
   <% for layerIndex in (0...packageBottomSurfaceAltitudes.size) %>
     <% for itemIndex in (0...packageAmount.size) %>
       <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
-        <pose>packagePositionXs[itemIndex] 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
+        <pose><%=packagePositionXs[itemIndex]%> 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
         <collision name='collision'>
           <pose>0 0 0 0 0 0</pose>
