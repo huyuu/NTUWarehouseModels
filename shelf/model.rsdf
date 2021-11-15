@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
 
 <!-- Variables -->
-<!-- primary variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
   # pillars
-  layerWidth=1.1
-  layerLength=3.3
-  pillarLength=0.2
-  pillarHeight=12.5
+  layerWidth = 1.1 # [m]
+  layerLength = 3.3 # [m]
+  pillarLength = 0.15 # [m]
+  pillarHeight = 12.5 # [m]
 
   # table
-  layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33]
-  tableHeight = (12.5 - layerSpaces.sum) / 7
-  tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35]
+  layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33] # [m]
+  tableHeight = (12.5 - layerSpaces.sum) / 7 # [m]
+  tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
 
+  # packages
+  spaceBetweenPackages = 0.10 # [m]
+  packageHeight = 1.2
+  packageAmount = 3
 %>
 
-<!-- derived variables -->
+
+<!-- MARK: - Derived Secondary Variables -->
 <%
   # pillars
   pillarNames = ["leftDown", "rightDown", "leftUp", "rightUp"]
@@ -30,6 +40,12 @@
   tableWidth = layerWidth - pillarLength*2
   tableCenterAltitudes = tableTopSurfaceAltitudes.map { |surfaceAltitude| surfaceAltitude-tableHeight/2 }
 
+  # packages
+  packageBottomSurfaceAltitudes = [0.0] + tableTopSurfaceAltitudes
+  packageCenterAltitudes = packageBottomSurfaceAltitudes.map { |bottomAltitude| bottomAltitude+packageHeight/2 }
+  packageLength = (tableLength - spaceBetweenPackages*(packageAmount+1)) / packageAmount
+  packageWidth = tableWidth - spaceBetweenPackages*2
+  packagePositionXs = [-(packageLength+spaceBetweenPackages), 0, packageLength+spaceBetweenPackages]
 %>
 
 
@@ -40,7 +56,7 @@
   <!-- link for the four legs -->
   <% for pillarIndex in (0...pillarNames.size) %>
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
-      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight%> 0 0 0</pose>
+      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
 
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
@@ -86,6 +102,34 @@
         </geometry>
       </visual>
     </link>
+  <% end %>
+
+
+  <!-- link for packages -->
+  <% for layerIndex in (0...packageBottomSurfaceAltitudes.size) %>
+    <% for itemIndex in (0...packageAmount.size) %>
+      <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
+        <pose>packagePositionXs[itemIndex] 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
+
+        <collision name='collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name='visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+    <% end %>
   <% end %>
 
 </model>
