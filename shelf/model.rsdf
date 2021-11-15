@@ -32,8 +32,8 @@
   pillarNames = ["leftDown", "rightDown", "leftUp", "rightUp"]
   shelfHalfLength = layerLength/2
   shelfHalfWidth = layerWidth/2
-  pillarPositionXs = [-shelfHalfLength + pillarLength, shelfHalfLength - pillarLength, -shelfHalfLength + pillarLength, shelfHalfLength - pillarLength]
-  pillarPositionYs = [-shelfHalfWidth + pillarLength, -shelfHalfWidth + pillarLength, shelfHalfWidth - pillarLength, shelfHalfWidth - pillarLength]
+  pillarPositionXs = [-shelfHalfLength + pillarLength/2, shelfHalfLength - pillarLength/2, -shelfHalfLength + pillarLength/2, shelfHalfLength - pillarLength/2]
+  pillarPositionYs = [-shelfHalfWidth + pillarLength/2, -shelfHalfWidth + pillarLength/2, shelfHalfWidth - pillarLength/2, shelfHalfWidth - pillarLength/2]
 
   # table
   tableLength = layerLength - pillarLength*2
