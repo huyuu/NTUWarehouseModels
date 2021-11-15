@@ -60,6 +60,7 @@
     <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
       <self_collide>true</self_collide>
       <!-- set kinematic to true to avoid it from being affected by external forces -->
+      <!-- reference: https://answers.gazebosim.org//question/25064/kinematic-property-of-link/ -->
       <kinematic>true</kinematic>
 
       <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
@@ -71,6 +72,16 @@
             <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
           </box>
         </geometry>
+        <!-- http://gazebosim.org/tutorials?tut=friction -->
+        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
       </collision>
 
       <visual name='visual'>
@@ -103,6 +114,14 @@
             <size><%=tableLength%> <%=tableWidth%> <%=tableHeight%></size>
           </box>
         </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
       </collision>
 
       <visual name='visual'>
@@ -147,6 +166,14 @@
               <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
             </box>
           </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+          </surface>
         </collision>
 
         <visual name='visual'>
