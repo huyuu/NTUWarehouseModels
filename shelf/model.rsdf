@@ -167,7 +167,7 @@
           <pose>0 0 0 0 0 0</pose>
           <geometry>
             <box>
-              <size><%=packageLength*0.95%> <%=packageWidth*0.95%> <%=packageHeight*0.95%></size>
+              <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
             </box>
           </geometry>
           <surface>
