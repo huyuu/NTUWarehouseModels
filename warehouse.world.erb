@@ -82,8 +82,8 @@
   spaceBetweenLightsAlongWidthAxis = roomWidth / (lightAmountAlongWidthAxis+1)
   counterX = 0
   counterY = 0
-  0.0.step(roomLength - 1e-6, spaceBetweenLightsAlongLengthAxis) do |x|
-    0.0.step(roomWidth - 1e-6, spaceBetweenLightsAlongWidthAxis) do |y|
+  spaceBetweenLightsAlongLengthAxis.step(roomLength - 1e-6, spaceBetweenLightsAlongLengthAxis) do |x|
+    spaceBetweenLightsAlongWidthAxis.step(roomWidth - 1e-6, spaceBetweenLightsAlongWidthAxis) do |y|
       lightInfos.push({
         'name' => "ceilingLight_#{counterX}_#{counterY}",
         'position' => [x, y, lightHeight, 0]
@@ -125,7 +125,7 @@
       <diffuse>1 1 1 1</diffuse>
 
       <attenuation>
-        <range>1000</range>
+        <range>100</range>
         <constant>0.9</constant>
         <linear>0.1</linear>
       </attenuation>
