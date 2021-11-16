@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+
+
+<sdf version='1.6'>
+<model name="ground">
+  <link name="groundOfWarehouse">
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+  </link>
+</model>
+</sdf>
