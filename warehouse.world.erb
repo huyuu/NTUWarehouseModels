@@ -111,15 +111,16 @@
     <ambient>0 0 0 0</ambient>
     <shadow>true</shadow>
   </scene>
-  <% for lightInfo in lightInfo %>
+  <% for lightInfo in lightInfos %>
     <% lightPosition = lightInfo['position'] %>
-    <light name="<%=lightInfo['name']%>" type="point">
+    <light name="<%=lightInfo['name']%>" type="spot">
       <pose><%=lightPosition[0]%> <%=lightPosition[1]%> <%=lightPosition[2]%> <%=lightPosition[3]%></pose>
+      <direction>0 0 -1</direction>
       <cast_shadows>true</cast_shadows>
       <diffuse>1 1 1 1</diffuse>
       <attenuation>
-        <range>50</range>
-        <quadratic>1.0</quadratic>
+        <range>1000</range>
+        <linear>1.0</linear>
       </attenuation>
     </light>
   <% end %>
