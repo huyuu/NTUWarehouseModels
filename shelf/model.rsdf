@@ -97,7 +97,7 @@
       </visual>
 
       <inertial>
-        <mass>pillarWeight</mass>
+        <mass><%=pillarWeight%></mass>
       </inertial>
     </link>
   <% end %>
@@ -137,7 +137,7 @@
       </visual>
 
       <inertial>
-        <mass>tableWeight</mass>
+        <mass><%=tableWeight%></mass>
       </inertial>
     </link>
   <% end %>
@@ -192,7 +192,7 @@
         </visual>
 
         <inertial>
-          <mass>packageWeight</mass>
+          <mass><%=packageWeight%></mass>
           <inertia>
             <ixx><%=2.492*10**5%></ixx>
             <ixy>0.0</ixy>
