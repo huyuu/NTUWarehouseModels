@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # pillars
+  layerWidth = 1.1 # [m]
+  layerLength = 3.3 # [m]
+  pillarLength = 0.08 # [m]
+  pillarHeight = 12.5 # [m]
+  pillarWeight = 20 # [kg]
+
+  # table
+  layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33] # [m]
+  tableHeight = (12.5 - layerSpaces.sum) / 7 # [m]
+  tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
+  tableWeight = 5 # [kg]
+
+  # packages
+  spaceBetweenPackages = 0.05 # [m]
+  packageHeight = 1.2
+  packageAmount = 3
+  packageLength = 1.0
+  packageWidth = 1.2
+  packageWeight = 1000 # [kg]
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+  # pillars
+  pillarNames = ["leftDown", "rightDown", "leftUp", "rightUp"]
+  shelfHalfLength = layerLength/2
+  shelfHalfWidth = layerWidth/2
+  pillarPositionXs = [-shelfHalfLength + pillarLength/2, shelfHalfLength - pillarLength/2, -shelfHalfLength + pillarLength/2, shelfHalfLength - pillarLength/2]
+  pillarPositionYs = [-shelfHalfWidth + pillarLength/2, -shelfHalfWidth + pillarLength/2, shelfHalfWidth - pillarLength/2, shelfHalfWidth - pillarLength/2]
+
+  # table
+  tableLength = layerLength - pillarLength*2
+  tableWidth = layerWidth
+  tableCenterAltitudes = tableTopSurfaceAltitudes.map { |surfaceAltitude| surfaceAltitude-tableHeight/2 }
+
+  # packages
+  packageBottomSurfaceAltitudes = [0.0] + tableTopSurfaceAltitudes
+  packageCenterAltitudes = packageBottomSurfaceAltitudes.map { |bottomAltitude| bottomAltitude+packageHeight/2 }
+  # packageLength = (tableLength - spaceBetweenPackages*(packageAmount+1)) / packageAmount
+  # packageWidth = tableWidth - spaceBetweenPackages*2
+  packagePositionXs = [-(packageLength+spaceBetweenPackages), 0, packageLength+spaceBetweenPackages]
+%>
+
+
+<sdf version='1.6'>
+<model name="shelf">
+  <!-- <static>true</static> -->
+
+  <!-- link for the four pillars -->
+  <% for pillarIndex in (0...pillarNames.size) %>
+    <link name='<%="pillar_#{pillarNames[pillarIndex]}"%>'>
+      <self_collide>true</self_collide>
+      <!-- set kinematic to true to avoid it from being affected by external forces -->
+      <!-- reference: https://answers.gazebosim.org//question/25064/kinematic-property-of-link/ -->
+      <kinematic>true</kinematic>
+
+      <pose><%=pillarPositionXs[pillarIndex]%> <%=pillarPositionYs[pillarIndex]%> <%=pillarHeight/2%> 0 0 0</pose>
+
+      <collision name='collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+          </box>
+        </geometry>
+        <!-- http://gazebosim.org/tutorials?tut=friction -->
+        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=pillarLength%> <%=pillarLength%> <%=pillarHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass><%=pillarWeight%></mass>
+      </inertial>
+    </link>
+  <% end %>
+
+
+  <!-- link for table -->
+  <% for layerIndex in (0...tableCenterAltitudes.size) %>
+    <link name='<%="table_layer#{layerIndex}"%>'>
+      <self_collide>true</self_collide>
+      <kinematic>true</kinematic>
+
+      <pose>0 0 <%=tableCenterAltitudes[layerIndex]%> 0 0 0</pose>
+
+      <collision name='collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=tableLength%> <%=tableWidth%> <%=tableHeight%></size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.9</mu>
+              <mu2>0.9</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=tableLength%> <%=tableWidth%> <%=tableHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+
+      <inertial>
+        <mass><%=tableWeight%></mass>
+      </inertial>
+    </link>
+  <% end %>
+
+
+  <!-- link for joints between tables and pillars -->
+  <% for layerIndex in (0...tableCenterAltitudes.size) %>
+    <% for pillarIndex in (0...pillarNames.size) %>
+      <joint name='<%="joint_layer#{layerIndex}_pillar_#{pillarNames[pillarIndex]}"%>' type="fixed">
+        <parent><%="pillar_#{pillarNames[pillarIndex]}"%></parent>
+        <child><%="table_layer#{layerIndex}"%></child>
+      </joint>
+    <% end %>
+  <% end %>
+
+
+  <!-- link for packages -->
+  <% for layerIndex in (0...packageBottomSurfaceAltitudes.size) %>
+    <% for itemIndex in (0...packageAmount) %>
+      <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
+        <self_collide>true</self_collide>
+
+        <pose><%=packagePositionXs[itemIndex]%> 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
+
+        <collision name='collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1.2</mu>
+                <mu2>1.2</mu2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.1</restitution_coefficient>
+            </bounce>
+          </surface>
+        </collision>
+
+        <visual name='visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size><%=packageLength%> <%=packageWidth%> <%=packageHeight%></size>
+            </box>
+          </geometry>
+        </visual>
+
+        <inertial>
+          <mass><%=packageWeight%></mass>
+          <inertia>
+            <ixx><%=2.492*10**5%></ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy><%=2.111*10**5%></iyy>
+            <iyz>0.0</iyz>
+            <izz><%=2.111*10**5%></izz>
+          </inertia>
+        </inertial>
+      </link>
+    <% end %>
+  <% end %>
+
+</model>
+</sdf>
