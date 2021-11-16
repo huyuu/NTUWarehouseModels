@@ -11,7 +11,7 @@
   # pillars
   layerWidth = 1.1 # [m]
   layerLength = 3.3 # [m]
-  pillarLength = 0.10 # [m]
+  pillarLength = 0.08 # [m]
   pillarHeight = 12.5 # [m]
 
   # table
@@ -20,7 +20,7 @@
   tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
 
   # packages
-  spaceBetweenPackages = 0.03 # [m]
+  spaceBetweenPackages = 0.05 # [m]
   packageHeight = 1.2
   packageAmount = 3
   packageLength = 1.0
