@@ -107,6 +107,7 @@
   <% for layerIndex in (0...tableCenterAltitudes.size) %>
     <link name='<%="table_layer#{layerIndex}"%>'>
       <self_collide>true</self_collide>
+      <kinematic>true</kinematic>
 
       <pose>0 0 <%=tableCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
