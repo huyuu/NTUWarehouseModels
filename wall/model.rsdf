@@ -18,7 +18,7 @@
 
 <sdf version='1.6'>
 <model name="wall">
-  <link name="">
+  <link name="wall">
   </link>
 </model>
 </sdf>
