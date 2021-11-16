@@ -13,11 +13,13 @@
   layerLength = 3.3 # [m]
   pillarLength = 0.08 # [m]
   pillarHeight = 12.5 # [m]
+  pillarWeight = 100000 # [kg]
 
   # table
   layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33] # [m]
   tableHeight = (12.5 - layerSpaces.sum) / 7 # [m]
   tableTopSurfaceAltitudes = [2.15, 3.90, 5.64, 7.4, 9.15, 10.9, 12.35] # [m]
+  tableWeight = 5 # [kg]
 
   # packages
   spaceBetweenPackages = 0.05 # [m]
@@ -25,6 +27,7 @@
   packageAmount = 3
   packageLength = 1.0
   packageWidth = 1.2
+  packageWeight = 1000 # [kg]
 %>
 
 
@@ -94,7 +97,7 @@
       </visual>
 
       <inertial>
-        <mass>20</mass>
+        <mass>pillarWeight</mass>
       </inertial>
     </link>
   <% end %>
@@ -134,7 +137,7 @@
       </visual>
 
       <inertial>
-        <mass>2</mass>
+        <mass>tableWeight</mass>
       </inertial>
     </link>
   <% end %>
@@ -189,7 +192,7 @@
         </visual>
 
         <inertial>
-          <mass>1000</mass>
+          <mass>packageWeight</mass>
           <inertia>
             <ixx><%=2.492*10**5%></ixx>
             <ixy>0.0</ixy>
