@@ -75,13 +75,20 @@
   roomWidth = rowInfos.map{ |rowInfo| rowInfo['space'] }.sum
 
   # lights
-  lightPositions = []
+  lightInfos = []
   spaceBetweenLightsAlongLengthAxis = roomLength / (lightAmountAlongLengthAxis+1)
   spaceBetweenLightsAlongWidthAxis = roomWidth / (lightAmountAlongWidthAxis+1)
+  counterX = 0
+  counterY = 0
   0.0.step(roomLength - 1e-6, spaceBetweenLightsAlongLengthAxis) do |x|
     0.0.step(roomWidth - 1e-6, spaceBetweenLightsAlongWidthAxis) do |y|
-      lightPositions.push([x, y, lightHeight, 0])
+      lightInfos.push({
+        'name' => "ceilingLight_#{counterX}_#{counterY}",
+        'position' => [x, y, lightHeight, 0]
+      })
+      counterY += 1
     end
+    counterX += 1
   end
 %>
 
@@ -104,8 +111,9 @@
     <ambient>0 0 0 0</ambient>
     <shadow>true</shadow>
   </scene>
-  <% for lightPosition in lightPositions %>
-    <light>
+  <% for lightInfo in lightInfo %>
+    <% lightPosition = lightInfo['position'] %>
+    <light name="<%=lightInfo['name']%>" type="point">
       <pose><%=lightPosition[0]%> <%=lightPosition[1]%> <%=lightPosition[2]%> <%=lightPosition[3]%></pose>
       <cast_shadows>true</cast_shadows>
       <diffuse>1 1 1 1</diffuse>
