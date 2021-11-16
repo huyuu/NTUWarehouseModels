@@ -13,7 +13,7 @@
   layerLength = 3.3 # [m]
   pillarLength = 0.08 # [m]
   pillarHeight = 12.5 # [m]
-  pillarWeight = 100000 # [kg]
+  pillarWeight = 20 # [kg]
 
   # table
   layerSpaces = [2.01, 1.61, 1.61, 1.61, 1.61, 1.61, 1.33] # [m]

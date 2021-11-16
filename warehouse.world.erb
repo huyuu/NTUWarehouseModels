@@ -55,6 +55,11 @@
     {'space' => shelfLength, 'isShelf' => true},
     {'space' => 1.0, 'isShelf' => false}
   ]
+
+  # lights
+  lightAmountAlongLengthAxis = 5
+  lightAmountAlongWidthAxis = 5
+  lightHeight = shelfHeight*1.5
 %>
 
 
@@ -64,6 +69,20 @@
   halfShelfLength = shelfLength/2.0
   halfShelfWidth = shelfWidth/2.0
   initialYawAngle = Math::PI/2.0
+
+  # room spec
+  roomLength = columnInfos.map{ |columnInfo| columnInfo['space'] }.sum
+  roomWidth = rowInfos.map{ |rowInfo| rowInfo['space'] }.sum
+
+  # lights
+  lightPositions = []
+  spaceBetweenLightsAlongLengthAxis = roomLength / (lightAmountAlongLengthAxis+1)
+  spaceBetweenLightsAlongWidthAxis = roomWidth / (lightAmountAlongWidthAxis+1)
+  0.0.step(roomLength - 1e-6, spaceBetweenLightsAlongLengthAxis) do |x|
+    0.0.step(roomWidth - 1e-6, spaceBetweenLightsAlongWidthAxis) do |y|
+      lightPositions.push([x, y, lightHeight, 0])
+    end
+  end
 %>
 
 
@@ -76,10 +95,28 @@
   rowIndex = 0
 %>
 
-<!-- Main -->
+<!-- MARK: - Main -->
 
 <sdf version='1.6'>
 <world name="warehouse">
+  <!-- Define scenes and lights -->
+  <scene>
+    <ambient>0 0 0 0</ambient>
+    <shadow>true</shadow>
+  </scene>
+  <% for lightPosition in lightPositions %>
+    <light>
+      <pose><%=lightPosition[0]%> <%=lightPosition[1]%> <%=lightPosition[2]%> <%=lightPosition[3]%></pose>
+      <cast_shadows>true</cast_shadows>
+      <diffuse>1 1 1 1</diffuse>
+      <attenuation>
+        <range>50</range>
+        <quadratic>1.0</quadratic>
+      </attenuation>
+    </light>
+  <% end %>
+
+
   <% for columnInfo in columnInfos %>
     <% if (columnInfo['doesContainShelf'] == true) %>
       <!-- reset cursorY position and rowIndex -->
