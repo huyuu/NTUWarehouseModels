@@ -8,7 +8,7 @@
 <!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
 <!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
-  # self
+  # shelf
   shelfHeight = 13.850 # [m]
 
   # overall wall
@@ -24,8 +24,11 @@
 
   # vertical wall
   wallPlainVerticalWidth = 1.0 + 3.3*17 + 6.3*2 # [m]
-  wallPlainVerticalLength = wallWidth
-  wallPlainVerticalHeight = wallHeight
+
+  # door wall
+  doorCenterPositionY = wallPlainVerticalWidth - 7.0
+  doorWidth = 1.0 # [m]
+  doorHeight = 2.0 # [m]
 %>
 
 
@@ -51,13 +54,43 @@
   rightWallWidth = wallWidth
   rightWallHeight = shutterHallHeight
   rightWallCenterX = wallLength - rightWallLength/2
+
+  # vertical wall
+  wallPlainVerticalLength = wallWidth
+  wallPlainVerticalHeight = wallHeight
+
+  # horizontal wall
+  wallPlainHorizontalLength = wallLength
+  wallPlainHorizontalWidth = wallWidth
+  wallPlainHorizontalHeight = wallHeight
+
+  # door wall
+  wallDoorHeight = wallHeight
+  wallDoorLength = wallWidth
+  wallDoorPositionX = wallLength
+
+  wallDoorUpperLength = wallDoorLength
+  wallDoorUpperWidth = wallDoorWidth
+  wallDoorUpperHeight = wallDoorHeight - doorHeight
+  wallDoorUpperCenterPositionZ = doorHeight + wallDoorUpperHeight/2
+  wallDoorUpperCenterPositionY = wallDoorWidth/2
+
+  wallDoorDownLeftLength = wallDoorLength
+  wallDoorDownLeftWidth = wallDoorWidth - doorCenterPositionY - doorWidth/2
+  wallDoorDownLeftCenterPositionY = doorCenterPositionY + doorWidth/2 + wallDoorDownLeftWidth/2
+  wallDoorDownLeftHeight = doorHeight
+
+  wallDoorDownRightLength = wallDoorLength
+  wallDoorDownRightWidth = wallDoorWidth - doorWidth - wallDoorDownLeftWidth
+  wallDoorDownRightCenterPositionY = wallDoorDownRightWidth/2
+  wallDoorDownRightHeight = doorHeight
 %>
 
 
 <sdf version='1.6'>
-<model name="wallWithShutter">
+<model name="walls">
 
-  <link name="wall_shutter">
+  <link name="wall_shutter_top">
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
 
@@ -152,29 +185,89 @@
 
   </link>
 
-  <link name="wall_plain_vertical_right">
+  <link name="wall_door_right">
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose><%=upperWallLength%> <%=wallPlainVerticalWidth/2%> 0 0 0 0</pose>
+    <pose><%=wallDoorPositionX%> 0 0 0 0 0</pose>
 
-    <collision name='collision'>
-      <pose>0 0 <%=wallPlainVerticalHeight/2%> 0 0 0</pose>
+    <collision name='collision_upper'>
+      <pose>0 <%=wallDoorUpperCenterPositionY%> <%=wallDoorUpperCenterPositionZ%> 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=wallPlainVerticalLength%> <%=wallPlainVerticalWidth%> <%=wallPlainVerticalHeight%></size>
+          <size><%=wallDoorUpperLength%> <%=wallDoorUpperWidth%> <%=wallDoorUpperHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <collision name='collision_downLeft'>
+      <pose>0 <%=wallDoorDownLeftCenterPositionY%> <%=wallDoorDownLeftHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallDoorDownLeftLength%> <%=wallDoorDownLeftWidth%> <%=wallDoorDownLeftHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <collision name='collision_downRight'>
+      <pose>0 <%=wallDoorDownRightCenterPositionY%> <%=wallDoorDownRightHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallDoorDownRightLength%> <%=wallDoorDownRightWidth%> <%=wallDoorDownRightHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+
+    <visual name='visual_upper'>
+      <pose>0 <%=wallDoorUpperCenterPositionY%> <%=wallDoorUpperCenterPositionZ%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallDoorUpperLength%> <%=wallDoorUpperWidth%> <%=wallDoorUpperHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+
+    <visual name='visual_downLeft'>
+      <pose>0 <%=wallDoorDownLeftCenterPositionY%> <%=wallDoorDownLeftHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallDoorDownLeftLength%> <%=wallDoorDownLeftWidth%> <%=wallDoorDownLeftHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+
+    <visual name='visual_downRight'>
+      <pose>0 <%=wallDoorDownRightCenterPositionY%> <%=wallDoorDownRightHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallDoorDownRightLength%> <%=wallDoorDownRightWidth%> <%=wallDoorDownRightHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="wall_plain_horizontal_bottom">
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose><%=walllPlainHorizontalLength/2%> 0 0 0 0 0</pose>
+
+    <collision name='collision'>
+      <pose>0 0 <%=walllPlainHorizontalHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=walllPlainHorizontalLength%> <%=walllPlainHorizontalWidth%> <%=walllPlainHorizontalHeight%></size>
         </box>
       </geometry>
     </collision>
 
     <visual name='visual'>
-      <pose>0 0 <%=wallPlainVerticalHeight/2%> 0 0 0</pose>
+      <pose>0 0 <%=walllPlainHorizontalHeight/2%> 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=wallPlainVerticalLength%> <%=wallPlainVerticalWidth%> <%=wallPlainVerticalHeight%></size>
+          <size><%=walllPlainHorizontalLength%> <%=walllPlainHorizontalWidth%> <%=walllPlainHorizontalHeight%></size>
         </box>
       </geometry>
     </visual>
-
   </link>
 </model>
 </sdf>
