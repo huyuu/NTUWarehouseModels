@@ -250,22 +250,22 @@
   <link name="wall_plain_horizontal_bottom">
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose><%=walllPlainHorizontalLength/2%> 0 0 0 0 0</pose>
+    <pose><%=wallPlainHorizontalLength/2%> 0 0 0 0 0</pose>
 
     <collision name='collision'>
-      <pose>0 0 <%=walllPlainHorizontalHeight/2%> 0 0 0</pose>
+      <pose>0 0 <%=wallPlainHorizontalHeight/2%> 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=walllPlainHorizontalLength%> <%=walllPlainHorizontalWidth%> <%=walllPlainHorizontalHeight%></size>
+          <size><%=wallPlainHorizontalLength%> <%=wallPlainHorizontalWidth%> <%=wallPlainHorizontalHeight%></size>
         </box>
       </geometry>
     </collision>
 
     <visual name='visual'>
-      <pose>0 0 <%=walllPlainHorizontalHeight/2%> 0 0 0</pose>
+      <pose>0 0 <%=wallPlainHorizontalHeight/2%> 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=walllPlainHorizontalLength%> <%=walllPlainHorizontalWidth%> <%=walllPlainHorizontalHeight%></size>
+          <size><%=wallPlainHorizontalLength%> <%=wallPlainHorizontalWidth%> <%=wallPlainHorizontalHeight%></size>
         </box>
       </geometry>
     </visual>
