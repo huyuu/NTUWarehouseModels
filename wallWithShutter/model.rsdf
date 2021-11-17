@@ -17,7 +17,7 @@
 
   # shutter hall
   shutterHallAmount = 4
-  shutterHallLength = 3.0 # [m]
+  shutterHallLength = 4.0 # [m]
   rightBlankSpaceLength = 1.3 + 3.1 + 2.5 + 3.1 + 1.1 + 0.818
   shutterHallHeight = 6.0 # [m]
 %>
@@ -88,7 +88,7 @@
     <% end %>
 
     <visual name='upperWall'>
-      <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <pose><%=upperWallLength/2%> 0 <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
       <geometry>
         <box>
           <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
