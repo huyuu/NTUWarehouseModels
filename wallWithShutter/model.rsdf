@@ -19,7 +19,7 @@
   shutterHallAmount = 4
   shutterHallLength = 3.0 # [m]
   rightBlankSpaceLength = 1.3 + 3.1 + 2.5 + 3.1 + 1.1 + 0.818
-  shutterHallHeight = 3.0 # [m]
+  shutterHallHeight = 6.0 # [m]
 %>
 
 
@@ -56,8 +56,8 @@
 
     <% for index in (0...intervalWallAmount) %>
       <collision name='intervalWall_<%=index%>'>
-        <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
-        <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
+        <% xPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+        <pose><%=xPosition%> 0 <%=intervalWallHeight/2%> 0 0 0</pose>
         <geometry>
           <box>
             <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
@@ -67,7 +67,7 @@
     <% end %>
 
     <collision name='upperWall'>
-      <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <pose><%=upperWallLength/2%> 0 <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
       <geometry>
         <box>
           <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
@@ -77,8 +77,8 @@
 
     <% for index in (0...intervalWallAmount) %>
       <visual name='intervalWall_<%=index%>'>
-        <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
-        <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
+        <% xPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+        <pose><%=xPosition%> 0 <%=intervalWallHeight/2%> 0 0 0</pose>
         <geometry>
           <box>
             <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
