@@ -29,7 +29,7 @@
   wallHeight = shelfHeight * 1.5
 
   # shutter hall
-  spaceBetweenShutterHalls = (wallLength - rightBlankSpaceLength) / (shutterHallAmount+1)
+  spaceBetweenShutterHalls = (wallLength - rightBlankSpaceLength - shutterHallLength*shutterHallAmount) / (shutterHallAmount)
   shutterHallWidth = wallWidth
 
   # interval wall
