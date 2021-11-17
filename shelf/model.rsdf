@@ -160,6 +160,7 @@
     <% for itemIndex in (0...packageAmount) %>
       <link name='<%="package_layer#{layerIndex}_item#{itemIndex}"%>'>
         <self_collide>true</self_collide>
+        <kinematic>true</kinematic>
 
         <pose><%=packagePositionXs[itemIndex]%> 0 <%=packageCenterAltitudes[layerIndex]%> 0 0 0</pose>
 
