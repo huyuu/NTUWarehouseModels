@@ -102,6 +102,8 @@
   cursorY = 0.0
   columnIndex = 0
   rowIndex = 0
+
+  shelfNames = []
 %>
 
 <!-- MARK: - Main -->
@@ -112,7 +114,7 @@
   <!-- define camera -->
   <gui>
     <camera name='user_camera'>
-      <pose>20 5 50 0 -0.5 0</pose>
+      <pose>37.5 -11 34.8 0 -0.67 2.3</pose>
     </camera>
   </gui>
 
@@ -186,9 +188,13 @@
       <% for rowInfo in rowInfos %>
         <!-- if the position is shelf, spawn a shelf -->
         <% if (rowInfo['isShelf'] == true) %>
+          <%
+            shelfName = "shelf_row#{rowIndex}_column#{columnIndex}"
+            shelfNames.push(shelfName)
+          %>
           <include>
             <uri>shelf</uri>
-            <name><%="shelf_row#{rowIndex}_column#{columnIndex}"%></name>
+            <name><%=shelfName%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
           </include>
         <% end %>
@@ -225,6 +231,7 @@
       <scale>1.0</scale>
       <interpolate_x>true</interpolate_x>
     </animation>
+
     <plugin name="free_person_plugin" filename="libActorPlugin.so">
       <target>3 2 1.24</target>
       <target_weight>1.15</target_weight>
@@ -232,6 +239,9 @@
       <ignore_obstacles>
         <model>walls</model>
         <model>ground_plane</model>
+        <% for shelfName in shelfNames %>
+          <model><%=shelfName%></model>
+        <% end %>
       </ignore_obstacles>
     </plugin>
   </actor>
