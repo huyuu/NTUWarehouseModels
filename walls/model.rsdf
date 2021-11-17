@@ -27,8 +27,8 @@
 
   # door wall
   doorCenterPositionY = wallPlainVerticalWidth - 7.0
-  doorWidth = 1.0 # [m]
-  doorHeight = 2.0 # [m]
+  doorWidth = 2.0 # [m]
+  doorHeight = 2.3 # [m]
 %>
 
 
