@@ -116,6 +116,7 @@
     <shadow>true</shadow>
   </scene>
 
+  <!--
   <% for lightInfo in lightInfos %>
     <% lightPosition = lightInfo['position'] %>
     <light name="<%=lightInfo['name']%>" type="spot">
@@ -138,6 +139,7 @@
       </spot>
     </light>
   <% end %>
+  -->
 
 
   <!-- include ground plane -->
@@ -145,10 +147,10 @@
     <uri>model://ground_plane</uri>
   </include>
 
-  <!-- <include>
+  <include>
     <uri>model://sun</uri>
     <pose>0 0 50</pose>
-  </include> -->
+  </include>
 
 
   <!-- include all the shelves -->
