@@ -65,6 +65,7 @@
   wallPlainHorizontalHeight = wallHeight
 
   # door wall
+  wallDoorWidth = wallPlainVerticalWidth
   wallDoorHeight = wallHeight
   wallDoorLength = wallWidth
   wallDoorPositionX = wallLength
