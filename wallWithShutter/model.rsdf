@@ -55,7 +55,7 @@
     <pose>0 0 0 0 0 0</pose>
 
     <% for index in (0...intervalWallAmount) %>
-      <collision name="intervalWall_#{index}">
+      <collision name="intervalWall_<%=index%>">
         <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
         <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
         <geomertry>
@@ -76,7 +76,7 @@
     </collision>
 
     <% for index in (0...intervalWallAmount) %>
-      <visual name="intervalWall_#{index}">
+      <visual name="intervalWall_<%=index%>">
         <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
         <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
         <geomertry>
