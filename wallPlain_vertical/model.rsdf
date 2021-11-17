@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # self
+  shelfHeight = 13.850 # [m]
+
+  # overall wall
+  wallWidth = 1.0 + 3.3*17 + 6.3*2 # [m]
+  wallLength = 0.3 # [m]
+  wallHeight = shelfHeight * 1.1
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+%>
+
+
+<sdf version='1.6'>
+<model name="wallPlain_vertical">
+
+  <link name="wallPlain">
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+
+    <pose>0 0 0 0 0 0</pose>
+
+    <collision name='wall_plain_vertical_left'>
+      <% xPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+      <pose>0 <%=wallWidth/2%> <%=wallHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallLength%> <%=wallWidth%> <%=wallHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <collision name='upperWall'>
+      <pose><%=upperWallLength/2%> 0 <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <collision name='rightWall'>
+      <pose><%=rightWallCenterX%> 0 <%=rightWallHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=rightWallLength%> <%=rightWallWidth%> <%=rightWallHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+
+    <% for index in (0...intervalWallAmount) %>
+      <visual name='intervalWall_<%=index%>'>
+        <% xPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+        <pose><%=xPosition%> 0 <%=intervalWallHeight/2%> 0 0 0</pose>
+        <geometry>
+          <box>
+            <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+    <% end %>
+
+    <visual name='upperWall'>
+      <pose><%=upperWallLength/2%> 0 <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+
+
+    <visual name='rightWall'>
+      <pose><%=rightWallCenterX%> 0 <%=rightWallHeight/2%> 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=rightWallLength%> <%=rightWallWidth%> <%=rightWallHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+
+  </link>
+</model>
+</sdf>
