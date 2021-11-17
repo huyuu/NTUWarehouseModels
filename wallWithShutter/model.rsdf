@@ -68,7 +68,7 @@
 
     <collision name='upperWall'>
       <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
-      <geomertry>
+      <geometry>
         <box>
           <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
         </box>
@@ -79,7 +79,7 @@
       <visual name='intervalWall_<%=index%>'>
         <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
         <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
-        <geomertry>
+        <geometry>
           <box>
             <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
           </box>
@@ -89,7 +89,7 @@
 
     <visual name='upperWall'>
       <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
-      <geomertry>
+      <geometry>
         <box>
           <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
         </box>
