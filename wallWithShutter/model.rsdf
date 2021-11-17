@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # self
+  shelfHeight = 13.850 # [m]
+
+  # overall wall
+  wallLength = 3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818 # [m]
+  wallWidth = 0.3 # [m]
+
+  # shutter hall
+  shutterHallAmount = 4
+  shutterHallLength = 3.0 # [m]
+  rightBlankSpaceLength = 1.3 + 3.1 + 2.5 + 3.1 + 1.1 + 0.818
+  shutterHallHeight = 3.0 # [m]
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+  # overall wall
+  wallHeight = shelfHeight * 1.5
+
+  # shutter hall
+  spaceBetweenShutterHalls = (wallLength - rightBlankSpaceLength) / (shutterHallAmount+1)
+  shutterHallWidth = wallWidth
+
+  # interval wall
+  intervalWallAmount = shutterHallAmount
+  intervalWallHeight = shutterHallHeight
+  intervalWallLength = spaceBetweenShutterHalls
+  intervalWallWidth = wallWidth
+
+  # upper wall
+  upperWallLength = wallLength
+  upperWallWidth = wallWidth
+  upperWallHeight = wallHeight - intervalWallHeight
+%>
+
+
+<sdf version='1.6'>
+<model name="wallWithShutter">
+
+  <link name="wall">
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+
+    <pose>0 0 0 0 0 0</pose>
+
+    <% for index in (0...intervalWallAmount) %>
+      <collision name="intervalWall_#{index}">
+        <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+        <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
+        <geomertry>
+          <box>
+            <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
+          </box>
+        </geometry>
+      </collision>
+    <% end %>
+
+    <collision name="upperWall">
+      <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <geomertry>
+        <box>
+          <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <% for index in (0...intervalWallAmount) %>
+      <visual name="intervalWall_#{index}">
+        <% yPosition = intervalWallLength/2 + index*(intervalWallLength+shutterHallLength) %>
+        <pose>0 <%=yPosition%> <%=intervalWallHeight/2%> 0 0 0</pose>
+        <geomertry>
+          <box>
+            <size><%=intervalWallLength%> <%=intervalWallWidth%> <%=intervalWallHeight%></size>
+          </box>
+        </geometry>
+      </visual>
+    <% end %>
+
+    <visual name="upperWall">
+      <pose>0 <%=upperWallLength/2%> <%=intervalWallHeight+upperWallHeight/2%> 0 0 0</pose>
+      <geomertry>
+        <box>
+          <size><%=upperWallLength%> <%=upperWallWidth%> <%=upperWallHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+
+  </link>
+</model>
+</sdf>
