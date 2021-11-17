@@ -165,11 +165,11 @@
       <% for rowInfo in rowInfos %>
         <!-- if the position is shelf, spawn a shelf -->
         <% if (rowInfo['isShelf'] == true) %>
-          <include>
+          <!-- <include>
             <uri>shelf</uri>
             <name><%="shelf_row#{rowIndex}_column#{columnIndex}"%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
-          </include>
+          </include> -->
         <% end %>
         <!-- prepare for next row -->
         <%
@@ -187,11 +187,11 @@
 
 
   <!-- include walls -->
-  <include>
+  <!-- <include>
     <uri>walls</uri>
     <name><"walls"</name>
     <pose>0 0 0 0 0 0</pose>
-  </include>
+  </include> -->
 
 </world>
 </sdf>
