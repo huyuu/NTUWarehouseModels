@@ -1,5 +1,5 @@
 for dirName in $(ls); do
-  if pathToRsdf="./$(find $dirName -name 'model.rsdf')"
+  if pathToRsdf=$(find $dirName -name 'model.rsdf') && $pathToRsdf
   then
     erb $pathToRsdf > ./$dirName/model.sdf
   fi
