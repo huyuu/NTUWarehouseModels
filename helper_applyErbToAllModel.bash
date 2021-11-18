@@ -1,6 +1,6 @@
 for dirName in $(ls -p); do
   pathToRsdf=$(find $dirName -name 'model.rsdf')
-  if ${pathToRsdf:=1}
+  if [ -n "$pathToRsdf" ]
   then
     echo "\$pathToRsdf = $pathToRsdf"
     erb $pathToRsdf > ./$dirName/model.sdf
