@@ -1,16 +1,17 @@
 #include <gazebo/gazebo.hh>
 
-namespace gazebo {
-  class WorldPluginTutorial: public WorldPlugin {
-  private:
-    /* data */
+namespace gazebo
+{
+  class WorldPluginTutorial : public WorldPlugin
+  {
+    public: WorldPluginTutorial() : WorldPlugin()
+            {
+              printf("Hello World!\n");
+            }
 
-  public:
-    WorldPluginTutorial(): WorldPlugin() {
-      printf("Hello World!\n");
-    }
-    virtual ~WorldPluginTutorial () = default;
-    void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override;
+    public: void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf)
+            {
+            }
   };
-  GZ_REGISTER_WORLD_PLUGIN(WorldPluginTutorial);
+  GZ_REGISTER_WORLD_PLUGIN(WorldPluginTutorial)
 }
