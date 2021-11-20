@@ -3,16 +3,19 @@
 namespace gazebo {
   class WorldPluginTutorial: public WorldPlugin {
   public:
-    WorldPluginTutorial(): WorldPlugin() {
-      printf("Hello World!\n");
-    }
+    WorldPluginTutorial();
     virtual ~WorldPluginTutorial () = default;
     void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override;
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldPluginTutorial);
 
 
+  WorldPluginTutorial::WorldPluginTutorial(): WorldPlugin() {
+    printf("Hello World!\n");
+  }
+
+
   void WorldPluginTutorial::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
-    cout << "loaded" << endl;
+    std::cout << "loaded" << std::endl;
   }
 }
