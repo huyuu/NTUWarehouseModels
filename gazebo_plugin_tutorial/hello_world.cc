@@ -6,9 +6,14 @@ namespace gazebo {
     /* data */
 
   public:
-    using WorldPlugin::WorldPlugin;
+    WorldPluginTutorial(): WorldPlugin();
     virtual ~WorldPluginTutorial () = default;
     void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) override;
   };
   GZ_REGISTER_WORLD_PLUGIN(WorldPluginTutorial);
+
+
+  WorldPluginTutorial::WorldPluginTutorial(): WorldPlugin() {
+    printf("Hello World!\n");
+  }
 }
