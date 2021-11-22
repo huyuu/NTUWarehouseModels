@@ -2,8 +2,12 @@
 #define ALGORITHM_EXPANDINGPOTENTIALFIELDPATHPLANNER_HH_
 
 #include <iostream>
-#include <ignition/math.hh>
 #include <vector>
+#include <functional>
+#include "gazebo/common/Plugin.hh"
+#include "gazebo/physics/physics.hh"
+#include "gazebo/util/system.hh"
+#include <ignition/math.hh>
 
 namespace gazebo {
   class GZ_PLUGIN_VISIBLE ExpandingPotentialFieldPathPlanner {
