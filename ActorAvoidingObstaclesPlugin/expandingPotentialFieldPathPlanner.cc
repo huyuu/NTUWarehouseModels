@@ -10,12 +10,12 @@ using namespace gazebo
 // constructor
 // ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(ignition::math::Box& actorBoundingBox, vector<ignition::math::Box>& obstacleBoundingBoxes) {
 ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
-  ExpandingPotentialFieldPathPlanner::updateBoundingBoxes(const ignition::math::Box actorBoundingBox, const physics::World& world);
+  ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
 }
 
 
 // update boundingBoxes
-void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world) {
+void ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world) {
   this->actorBoundingBox = actorBoundingBox;
   const int modelCount {world.ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
@@ -87,6 +87,18 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 
 
 // generate gradient near point
-ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::__generateGradientNearCurrentPosition(const ignition::math::Vector3d& currentPosition) const {
+ignition::math::Vector2d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition) const {
+  ignition::math::Vector2d currentPosition2d {currentPosition.X(), currentPosition.Y()};
+  ignition::math::Vector2d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
+  ignition::math::Vector2d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
 
+  ignition::math::Vector2d point_x_plus {currentPosition2d + deltaX};
+  ignition::math::Vector2d point_x_minus {currentPosition2d - deltaX};
+  ignition::math::Vector2d point_y_plus {currentPosition2d + deltaY};
+  ignition::math::Vector2d point_y_minus {currentPosition2d - deltaY};
+
+  double gradientX = -(this->__generatePotentialAtPoint(point_x_plus) - this->__generatePotentialAtPoint(point_x_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  double gradientY = -(this->__generatePotentialAtPoint(point_y_plus) - this->__generatePotentialAtPoint(point_y_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  ignition::math::Vector2d gradient {gradientX, gradientY};
+  return gradient;
 }
