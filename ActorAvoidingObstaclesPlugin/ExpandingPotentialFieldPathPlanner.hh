@@ -24,7 +24,7 @@ namespace gazebo {
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&, const ignition::math::Vector3d&) const;
     vector<double> gaussPoints;
     vector<double> gaussWeights;
-    void storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox) const;
+    void storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox, ignition::math::Vector3d&) const;
 
 
   private:

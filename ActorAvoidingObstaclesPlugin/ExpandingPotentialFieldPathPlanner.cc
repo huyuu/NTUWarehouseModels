@@ -111,12 +111,12 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double Y_up {boundingBox.Max().Y()};
     potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
   }
-  potential += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -10.0);
+  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -10.0);
   return potentialAtPoint;
 }
 
 
-void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
+void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox, ignition::math::Vector3d& target) const {
   const int sampleAmount = 200;
   static int counter = 1;
   std::vector<std::vector<double>> potentialMap;
@@ -150,7 +150,7 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
       const double x {minX + intervalX*i};
       const double y {minY + intervalY*j};
       const ignition::math::Vector2d position {x, y};
-      const double potential = this->__generatePotentialAtPoint(position);
+      const double potential = this->__generatePotentialAtPoint(position, target);
       // write to file
       writing_file << x << "," << y << "," << potential << std::endl;
     }
