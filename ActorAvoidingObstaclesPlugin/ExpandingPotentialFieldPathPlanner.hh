@@ -22,6 +22,8 @@ namespace gazebo {
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// calculate vector for next step
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&) const;
+    static const vector<double> gaussPoints;
+    static const vector<double> gaussWeights;
 
 
   private:
@@ -45,8 +47,6 @@ namespace gazebo {
     /// gauss points and weights
     // reference: https://pomax.github.io/bezierinfo/legendre-gauss.html
     static const int gaussSampleAmount = 10;
-    static const vector<double> gaussPoints;
-    static const vector<double> gaussWeights;
     /// small delta h for numerous differential
     static constexpr double h {0.01}; // 1[cm]
   };
