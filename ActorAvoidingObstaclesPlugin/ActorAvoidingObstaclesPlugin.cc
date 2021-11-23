@@ -26,7 +26,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
   this->world = this->actor->GetWorld();
 
-  this->connections.push_back(event::Events::ConnectWorldUpdateBegin(std::bind(&ActorPlugin::OnUpdate, this, std::placeholders::_1)));
+  this->connections.push_back(event::Events::ConnectWorldUpdateBegin(std::bind(&ActorAvoidingObstaclesPlugin::OnUpdate, this, std::placeholders::_1)));
 
   this->Reset();
 
@@ -75,7 +75,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
 
 // Override Function: Reset
-void ActorPlugin::Reset()
+void ActorAvoidingObstaclesPlugin::Reset()
 {
   this->velocity = 0.8;
   this->lastUpdate = 0;
@@ -103,7 +103,7 @@ void ActorPlugin::Reset()
 
 
 // Private Function: Choose New Target
-void ActorPlugin::ChooseNewTarget() {
+void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   ignition::math::Vector3d newTarget(this->target);
   while ((newTarget - this->target).Length() < 2.0)
   {
@@ -128,7 +128,7 @@ void ActorPlugin::ChooseNewTarget() {
 
 
 // Private Function: Handle Obstacles
-void ActorPlugin::HandleObstacles() {
+void ActorAvoidingObstaclesPlugin::HandleObstacles() {
   for (unsigned int i = 0; i < this->world->ModelCount(); ++i) {
     const physics::ModelPtr model = this->world->ModelByIndex(i);
     // if the model is in ignoringModels, meaning that the actor should NOT avoid it, we end the handleObstacle process.
@@ -148,7 +148,7 @@ void ActorPlugin::HandleObstacles() {
 
 
 // Private Function: OnUpdate
-void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
+void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 {
   // Time delta
   const double dt = (_info.simTime - this->lastUpdate).Double();

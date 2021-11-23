@@ -39,13 +39,13 @@ namespace gazebo {
     /// target position
     ignition::math::Vector3d targetPosition {};
     /// sample amount
-    int sampleAmount {100};
+    const int sampleAmount {100};
     /// potential map
-    vector<vector<double>> potentialMap(sampleAmount, vector<double>(sampleAmount, 0.0));
+    vector<vector<double>> potentialMap(100, vector<double>(100, 0.0));
     /// gauss points and weights
     // reference: https://pomax.github.io/bezierinfo/legendre-gauss.html
     static const int gaussSampleAmount = 10;
-    static const vector<double> gaussPoints {
+    static const vector<double> gaussPoints = {
       -0.1488743389816312,
       0.1488743389816312,
       -0.4333953941292472,
@@ -57,7 +57,7 @@ namespace gazebo {
       -0.9739065285171717,
       0.9739065285171717
     };
-    static const vector<double> gaussWeights {
+    static const vector<double> gaussWeights = {
       0.2955242247147529,
       0.2955242247147529,
       0.2692667193099963,
