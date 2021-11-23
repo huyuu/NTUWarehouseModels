@@ -8,7 +8,35 @@ using std::vector;
 // ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
 //   ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
 // }
-ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner() {}
+ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner() {
+  this->gaussPoints = {
+    -0.1488743389816312,
+    0.1488743389816312,
+    -0.4333953941292472,
+    0.4333953941292472,
+    -0.6794095682990244,
+    0.6794095682990244,
+    -0.8650633666889845,
+    0.8650633666889845,
+    -0.9739065285171717,
+    0.9739065285171717
+  };
+
+  this->gaussWeights = {
+    0.2955242247147529,
+    0.2955242247147529,
+    0.2692667193099963,
+    0.2692667193099963,
+    0.2190863625159820,
+    0.2190863625159820,
+    0.1494513491505806,
+    0.1494513491505806,
+    0.0666713443086881,
+    0.0666713443086881
+  };
+
+  this->potentialMap = vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
+}
 
 
 // update boundingBoxes

@@ -41,34 +41,12 @@ namespace gazebo {
     /// sample amount
     const int sampleAmount {100};
     /// potential map
-    vector<vector<double>> potentialMap(100, vector<double>(100, 0.0));
+    vector<vector<double>> potentialMap;
     /// gauss points and weights
     // reference: https://pomax.github.io/bezierinfo/legendre-gauss.html
     static const int gaussSampleAmount = 10;
-    static const vector<double> gaussPoints = {
-      -0.1488743389816312,
-      0.1488743389816312,
-      -0.4333953941292472,
-      0.4333953941292472,
-      -0.6794095682990244,
-      0.6794095682990244,
-      -0.8650633666889845,
-      0.8650633666889845,
-      -0.9739065285171717,
-      0.9739065285171717
-    };
-    static const vector<double> gaussWeights = {
-      0.2955242247147529,
-      0.2955242247147529,
-      0.2692667193099963,
-      0.2692667193099963,
-      0.2190863625159820,
-      0.2190863625159820,
-      0.1494513491505806,
-      0.1494513491505806,
-      0.0666713443086881,
-      0.0666713443086881
-    };
+    static const vector<double> gaussPoints;
+    static const vector<double> gaussWeights;
     /// small delta h for numerous differential
     static constexpr double h {0.01}; // 1[cm]
   };
