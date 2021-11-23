@@ -171,7 +171,7 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
   this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition) * this->velocity * dt;
 
   // Compute the yaw orientation
-  ignition::math::Angle yaw = atan2(pos.Y(), pos.X()) + 1.5707 - rpy.Z();
+  ignition::math::Angle yaw = atan2(currentPosition.Y(), currentPosition.X()) + 1.5707 - rpy.Z();
   yaw.Normalize();
 
   // Rotate in place, instead of jumping.
