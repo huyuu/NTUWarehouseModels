@@ -8,8 +8,11 @@ using std::vector;
 // ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
 //   ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
 // }
-ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(): potentialMap{vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0))} {
-}
+ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner():
+  potentialMap{vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0))},
+  gaussPoints{{-0.1488743389816312, 0.1488743389816312, -0.4333953941292472, 0.4333953941292472, -0.6794095682990244, 0.6794095682990244, -0.8650633666889845, 0.8650633666889845, -0.9739065285171717, 0.9739065285171717}},
+  gaussWeight{{0.2955242247147529, 0.2955242247147529, 0.2692667193099963, 0.2692667193099963, 0.2190863625159820, 0.2190863625159820, 0.1494513491505806, 0.1494513491505806, 0.0666713443086881, 0.0666713443086881}}
+  {}
 
 
 // update boundingBoxes
@@ -54,16 +57,16 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
   int i = 0;
   int j = 0;
   for (i = 0; i < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++i) {
-    const double x_ = ExpandingPotentialFieldPathPlanner::gaussPoints[i];
+    const double x_ = this->gaussPoints[i];
     double sum_j = 0.0;
     for (j = 0; j < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++j) {
-      const double y_ = ExpandingPotentialFieldPathPlanner::gaussPoints[j];
+      const double y_ = this->gaussPoints[j];
       sum_j += ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
     }
-    sum_j *= gaussWeights[j];
+    sum_j *= this->gaussWeights[j];
     sum_i += sum_j;
   }
-  sum_i *= gaussWeights[i];
+  sum_i *= this->gaussWeights[i];
   return sum_i;
 }
 

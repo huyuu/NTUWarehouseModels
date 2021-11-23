@@ -22,8 +22,8 @@ namespace gazebo {
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// calculate vector for next step
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&) const;
-    static vector<double> gaussPoints;
-    static vector<double> gaussWeights;
+    vector<double> gaussPoints;
+    vector<double> gaussWeights;
 
 
   private:
@@ -51,30 +51,30 @@ namespace gazebo {
     static constexpr double h {0.01}; // 1[cm]
   };
 
-  ExpandingPotentialFieldPathPlanner::gaussPoints = vector<double>{
-    -0.1488743389816312,
-    0.1488743389816312,
-    -0.4333953941292472,
-    0.4333953941292472,
-    -0.6794095682990244,
-    0.6794095682990244,
-    -0.8650633666889845,
-    0.8650633666889845,
-    -0.9739065285171717,
-    0.9739065285171717
-  };
-  ExpandingPotentialFieldPathPlanner::gaussWeights = vector<double>{
-    0.2955242247147529,
-    0.2955242247147529,
-    0.2692667193099963,
-    0.2692667193099963,
-    0.2190863625159820,
-    0.2190863625159820,
-    0.1494513491505806,
-    0.1494513491505806,
-    0.0666713443086881,
-    0.0666713443086881
-  };
+  // ExpandingPotentialFieldPathPlanner::gaussPoints = vector<double>{
+  //   -0.1488743389816312,
+  //   0.1488743389816312,
+  //   -0.4333953941292472,
+  //   0.4333953941292472,
+  //   -0.6794095682990244,
+  //   0.6794095682990244,
+  //   -0.8650633666889845,
+  //   0.8650633666889845,
+  //   -0.9739065285171717,
+  //   0.9739065285171717
+  // };
+  // ExpandingPotentialFieldPathPlanner::gaussWeights = vector<double>{
+  //   0.2955242247147529,
+  //   0.2955242247147529,
+  //   0.2692667193099963,
+  //   0.2692667193099963,
+  //   0.2190863625159820,
+  //   0.2190863625159820,
+  //   0.1494513491505806,
+  //   0.1494513491505806,
+  //   0.0666713443086881,
+  //   0.0666713443086881
+  // };
 }
 
 #endif
