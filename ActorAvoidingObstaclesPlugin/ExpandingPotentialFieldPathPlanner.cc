@@ -1,6 +1,6 @@
 #include "ExpandingPotentialFieldPathPlanner.hh"
-using namespace gazebo
-using std::vector
+using namespace gazebo;
+using std::vector;
 
 // MARK: - Definitions
 

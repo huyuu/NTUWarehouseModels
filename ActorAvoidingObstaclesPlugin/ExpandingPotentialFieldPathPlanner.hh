@@ -9,7 +9,7 @@
 #include "gazebo/util/system.hh"
 #include <ignition/math.hh>
 
-using std::vector
+using std::vector;
 
 
 namespace gazebo {

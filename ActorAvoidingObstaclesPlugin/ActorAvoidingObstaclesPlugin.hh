@@ -86,7 +86,7 @@ namespace gazebo {
     ExpandingPotentialFieldPathPlanner pathPlanner {};
 
     ignition::math::Box<double> outerMostBoundaryBox {};
-  }
+  };
 }
 
 

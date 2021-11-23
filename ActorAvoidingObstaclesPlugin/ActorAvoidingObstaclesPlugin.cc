@@ -4,7 +4,7 @@
 #include "gazebo/physics/physics.hh"
 #include "ActorAvoidingObstaclesPlugin.hh"
 
-using namespace gazebo
+using namespace gazebo;
 GZ_REGISTER_MODEL_PLUGIN(ActorAvoidingObstaclesPlugin)
 
 #define WALKING_ANIMATION "walking"
@@ -21,7 +21,7 @@ ActorAvoidingObstaclesPlugin::ActorAvoidingObstaclesPlugin(): ModelPlugin() {
 
 
 // Override Function: Load
-ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
+void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   this->sdf = _sdf;
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
   this->world = this->actor->GetWorld();
