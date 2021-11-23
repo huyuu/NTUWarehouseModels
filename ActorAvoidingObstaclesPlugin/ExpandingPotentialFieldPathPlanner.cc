@@ -27,6 +27,26 @@ void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Axis
 }
 
 
+// generate gradient near point
+ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition) const {
+  ignition::math::Vector2d currentPosition2d {currentPosition.X(), currentPosition.Y()};
+  ignition::math::Vector2d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
+  ignition::math::Vector2d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
+
+  ignition::math::Vector2d point_x_plus {currentPosition2d + deltaX};
+  ignition::math::Vector2d point_x_minus {currentPosition2d - deltaX};
+  ignition::math::Vector2d point_y_plus {currentPosition2d + deltaY};
+  ignition::math::Vector2d point_y_minus {currentPosition2d - deltaY};
+
+  double gradientX = -(this->__generatePotentialAtPoint(point_x_plus) - this->__generatePotentialAtPoint(point_x_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  double gradientY = -(this->__generatePotentialAtPoint(point_y_plus) - this->__generatePotentialAtPoint(point_y_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  ignition::math::Vector3d gradient {gradientX, gradientY, 0.0};
+  return gradient;
+}
+
+
+// MARK: - Private Methods
+
 // update potential map
 // void ExpandingPotentialFieldPathPlanner::updatePotentialMap() {
 //   for (int i = 0; i < this->sampleAmount; ++i) {
@@ -88,19 +108,15 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 }
 
 
-// generate gradient near point
-ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition) const {
-  ignition::math::Vector2d currentPosition2d {currentPosition.X(), currentPosition.Y()};
-  ignition::math::Vector2d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
-  ignition::math::Vector2d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
-
-  ignition::math::Vector2d point_x_plus {currentPosition2d + deltaX};
-  ignition::math::Vector2d point_x_minus {currentPosition2d - deltaX};
-  ignition::math::Vector2d point_y_plus {currentPosition2d + deltaY};
-  ignition::math::Vector2d point_y_minus {currentPosition2d - deltaY};
-
-  double gradientX = -(this->__generatePotentialAtPoint(point_x_plus) - this->__generatePotentialAtPoint(point_x_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
-  double gradientY = -(this->__generatePotentialAtPoint(point_y_plus) - this->__generatePotentialAtPoint(point_y_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
-  ignition::math::Vector3d gradient {gradientX, gradientY, 0.0};
-  return gradient;
-}
+// void ExpandingPotentialFieldPathPlanner::__storePotentialsOnSamplePoints() {
+//   vector<vecotr<double>> potentialMap(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
+//   for (int i = 0; i < this->sampleAmount; ++i) {
+//     for (int j = 0; j < this->sampleAmount; ++j) {
+//       interval = {
+//
+//       }();
+//       const ignition::math::Vector3d position {};
+//
+//     }
+//   }
+// }

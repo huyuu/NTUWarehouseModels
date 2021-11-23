@@ -168,7 +168,7 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition) * this->velocity * dt;
+  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition);
 
   // Compute the yaw orientation
   ignition::math::Angle yaw = atan2(currentPosition.Y(), currentPosition.X()) + 1.5707 - rpy.Z();
@@ -182,9 +182,12 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
-    pose.Pos() += this->goingVector;
+    // pose.Pos() += this->goingVector * this->velocity * dt;
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
+  std::cout << "old position: " << pose.Pos();
+  pose.Pos() += this->goingVector * this->velocity * dt;
+  std::cout << "goingVector: " << this->goingVector * this->velocity * dt << std::endl;
 
   // Make sure the actor stays within bounds
   pose.Pos().X(std::max(this->outerMostBoundaryBox.Min().X(), std::min(this->outerMostBoundaryBox.Max().X(), pose.Pos().X())));
