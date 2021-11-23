@@ -1,4 +1,4 @@
-#include "expandingPotentialFieldPathPlanner.hh"
+#include "ExpandingPotentialFieldPathPlanner.hh"
 using namespace gazebo
 
 
