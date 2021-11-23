@@ -140,6 +140,8 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
   constexpr double width = 1.0 + 3.3*17 + 6.3*2;
   const double intervalY = width / (sampleAmount - 1);
 
+  const ignition::math::Vector2d target2d {target.X(), target.Y()};
+
   if (counter > 1) {
     return;
   }
@@ -150,7 +152,7 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
       const double x {minX + intervalX*i};
       const double y {minY + intervalY*j};
       const ignition::math::Vector2d position {x, y};
-      const double potential = this->__generatePotentialAtPoint(position, target);
+      const double potential = this->__generatePotentialAtPoint(position, target2d);
       // write to file
       writing_file << x << "," << y << "," << potential << std::endl;
     }
