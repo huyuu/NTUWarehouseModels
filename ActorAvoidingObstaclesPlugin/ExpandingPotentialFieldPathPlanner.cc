@@ -81,12 +81,10 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     double sum_j = 0.0;
     for (j = 0; j < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++j) {
       const double y_ = this->gaussPoints[j];
-      sum_j += ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
+      sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
     }
-    sum_j *= this->gaussWeights[j];
-    sum_i += sum_j;
+    sum_i += this->gaussWeights[i] * sum_j;
   }
-  sum_i *= this->gaussWeights[i];
   return sum_i;
 }
 
@@ -110,11 +108,12 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
   const int sampleAmount = 100;
+  static int counter = 1;
   std::vector<std::vector<double>> potentialMap;
   for (int i = 0; i < sampleAmount; ++i) {
     vector<double> temp;
     for (int j = 0; j < sampleAmount; ++j) {
-      temp.push_back;
+      temp.push_back(0.0);
     }
     potentialMap.push_back(temp);
   }
@@ -122,6 +121,8 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
   // const double minX = outerMostBoundaryBox.Min().X();
   // const double minY = outerMostBoundaryBox.Min().Y();
   // const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
+  const double minX = 0.0;
+  const double minY = 0.0;
   constexpr double length = 3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818;
   const double intervalX = length / (sampleAmount - 1);
 
@@ -129,6 +130,9 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
   constexpr double width = 1.0 + 3.3*17 + 6.3*2;
   const double intervalY = width / (sampleAmount - 1);
 
+  if (counter > 1) {
+    return;
+  }
   std::ofstream writing_file;
   writing_file.open("potentialMap.csv", std::ios::out);
   for (int i = 0; i < sampleAmount; ++i) {
@@ -143,4 +147,5 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
   }
   writing_file.close();
   std::cout << "potentialMap.csv written." << std::endl;
+  counter += 1;
 }
