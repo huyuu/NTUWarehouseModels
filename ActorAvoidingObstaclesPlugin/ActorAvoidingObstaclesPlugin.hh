@@ -37,7 +37,7 @@ namespace gazebo {
     /// simple vector-field algorithm.
     /// \param[in] _pos Direction vector that should be adjusted according
     /// to nearby obstacles.
-    virtual void HandleObstacles();
+    // virtual void HandleObstacles();
 
 
     // Private Properties

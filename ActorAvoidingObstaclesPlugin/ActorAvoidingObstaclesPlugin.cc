@@ -128,23 +128,23 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
 
 
 // Private Function: Handle Obstacles
-void ActorAvoidingObstaclesPlugin::HandleObstacles() {
-  for (unsigned int i = 0; i < this->world->ModelCount(); ++i) {
-    const physics::ModelPtr model = this->world->ModelByIndex(i);
-    // if the model is in ignoringModels, meaning that the actor should NOT avoid it, we end the handleObstacle process.
-    if (std::find(this->ignoreModels.begin(), this->ignoreModels.end(), model->GetName()) != this->ignoreModels.end()) {
-      return ;
-    }
-    ignition::math::Vector3d vectorFromActorToObstacle = model->WorldPose().Pos() - this->actor->WorldPose().Pos();
-    const double&& distanceFromActorToObstacle {vectorFromActorToObstacle.Length()};
-    if (distanceFromActorToObstacle < 4.0) {
-      const double&& invModelDist {this->obstacleWeight / distanceFromActorToObstacle};
-      vectorFromActorToObstacle.Normalize();
-      vectorFromActorToObstacle *= invModelDist;
-      vectorFromActorToTarget -= vectorFromActorToObstacle;
-    }
-  }
-}
+// void ActorAvoidingObstaclesPlugin::HandleObstacles() {
+//   for (unsigned int i = 0; i < this->world->ModelCount(); ++i) {
+//     const physics::ModelPtr model = this->world->ModelByIndex(i);
+//     // if the model is in ignoringModels, meaning that the actor should NOT avoid it, we end the handleObstacle process.
+//     if (std::find(this->ignoreModels.begin(), this->ignoreModels.end(), model->GetName()) != this->ignoreModels.end()) {
+//       return ;
+//     }
+//     ignition::math::Vector3d vectorFromActorToObstacle = model->WorldPose().Pos() - this->actor->WorldPose().Pos();
+//     const double&& distanceFromActorToObstacle {vectorFromActorToObstacle.Length()};
+//     if (distanceFromActorToObstacle < 4.0) {
+//       const double&& invModelDist {this->obstacleWeight / distanceFromActorToObstacle};
+//       vectorFromActorToObstacle.Normalize();
+//       vectorFromActorToObstacle *= invModelDist;
+//       vectorFromActorToTarget -= vectorFromActorToObstacle;
+//     }
+//   }
+// }
 
 
 // Private Function: OnUpdate
