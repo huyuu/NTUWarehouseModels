@@ -4,49 +4,47 @@ using std::vector;
 
 // MARK: - Definitions
 
+ExpandingPotentialFieldPathPlanner::gaussPoints = {
+  -0.1488743389816312,
+  0.1488743389816312,
+  -0.4333953941292472,
+  0.4333953941292472,
+  -0.6794095682990244,
+  0.6794095682990244,
+  -0.8650633666889845,
+  0.8650633666889845,
+  -0.9739065285171717,
+  0.9739065285171717
+};
+ExpandingPotentialFieldPathPlanner::gaussWeights = {
+  0.2955242247147529,
+  0.2955242247147529,
+  0.2692667193099963,
+  0.2692667193099963,
+  0.2190863625159820,
+  0.2190863625159820,
+  0.1494513491505806,
+  0.1494513491505806,
+  0.0666713443086881,
+  0.0666713443086881
+};
+
 // constructor
 // ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
 //   ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
 // }
-ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner() {
-  this->gaussPoints = {
-    -0.1488743389816312,
-    0.1488743389816312,
-    -0.4333953941292472,
-    0.4333953941292472,
-    -0.6794095682990244,
-    0.6794095682990244,
-    -0.8650633666889845,
-    0.8650633666889845,
-    -0.9739065285171717,
-    0.9739065285171717
-  };
-
-  this->gaussWeights = {
-    0.2955242247147529,
-    0.2955242247147529,
-    0.2692667193099963,
-    0.2692667193099963,
-    0.2190863625159820,
-    0.2190863625159820,
-    0.1494513491505806,
-    0.1494513491505806,
-    0.0666713443086881,
-    0.0666713443086881
-  };
-
-  this->potentialMap = vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
+ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(): potentialMap{vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0))} {
 }
 
 
 // update boundingBoxes
 void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels) {
   this->actorBoundingBox = actorBoundingBox;
-  const int modelCount {world->ModelCount()};
+  const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
-    const physics::ModelPtr model = this->world->ModelByIndex(i);
+    const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
-      this->obstacles.push_back(world->ModelByIndex(i));
+      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i).BoundingBox());
   }
 }
 
@@ -81,10 +79,10 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
   int i = 0;
   int j = 0;
   for (i = 0; i < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++i) {
-    const x_ = ExpandingPotentialFieldPathPlanner::gaussPoints[i];
+    const double x_ = ExpandingPotentialFieldPathPlanner::gaussPoints[i];
     double sum_j = 0.0;
     for (j = 0; j < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++j) {
-      const y_ = ExpandingPotentialFieldPathPlanner::gaussPoints[j];
+      const double y_ = ExpandingPotentialFieldPathPlanner::gaussPoints[j];
       sum_j += ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
     }
     sum_j *= gaussWeights[j];
@@ -101,8 +99,7 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
   const double y {point.Y()};
   double potentialAtPoint {0.0};
   // generate barrier potential for obstacles
-  for (const auto& obstacle: this->obstacles) {
-    const ignition::math::AxisAlignedBox boundingBox {obstacle->BoundingBox()};
+  for (const auto& boundingBox: this->obstacleBoundingBoxes) {
     const double X_down {boundingBox.Min().X()};
     const double X_up {boundingBox.Max().X()};
     const double Y_down {boundingBox.Min().Y()};
