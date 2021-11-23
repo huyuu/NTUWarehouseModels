@@ -5,18 +5,20 @@ using namespace gazebo
 // MARK: - Definitions
 
 // constructor
-// ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(ignition::math::Box& actorBoundingBox, vector<ignition::math::Box>& obstacleBoundingBoxes) {
-ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
-  ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
-}
+// ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
+//   ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
+// }
+ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner() {}
 
 
 // update boundingBoxes
-void ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world) {
+void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world, const std::vector<std::string>& ignoreModels) {
   this->actorBoundingBox = actorBoundingBox;
   const int modelCount {world.ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
-    this->obstacles.push_back(world.ModelByIndex(i));
+    const physics::ModelPtr model = this->world->ModelByIndex(i);
+    if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
+      this->obstacles.push_back(world.ModelByIndex(i));
   }
 }
 

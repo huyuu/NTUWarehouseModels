@@ -13,16 +13,16 @@ namespace gazebo {
   class GZ_PLUGIN_VISIBLE ExpandingPotentialFieldPathPlanner {
   public:
     /// constructor
-    ExpandingPotentialFieldPathPlanner(const ignition::math::Box, const physics::World&);
+    ExpandingPotentialFieldPathPlanner();
     ~ExpandingPotentialFieldPathPlanner();
+    /// update models when there is any change
+    void updateModels(const ignition::math::Box, const physics::World&, const std::vector<std::string>&);
     /// calculate vector for next step
     virtual ignition::math::Vector2d generateGradientNearPosition(const ignition::math::Vector3d&) const;
 
 
   private:
     // Member Functions
-    /// update models when there is any change
-    void __updateModels(const ignition::math::Box, const physics::World&);
     /// calculate potential by Gauss Integral using the specific formula
     double __calculatePotentialUsingFormula(const double& x, const double& y, const double& X_down, const double& X_up, const double& Y_down, const double& Y_up) const;
     /// generate potential at point

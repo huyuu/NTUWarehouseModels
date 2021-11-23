@@ -61,6 +61,16 @@ ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sd
       modelElem = modelElem->GetNextElement("model");
     }
   }
+
+  this->pathPlanner->updateModels(this->actor->BoundingBox(), this->World, this->ignoreModels);
+
+  const int modelCount {world.ModelCount()};
+  for (unsigned int i = 0; i < modelCount; ++i) {
+    const physics::ModelPtr model = this->world->ModelByIndex(i);
+    if (model->GetName() == "walls") {
+      this->outerMostBoundaryBox = model.BoundingBox();
+      break
+    }
 }
 
 
@@ -144,8 +154,9 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
   const double dt = (_info.simTime - this->lastUpdate).Double();
 
   ignition::math::Pose3d pose = this->actor->WorldPose();
-  ignition::math::Vector3d vectorFromActorToTarget = this->target - pose.Pos();
-  this->goingVector = this->target - pose.Pos();
+  ignition::math::Vector3d currentPosition = pose.Pos();
+  ignition::math::Vector3d vectorFromActorToTarget = this->target - currentPosition;
+  this->goingVector = this->target - currentPosition;
   this->goingVector.Normalize();
   ignition::math::Vector3d rpy = pose.Rot().Euler();
 
@@ -157,7 +168,7 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner->calculateNextStepVector(pose.Pos(), goingVector);
+  this->goingVector = this->pathPlanner->generateGradientNearPosition(currentPosition) * this->velocity * dt;
 
   // Compute the yaw orientation
   ignition::math::Angle yaw = atan2(pos.Y(), pos.X()) + 1.5707 - rpy.Z();
@@ -171,13 +182,13 @@ void ActorPlugin::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
-    pose.Pos() += pos * this->velocity * dt;
+    pose.Pos() += this->goingVector;
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
 
   // Make sure the actor stays within bounds
-  pose.Pos().X(std::max(-3.0, std::min(3.5, pose.Pos().X())));
-  pose.Pos().Y(std::max(-10.0, std::min(2.0, pose.Pos().Y())));
+  pose.Pos().X(std::max(this->outerMostBoundaryBox.Min().X(), std::min(this->outerMostBoundaryBox.Max().X(), pose.Pos().X())));
+  pose.Pos().Y(std::max(this->outerMostBoundaryBox.Min().Y(), std::min(this->outerMostBoundaryBox.Max().Y(), pose.Pos().Y())));
   pose.Pos().Z(1.2138);
 
   // Distance traveled is used to coordinate motion with the walking
