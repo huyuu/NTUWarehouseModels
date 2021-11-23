@@ -108,15 +108,33 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 }
 
 
-// void ExpandingPotentialFieldPathPlanner::__storePotentialsOnSamplePoints() {
-//   vector<vecotr<double>> potentialMap(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
-//   for (int i = 0; i < this->sampleAmount; ++i) {
-//     for (int j = 0; j < this->sampleAmount; ++j) {
-//       interval = {
-//
-//       }();
-//       const ignition::math::Vector3d position {};
-//
-//     }
-//   }
-// }
+void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints() const {
+  vector<vecotr<double>> potentialMap(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
+
+  const double minX = this->outerMostBoundaryBox.Min().X();
+  const double minY = this->outerMostBoundaryBox.Min().Y();
+  const double intervalX = {
+    const double length = this->outerMostBoundaryBox.Max().X() - this->outerMostBoundaryBox.Min().X();
+    return length / static_case<double>(this->sampleAmount - 1);
+  }();
+
+  const double intervalY = {
+    const double width = this->outerMostBoundaryBox.Max().Y() - this->outerMostBoundaryBox.Min().Y();
+    return width / static_case<double>(this->sampleAmount - 1);
+  }();
+
+  std::ofstream writing_file;
+  writing_file.open("potentialMap.csv", std::ios::out);
+  for (int i = 0; i < this->sampleAmount; ++i) {
+    for (int j = 0; j < this->sampleAmount; ++j) {
+      const double x {minX + intervalX*i};
+      const double y {minY + intervalY*j};
+      const ignition::math::Vector2d position {x, y};
+      const double potential = this->__generatePotentialAtPoint(position);
+      // write to file
+      writing_file << x << "," << y << "," << potential << std::endl;
+    }
+  }
+  writing_file.close();
+  std::cout << "potentialMap.csv written." << std::endl;
+}
