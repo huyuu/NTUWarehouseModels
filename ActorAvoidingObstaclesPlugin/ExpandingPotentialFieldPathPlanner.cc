@@ -83,7 +83,8 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     double sum_j = 0.0;
     for (j = 0; j < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++j) {
       const double y_ = this->gaussPoints[j];
-      sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
+      // sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
+      sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / ( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
     }
     sum_i += this->gaussWeights[i] * sum_j;
   }
@@ -94,7 +95,7 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
 double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEmittingPoint(const ignition::math::Vector2d& sourcePosition, const ignition::math::Vector2d& currentPosition, const double coeff) const {
   const ignition::math::Vector2d sourceToCurrentVector {currentPosition.X() - sourcePosition.X(), currentPosition.Y() - sourcePosition.Y()};
   const double distance {sourceToCurrentVector.Length()};
-  return coeff / distance;
+  return coeff / (distance);
 }
 
 
@@ -119,6 +120,9 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox, ignition::math::Vector3d& target) const {
   const int sampleAmount = 200;
   static int counter = 1;
+  if (counter > 1) {
+    return;
+  }
   std::vector<std::vector<double>> potentialMap;
   for (int i = 0; i < sampleAmount; ++i) {
     vector<double> temp;
@@ -141,10 +145,6 @@ void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition:
   const double intervalY = width / (sampleAmount - 1);
 
   const ignition::math::Vector2d target2d {target.X(), target.Y()};
-
-  if (counter > 1) {
-    return;
-  }
   std::ofstream writing_file;
   writing_file.open("potentialMap.csv", std::ios::out);
   for (int i = 0; i < sampleAmount; ++i) {

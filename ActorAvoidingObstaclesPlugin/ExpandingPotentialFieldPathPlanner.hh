@@ -50,7 +50,7 @@ namespace gazebo {
     // reference: https://pomax.github.io/bezierinfo/legendre-gauss.html
     static const int gaussSampleAmount = 10;
     /// small delta h for numerous differential
-    static constexpr double h {0.01}; // 1[cm]
+    static constexpr double h {0.05}; // 5[cm]
   };
 
   // ExpandingPotentialFieldPathPlanner::gaussPoints = vector<double>{
