@@ -83,8 +83,7 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     double sum_j = 0.0;
     for (j = 0; j < ExpandingPotentialFieldPathPlanner::gaussSampleAmount; ++j) {
       const double y_ = this->gaussPoints[j];
-      // sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::sqrt( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
-      sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / ( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) );
+      sum_j += this->gaussWeights[j] * ((X_up-X_down)/2.0 * (Y_up-Y_down)/2.0) / std::pow( std::pow(x-((X_up-X_down)/2.0*(x_+1)+X_down), 2) + std::pow(y-((Y_up-Y_down)/2.0*(y_+1)+Y_down), 2) , 2.0);
     }
     sum_i += this->gaussWeights[i] * sum_j;
   }
@@ -95,7 +94,7 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
 double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEmittingPoint(const ignition::math::Vector2d& sourcePosition, const ignition::math::Vector2d& currentPosition, const double coeff) const {
   const ignition::math::Vector2d sourceToCurrentVector {currentPosition.X() - sourcePosition.X(), currentPosition.Y() - sourcePosition.Y()};
   const double distance {sourceToCurrentVector.Length()};
-  return coeff / (distance);
+  return coeff / (std::pow(distance, 0.5));
 }
 
 
@@ -112,13 +111,13 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double Y_up {boundingBox.Max().Y()};
     potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
   }
-  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -10.0);
+  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -5.0);
   return potentialAtPoint;
 }
 
 
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox, ignition::math::Vector3d& target) const {
-  const int sampleAmount = 200;
+  const int sampleAmount = 300;
   static int counter = 1;
   if (counter > 1) {
     return;
