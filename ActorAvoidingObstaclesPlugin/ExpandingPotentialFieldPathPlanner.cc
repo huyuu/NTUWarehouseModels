@@ -95,7 +95,9 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
 double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEmittingPoint(const ignition::math::Vector2d& sourcePosition, const ignition::math::Vector2d& currentPosition, const double coeff) const {
   const ignition::math::Vector2d sourceToCurrentVector {currentPosition.X() - sourcePosition.X(), currentPosition.Y() - sourcePosition.Y()};
   const double distance {sourceToCurrentVector.Length()};
-  return coeff / (std::pow(distance, 0.5));
+  const double potential {(ExpandingPotentialFieldPathPlanner::Umax - ExpandingPotentialFieldPathPlanner::Umin) / (ExpandingPotentialFieldPathPlanner::width) * distance + ExpandingPotentialFieldPathPlanner::Umin};
+  return coeff * potential;
+  // return coeff / (std::pow(distance, 0.5));
   // return std::max(-10.0, std::min(10.0, potential));
 }
 
@@ -113,8 +115,8 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double Y_up {boundingBox.Max().Y()};
     potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
   }
-  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -30.0);
-  return std::max(-10.0, std::min(10.0, potentialAtPoint));
+  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, 1.0);
+  return std::max(ExpandingPotentialFieldPathPlanner::Umin, std::min(ExpandingPotentialFieldPathPlanner::Umax, potentialAtPoint));
 }
 
 

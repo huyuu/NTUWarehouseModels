@@ -51,6 +51,12 @@ namespace gazebo {
     static const int gaussSampleAmount = 10;
     /// small delta h for numerous differential
     static constexpr double h {0.05}; // 5[cm]
+
+    static constexpr double Umax {30.0};
+    static constexpr double Umin {-30.0};
+
+    static constexpr double length {3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818};
+    static constexpr double width {1.0 + 3.3*17 + 6.3*2};
   };
 
   // ExpandingPotentialFieldPathPlanner::gaussPoints = vector<double>{
