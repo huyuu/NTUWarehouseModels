@@ -87,7 +87,6 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     }
     sum_i += this->gaussWeights[i] * sum_j;
   }
-  // return sum_i * coeff;
   return std::max(ExpandingPotentialFieldPathPlanner::Umin/2.0, std::min(ExpandingPotentialFieldPathPlanner::Umax/2.0, sum_i * coeff));
 }
 
@@ -97,8 +96,6 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEm
   const double distance {sourceToCurrentVector.Length()};
   const double potential {(ExpandingPotentialFieldPathPlanner::Umax - ExpandingPotentialFieldPathPlanner::Umin) / ExpandingPotentialFieldPathPlanner::width * distance + ExpandingPotentialFieldPathPlanner::Umin};
   return coeff * potential;
-  // return coeff / (std::pow(distance, 0.5));
-  // return std::max(-10.0, std::min(10.0, potential));
 }
 
 
