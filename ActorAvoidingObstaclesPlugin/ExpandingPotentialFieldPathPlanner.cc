@@ -12,7 +12,7 @@ ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner() {}
 
 
 // update boundingBoxes
-void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world, const std::vector<std::string>& ignoreModels) {
+void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Box<double> actorBoundingBox, const physics::World& world, const std::vector<std::string>& ignoreModels) {
   this->actorBoundingBox = actorBoundingBox;
   const int modelCount {world.ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
@@ -74,7 +74,7 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
   double potentialAtPoint {0.0};
   // generate barrier potential for obstacles
   for (const auto& obstacle: this->obstacles) {
-    const ignition::math::Box boundingBox {obstacle->BoundingBox()};
+    const ignition::math::Box<double> boundingBox {obstacle->BoundingBox()};
     const double X_down {boundingBox.Min().X()};
     const double X_up {boundingBox.Max().X()};
     const double Y_down {boundingBox.Min().Y()};
