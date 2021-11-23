@@ -11,7 +11,7 @@ using std::vector;
 ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner():
   potentialMap{vector<vector<double>>(this->sampleAmount, vector<double>(this->sampleAmount, 0.0))},
   gaussPoints{{-0.1488743389816312, 0.1488743389816312, -0.4333953941292472, 0.4333953941292472, -0.6794095682990244, 0.6794095682990244, -0.8650633666889845, 0.8650633666889845, -0.9739065285171717, 0.9739065285171717}},
-  gaussWeight{{0.2955242247147529, 0.2955242247147529, 0.2692667193099963, 0.2692667193099963, 0.2190863625159820, 0.2190863625159820, 0.1494513491505806, 0.1494513491505806, 0.0666713443086881, 0.0666713443086881}}
+  gaussWeights{{0.2955242247147529, 0.2955242247147529, 0.2692667193099963, 0.2692667193099963, 0.2190863625159820, 0.2190863625159820, 0.1494513491505806, 0.1494513491505806, 0.0666713443086881, 0.0666713443086881}}
   {}
 
 
@@ -72,7 +72,7 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
 
 
 // calculate next step vector
-double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const ignition::math::Vector3d& point) const {
+double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const ignition::math::Vector2d& point) const {
   const double x {point.X()};
   const double y {point.Y()};
   double potentialAtPoint {0.0};

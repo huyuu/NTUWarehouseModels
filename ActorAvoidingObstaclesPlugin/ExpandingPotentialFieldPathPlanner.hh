@@ -21,7 +21,7 @@ namespace gazebo {
     /// update models when there is any change
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// calculate vector for next step
-    virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&) const;
+    virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector2d&) const;
     vector<double> gaussPoints;
     vector<double> gaussWeights;
 
