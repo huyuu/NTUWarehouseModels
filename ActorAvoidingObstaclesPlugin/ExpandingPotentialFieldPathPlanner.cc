@@ -110,17 +110,23 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
   const int sampleAmount = 100;
-  vector<vecotr<double>> potentialMap;
+  std::vector<std::vector<double>> potentialMap;
   for (int i = 0; i < sampleAmount; ++i) {
-    potentialAmount.push_back(vector<double>(sampleAmount));
+    vector<double> temp;
+    for (int j = 0; j < sampleAmount; ++j) {
+      temp.push_back;
+    }
+    potentialMap.push_back(temp);
   }
 
-  const double minX = outerMostBoundaryBox.Min().X();
-  const double minY = outerMostBoundaryBox.Min().Y();
-  const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
+  // const double minX = outerMostBoundaryBox.Min().X();
+  // const double minY = outerMostBoundaryBox.Min().Y();
+  // const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
+  constexpr double length = 3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818;
   const double intervalX = length / (sampleAmount - 1);
 
-  const double width = outerMostBoundaryBox.Max().Y() - outerMostBoundaryBox.Min().Y();
+  // const double width = outerMostBoundaryBox.Max().Y() - outerMostBoundaryBox.Min().Y();
+  constexpr double width = 1.0 + 3.3*17 + 6.3*2;
   const double intervalY = width / (sampleAmount - 1);
 
   std::ofstream writing_file;
