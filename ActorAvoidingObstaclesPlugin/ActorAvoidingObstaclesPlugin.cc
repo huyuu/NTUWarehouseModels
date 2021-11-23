@@ -169,7 +169,7 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
   this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition);
-  this->pathPlanner.storePotentialsOnSamplePoints();
+  this->pathPlanner.storePotentialsOnSamplePoints(this->outerMostBoundaryBox);
 
   // Compute the yaw orientation
   ignition::math::Angle yaw = atan2(currentPosition.Y(), currentPosition.X()) + 1.5707 - rpy.Z();

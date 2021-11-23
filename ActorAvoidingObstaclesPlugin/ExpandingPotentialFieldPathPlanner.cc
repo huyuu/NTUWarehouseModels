@@ -110,7 +110,10 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
   const int sampleAmount = 100;
-  vector<vecotr<double>> potentialMap(100, vector<double>(100, 0.0));
+  vector<vecotr<double>> potentialMap;
+  for (int i = 0; i < sampleAmount; ++i) {
+    potentialAmount.push_back(vector<double>(sampleAmount));
+  }
 
   const double minX = outerMostBoundaryBox.Min().X();
   const double minY = outerMostBoundaryBox.Min().Y();
