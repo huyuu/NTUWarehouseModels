@@ -4,31 +4,6 @@ using std::vector;
 
 // MARK: - Definitions
 
-ExpandingPotentialFieldPathPlanner::gaussPoints = {
-  -0.1488743389816312,
-  0.1488743389816312,
-  -0.4333953941292472,
-  0.4333953941292472,
-  -0.6794095682990244,
-  0.6794095682990244,
-  -0.8650633666889845,
-  0.8650633666889845,
-  -0.9739065285171717,
-  0.9739065285171717
-};
-ExpandingPotentialFieldPathPlanner::gaussWeights = {
-  0.2955242247147529,
-  0.2955242247147529,
-  0.2692667193099963,
-  0.2692667193099963,
-  0.2190863625159820,
-  0.2190863625159820,
-  0.1494513491505806,
-  0.1494513491505806,
-  0.0666713443086881,
-  0.0666713443086881
-};
-
 // constructor
 // ExpandingPotentialFieldPathPlanner::ExpandingPotentialFieldPathPlanner(const ignition::math::Box actorBoundingBox, const physics::World& world) {
 //   ExpandingPotentialFieldPathPlanner::__updateModels(const ignition::math::Box actorBoundingBox, const physics::World& world);
@@ -44,7 +19,7 @@ void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Axis
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
-      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i).BoundingBox());
+      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->BoundingBox());
   }
 }
 
@@ -112,14 +87,14 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 
 // generate gradient near point
 ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition) const {
-  ignition::math::Vector3d currentPosition2d {currentPosition.X(), currentPosition.Y()};
-  ignition::math::Vector3d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
-  ignition::math::Vector3d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
+  ignition::math::Vector2d currentPosition2d {currentPosition.X(), currentPosition.Y()};
+  ignition::math::Vector2d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
+  ignition::math::Vector2d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
 
-  ignition::math::Vector3d point_x_plus {currentPosition2d + deltaX};
-  ignition::math::Vector3d point_x_minus {currentPosition2d - deltaX};
-  ignition::math::Vector3d point_y_plus {currentPosition2d + deltaY};
-  ignition::math::Vector3d point_y_minus {currentPosition2d - deltaY};
+  ignition::math::Vector2d point_x_plus {currentPosition2d + deltaX};
+  ignition::math::Vector2d point_x_minus {currentPosition2d - deltaX};
+  ignition::math::Vector2d point_y_plus {currentPosition2d + deltaY};
+  ignition::math::Vector2d point_y_minus {currentPosition2d - deltaY};
 
   double gradientX = -(this->__generatePotentialAtPoint(point_x_plus) - this->__generatePotentialAtPoint(point_x_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
   double gradientY = -(this->__generatePotentialAtPoint(point_y_plus) - this->__generatePotentialAtPoint(point_y_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
