@@ -19,7 +19,7 @@ namespace gazebo {
     ExpandingPotentialFieldPathPlanner();
     ~ExpandingPotentialFieldPathPlanner();
     /// update models when there is any change
-    void updateModels(const ignition::math::Box<double>, const physics::World&, const std::vector<std::string>&);
+    void updateModels(const ignition::math::Box, const physics::World&, const std::vector<std::string>&);
     /// calculate vector for next step
     virtual ignition::math::Vector2d generateGradientNearPosition(const ignition::math::Vector3d&) const;
 
@@ -33,9 +33,9 @@ namespace gazebo {
 
     // Properties
     /// actor bounding box
-    ignition::math::Box<double> actorBoundingBox;
+    ignition::math::Box actorBoundingBox;
     /// obstacles bounding boxes
-    vector<ignition::math::Box<double>> obstacleBoundingBoxes;
+    vector<ignition::math::Box> obstacleBoundingBoxes;
     /// target position
     ignition::math::Vector3d targetPosition {};
     /// sample amount

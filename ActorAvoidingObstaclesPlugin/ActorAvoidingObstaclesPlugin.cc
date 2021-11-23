@@ -62,15 +62,16 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
     }
   }
 
-  this->pathPlanner.updateModels(this->actor->BoundingBox(), this->World, this->ignoreModels);
+  this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
 
   const int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
-    const physics::ModelPtr model = this->World->ModelByIndex(i);
+    const physics::ModelPtr model = this->world->ModelByIndex(i);
     if (model->GetName() == "walls") {
       this->outerMostBoundaryBox = model->BoundingBox();
       break;
     }
+  }
 }
 
 
