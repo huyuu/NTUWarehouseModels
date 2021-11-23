@@ -168,7 +168,7 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition);
+  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
   this->pathPlanner.storePotentialsOnSamplePoints(this->outerMostBoundaryBox);
 
   // Compute the yaw orientation

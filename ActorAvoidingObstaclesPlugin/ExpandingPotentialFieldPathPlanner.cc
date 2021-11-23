@@ -28,7 +28,7 @@ void ExpandingPotentialFieldPathPlanner::updateModels(const ignition::math::Axis
 
 
 // generate gradient near point
-ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition) const {
+ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) const {
   ignition::math::Vector2d currentPosition2d {currentPosition.X(), currentPosition.Y()};
   ignition::math::Vector2d deltaX {ExpandingPotentialFieldPathPlanner::h, 0.0};
   ignition::math::Vector2d deltaY {0.0, ExpandingPotentialFieldPathPlanner::h};
@@ -38,8 +38,10 @@ ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNea
   ignition::math::Vector2d point_y_plus {currentPosition2d + deltaY};
   ignition::math::Vector2d point_y_minus {currentPosition2d - deltaY};
 
-  double gradientX = -(this->__generatePotentialAtPoint(point_x_plus) - this->__generatePotentialAtPoint(point_x_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
-  double gradientY = -(this->__generatePotentialAtPoint(point_y_plus) - this->__generatePotentialAtPoint(point_y_minus)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  ignition::math::Vector2d target2d {target.X(), target.Y()};
+
+  double gradientX = -(this->__generatePotentialAtPoint(point_x_plus, target2d) - this->__generatePotentialAtPoint(point_x_minus, target2d)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
+  double gradientY = -(this->__generatePotentialAtPoint(point_y_plus, target2d) - this->__generatePotentialAtPoint(point_y_minus, target2d)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
   ignition::math::Vector3d gradient {gradientX, gradientY, 0.0};
   return gradient;
 }
@@ -72,7 +74,7 @@ ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNea
 
 
 // generate potential from bounding box
-double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(const double& x, const double& y, const double& X_down, const double& X_up, const double& Y_down, const double& Y_up) const {
+double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(const double& x, const double& y, const double& X_down, const double& X_up, const double& Y_down, const double& Y_up, const double coeff=1.0) const {
   double sum_i = 0.0;
   int i = 0;
   int j = 0;
@@ -85,12 +87,19 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     }
     sum_i += this->gaussWeights[i] * sum_j;
   }
-  return sum_i;
+  return sum_i * coeff;
+}
+
+
+double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEmittingPoint(const ignition::math::Vector2d& sourcePosition, const ignition::math::Vector2d& currentPosition, const double coeff) const {
+  const ignition::math::Vector2d sourceToCurrentVector {currentPosition.X() - sourcePosition.X(), currentPosition.Y() - sourcePosition.Y()};
+  const double distance {sourceToCurrentVector.Length()};
+  return coeff / distance;
 }
 
 
 // calculate next step vector
-double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const ignition::math::Vector2d& point) const {
+double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const ignition::math::Vector2d& point, const ignition::math::Vector2d& target) const {
   const double x {point.X()};
   const double y {point.Y()};
   double potentialAtPoint {0.0};
@@ -102,12 +111,13 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double Y_up {boundingBox.Max().Y()};
     potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
   }
+  potential += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -10.0);
   return potentialAtPoint;
 }
 
 
 void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
-  const int sampleAmount = 100;
+  const int sampleAmount = 200;
   static int counter = 1;
   std::vector<std::vector<double>> potentialMap;
   for (int i = 0; i < sampleAmount; ++i) {
