@@ -113,7 +113,7 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double X_up {boundingBox.Max().X()};
     const double Y_down {boundingBox.Min().Y()};
     const double Y_up {boundingBox.Max().Y()};
-    potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
+    potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up, 0.5);
   }
   potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, 1.0);
   return std::max(ExpandingPotentialFieldPathPlanner::Umin, std::min(ExpandingPotentialFieldPathPlanner::Umax, potentialAtPoint));
