@@ -21,7 +21,7 @@ namespace gazebo {
     /// update models when there is any change
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// calculate vector for next step
-    virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector2d&) const;
+    virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&) const;
     vector<double> gaussPoints;
     vector<double> gaussWeights;
 
@@ -31,7 +31,7 @@ namespace gazebo {
     /// calculate potential by Gauss Integral using the specific formula
     double __calculatePotentialUsingFormula(const double& x, const double& y, const double& X_down, const double& X_up, const double& Y_down, const double& Y_up) const;
     /// generate potential at point
-    double __generatePotentialAtPoint(const ignition::math::Vector3d&) const;
+    double __generatePotentialAtPoint(const ignition::math::Vector2d&) const;
 
     // Properties
     /// actor bounding box

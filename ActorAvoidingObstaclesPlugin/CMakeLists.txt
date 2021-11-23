@@ -9,5 +9,3 @@ add_library(ActorAvoidingObstaclesPlugin SHARED ActorAvoidingObstaclesPlugin.hh 
 target_link_libraries(ActorAvoidingObstaclesPlugin ${GAZEBO_LIBRARIES})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
-
-export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:~/Documents/NTUWarehouseModels/ActorAvoidingObstaclesPlugin/build
