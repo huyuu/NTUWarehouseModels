@@ -87,16 +87,16 @@ double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormula(cons
     }
     sum_i += this->gaussWeights[i] * sum_j;
   }
-  const double potential {sum_i * coeff};
-  return std::max(-10.0, std::min(10.0, potential));
+  return sum_i * coeff;
+  // return std::max(-10.0, std::min(10.0, potential));
 }
 
 
 double ExpandingPotentialFieldPathPlanner::__calculatePotentialUsingFormulaForEmittingPoint(const ignition::math::Vector2d& sourcePosition, const ignition::math::Vector2d& currentPosition, const double coeff) const {
   const ignition::math::Vector2d sourceToCurrentVector {currentPosition.X() - sourcePosition.X(), currentPosition.Y() - sourcePosition.Y()};
   const double distance {sourceToCurrentVector.Length()};
-  const double potential {coeff / (std::pow(distance, 1.0))};
-  return std::max(-10.0, std::min(10.0, potential));
+  return coeff / (std::pow(distance, 0.5));
+  // return std::max(-10.0, std::min(10.0, potential));
 }
 
 
@@ -113,8 +113,8 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
     const double Y_up {boundingBox.Max().Y()};
     potentialAtPoint += this->__calculatePotentialUsingFormula(x, y, X_down, X_up, Y_down, Y_up);
   }
-  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -5.0);
-  return potentialAtPoint;
+  potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, -30.0);
+  return std::max(-10.0, std::min(10.0, potentialAtPoint));
 }
 
 
