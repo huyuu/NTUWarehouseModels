@@ -108,25 +108,22 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
 }
 
 
-void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints() const {
-  vector<vecotr<double>> potentialMap(this->sampleAmount, vector<double>(this->sampleAmount, 0.0));
+void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox) const {
+  const int sampleAmount = 100;
+  vector<vecotr<double>> potentialMap(100, vector<double>(100, 0.0));
 
-  const double minX = this->outerMostBoundaryBox.Min().X();
-  const double minY = this->outerMostBoundaryBox.Min().Y();
-  const double intervalX = {
-    const double length = this->outerMostBoundaryBox.Max().X() - this->outerMostBoundaryBox.Min().X();
-    return length / static_case<double>(this->sampleAmount - 1);
-  }();
+  const double minX = outerMostBoundaryBox.Min().X();
+  const double minY = outerMostBoundaryBox.Min().Y();
+  const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
+  const double intervalX = length / (sampleAmount - 1);
 
-  const double intervalY = {
-    const double width = this->outerMostBoundaryBox.Max().Y() - this->outerMostBoundaryBox.Min().Y();
-    return width / static_case<double>(this->sampleAmount - 1);
-  }();
+  const double width = outerMostBoundaryBox.Max().Y() - outerMostBoundaryBox.Min().Y();
+  const double intervalY = width / (sampleAmount - 1);
 
   std::ofstream writing_file;
   writing_file.open("potentialMap.csv", std::ios::out);
-  for (int i = 0; i < this->sampleAmount; ++i) {
-    for (int j = 0; j < this->sampleAmount; ++j) {
+  for (int i = 0; i < sampleAmount; ++i) {
+    for (int j = 0; j < sampleAmount; ++j) {
       const double x {minX + intervalX*i};
       const double y {minY + intervalY*j};
       const ignition::math::Vector2d position {x, y};
