@@ -16,7 +16,7 @@ namespace gazebo {
   class GZ_PLUGIN_VISIBLE AStarPathPlanner {
   public:
     /// Constructor
-    AStarPathPlanner(): start{ignition::math::Vector3d{}}, nextNode{Node{false, -1, nullptr, ignition::math::Vector3d{}, Node::bigNumber, Node::bigNumber}} {}
+    AStarPathPlanner(): start{ignition::math::Vector3d{}}, nextNode{{}} {}
     AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels);
     ~AStarPathPlanner() = default;
     /// update models when there is any change
