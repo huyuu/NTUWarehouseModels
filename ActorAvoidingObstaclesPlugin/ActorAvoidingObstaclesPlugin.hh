@@ -84,7 +84,7 @@ namespace gazebo {
     physics::TrajectoryInfoPtr trajectoryInfo;
 
     // the custom path planner
-    AStarPathPlanner pathPlanner {};
+    AStarPathPlanner pathPlanner;
 
     ignition::math::AxisAlignedBox outerMostBoundaryBox {};
   };

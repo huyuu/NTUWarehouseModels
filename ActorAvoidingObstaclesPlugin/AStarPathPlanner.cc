@@ -5,9 +5,30 @@ using std::vector;
 
 // MARK: - Constructors
 
-void AStarPathPlanner::lazyConstructor(ignition::math::Vector3d start, ignition::math::Vector3d& target) {
-  this->start = start;
-  this->target = target;
+AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels):
+  nodeCounter{},
+  start{start},
+  target{target} {
+  // set actor boundingBox
+  this->actorBoundingBox = actorBoundingBox;
+  // set obstacleBoundingBoxes
+  const unsigned int modelCount {world->ModelCount()};
+  for (unsigned int i = 0; i < modelCount; ++i) {
+    const physics::ModelPtr model = world->ModelByIndex(i);
+    if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
+      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->BoundingBox());
+  }
+  // set allNodesInMap
+  for (const auto& boundingBox: this->obstacleBoundingBoxes) {
+    const ignition::math::Vector3d leftDownPosition {boundingBox.Min().X(), boundingBox.Min().Y(), 0.0};
+    this->allNodesInMap.push_back(Node{-1, leftDownPosition, target});
+    const ignition::math::Vector3d rightUpPosition {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
+    this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
+    this->allNodesInMap.push_back(Node{0, start, target});
+    this->nodes.push_back(Node{0, start, target});
+  }
+  // set nextNode
+  this->nextNode = this->nodes[0];
 }
 
 
@@ -89,17 +110,17 @@ Node& AStarPathPlanner::__getNextNodeToMove() {
 
 bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const {
   // define judge functions
-  auto didIntersect = [&] (ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2) -> bool {
-    auto getJudgeNumber = [&] (ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1) -> double {
-      return (basePoint2.Y() - basePoint2.Y())/(basePoint2.X() - basePoint1.Y()) * (testPoint.X() - basePoint1.X()) + basePoint1.Y() - testPoint.Y();
-    };
-    if (getJudgeNumber(group1Point1, group1Point2, group2Point1) * getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
-      return false;
-    else if (getJudgeNumber(group2Point1, group2Point2, group1Point1) * getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
-      return false;
-    else
-      return true;
-  };
+  // auto didIntersect = [&] (ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2) -> bool {
+  //   auto getJudgeNumber = [&] (ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1) -> double {
+  //     return (basePoint2.Y() - basePoint2.Y())/(basePoint2.X() - basePoint1.Y()) * (testPoint.X() - basePoint1.X()) + basePoint1.Y() - testPoint.Y();
+  //   };
+  //   if (getJudgeNumber(group1Point1, group1Point2, group2Point1) * getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
+  //     return false;
+  //   else if (getJudgeNumber(group2Point1, group2Point2, group1Point1) * getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
+  //     return false;
+  //   else
+  //     return true;
+  // };
   // loop over everu obstacles
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
     // get box edges
@@ -107,7 +128,7 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d leftUp {boundingBox.Min().X(), boundingBox.Max().Y(), 0.0};
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
-    if (didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || didIntersect(leftUp, rightDown, fromNode.position, toNode.position))
+    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position))
       return false;
   }
   return true;

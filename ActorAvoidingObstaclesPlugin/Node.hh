@@ -21,7 +21,7 @@ namespace gazebo {
       position{position},
       heuristicCostToTarget{Node::bigNumber},
       totalCost{Node::bigNumber} {
-        const double vectorFromStartToTarget {target - position};
+        const ignition::math::Vector3d vectorFromStartToTarget {target - position};
         this->heuristicCostToTarget = vectorFromStartToTarget.Length();
         this->totalCost = this->heuristicCostToTarget;
         this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
@@ -35,10 +35,10 @@ namespace gazebo {
       heuristicCostToTarget{Node::bigNumber},
       totalCost{Node::bigNumber} {
         // get actual cost from start to parent node
-        const double costFromStartToParent {parentNode.getActualCostFromStartToCurrentPosition()};
-        const double vectorFromParentToNewNode {EstimatedNewNodePosition - parentNodePtr->position};
+        const double costFromStartToParent {parentNodePtr->actualCostFromStart};
+        const ignition::math::Vector3d vectorFromParentToNewNode {EstimatedNewNodePosition - parentNodePtr->position};
         const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
-        const double vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
+        const ignition::math::Vector3d vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
         const double costFromNewNodeToTarget {vectorFromNewNodeToTarget.Length()};
         // calculate heuristic cost from new node to target
         this->heuristicCostToTarget = costFromNewNodeToTarget;
@@ -74,15 +74,15 @@ namespace gazebo {
     // MARK: - Public Functions
 
     /// get distance from point
-    get getDistanceFrom(ignition::math::Vector3d& point) {
+    double getDistanceFrom(ignition::math::Vector3d& point) {
       return std::sqrt( std::pow(this->position.x - point.X(), 2) + std::pow(this->position.y - point.Y(), 2) );
     }
 
 
-    bool compareAndUpdateCostIfNeccessary(Node& anothorParentNode) {
-      const double vectorFromParentToNewNode {this->position - anothorParentNode.position};
+    bool compareAndUpdateCostIfNeccessary(Node& anotherParentNode) {
+      const double vectorFromParentToNewNode {this->position - anotherParentNode.position};
       const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
-      newTotalCost = anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget;
+      const double newTotalCost {anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget};
       if (newTotalCost < this->actualCostFromStart) {
         this->parentNodePtr = &anotherParentNode;
         this->totalCost = newTotalCost;
@@ -92,12 +92,12 @@ namespace gazebo {
         return false;
       }
     }
-    
+
 
     bool operator==(const Node& anotherNode) const {
       return anotherNode.id == this->id;
     }
-  }
+  };
 }
 
 #endif

@@ -17,13 +17,12 @@ namespace gazebo {
   public:
     /// Constructor
     AStarPathPlanner() = default;
-    void AStarPathPlanner::lazyConstructor(ignition::math::Vector3d start, ignition::math::Vector3d& target);
+    AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels);
     ~AStarPathPlanner() = default;
     /// update models when there is any change
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// generate vector to next node
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&, const ignition::math::Vector3d&) const;
-  };
 
 
   private:
@@ -57,6 +56,7 @@ namespace gazebo {
     bool __isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const;
     static double __getJudgeNumber(ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1);
     static bool __didIntersect(ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2);
+  };
 }
 
 
