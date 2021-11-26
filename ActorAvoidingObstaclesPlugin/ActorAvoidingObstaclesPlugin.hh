@@ -8,6 +8,7 @@
 #include "gazebo/physics/physics.hh"
 #include "gazebo/util/system.hh"
 #include "ExpandingPotentialFieldPathPlanner.hh"
+#include "AStarPathPlanner.hh"
 
 
 namespace gazebo {
@@ -83,7 +84,7 @@ namespace gazebo {
     physics::TrajectoryInfoPtr trajectoryInfo;
 
     // the custom path planner
-    ExpandingPotentialFieldPathPlanner pathPlanner {};
+    AStartPathPlanner pathPlanner {};
 
     ignition::math::AxisAlignedBox outerMostBoundaryBox {};
   };

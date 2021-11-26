@@ -43,7 +43,54 @@ ignition::math::Vector3d ExpandingPotentialFieldPathPlanner::generateGradientNea
   double gradientX = -(this->__generatePotentialAtPoint(point_x_plus, target2d) - this->__generatePotentialAtPoint(point_x_minus, target2d)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
   double gradientY = -(this->__generatePotentialAtPoint(point_y_plus, target2d) - this->__generatePotentialAtPoint(point_y_minus, target2d)) / (2.0*ExpandingPotentialFieldPathPlanner::h);
   ignition::math::Vector3d gradient {gradientX, gradientY, 0.0};
+
   return gradient;
+}
+
+
+void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox, ignition::math::Vector3d& target) const {
+  const int sampleAmount = 300;
+  static int counter = 1;
+  if (counter > 1) {
+    return;
+  }
+  std::vector<std::vector<double>> potentialMap;
+  for (int i = 0; i < sampleAmount; ++i) {
+    vector<double> temp;
+    for (int j = 0; j < sampleAmount; ++j) {
+      temp.push_back(0.0);
+    }
+    potentialMap.push_back(temp);
+  }
+
+  // const double minX = outerMostBoundaryBox.Min().X();
+  // const double minY = outerMostBoundaryBox.Min().Y();
+  // const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
+  const double minX = 0.0;
+  const double minY = 0.0;
+  constexpr double length = 3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818;
+  const double intervalX = length / (sampleAmount - 1);
+
+  // const double width = outerMostBoundaryBox.Max().Y() - outerMostBoundaryBox.Min().Y();
+  constexpr double width = 1.0 + 3.3*17 + 6.3*2;
+  const double intervalY = width / (sampleAmount - 1);
+
+  const ignition::math::Vector2d target2d {target.X(), target.Y()};
+  std::ofstream writing_file;
+  writing_file.open("potentialMap.csv", std::ios::out);
+  for (int i = 0; i < sampleAmount; ++i) {
+    for (int j = 0; j < sampleAmount; ++j) {
+      const double x {minX + intervalX*i};
+      const double y {minY + intervalY*j};
+      const ignition::math::Vector2d position {x, y};
+      const double potential = this->__generatePotentialAtPoint(position, target2d);
+      // write to file
+      writing_file << x << "," << y << "," << potential << std::endl;
+    }
+  }
+  writing_file.close();
+  std::cout << "potentialMap.csv written." << std::endl;
+  counter += 1;
 }
 
 
@@ -114,50 +161,4 @@ double ExpandingPotentialFieldPathPlanner::__generatePotentialAtPoint(const igni
   }
   potentialAtPoint += this->__calculatePotentialUsingFormulaForEmittingPoint(target, point, 1.0);
   return std::max(ExpandingPotentialFieldPathPlanner::Umin, std::min(ExpandingPotentialFieldPathPlanner::Umax, potentialAtPoint));
-}
-
-
-void ExpandingPotentialFieldPathPlanner::storePotentialsOnSamplePoints(ignition::math::AxisAlignedBox outerMostBoundaryBox, ignition::math::Vector3d& target) const {
-  const int sampleAmount = 300;
-  static int counter = 1;
-  if (counter > 1) {
-    return;
-  }
-  std::vector<std::vector<double>> potentialMap;
-  for (int i = 0; i < sampleAmount; ++i) {
-    vector<double> temp;
-    for (int j = 0; j < sampleAmount; ++j) {
-      temp.push_back(0.0);
-    }
-    potentialMap.push_back(temp);
-  }
-
-  // const double minX = outerMostBoundaryBox.Min().X();
-  // const double minY = outerMostBoundaryBox.Min().Y();
-  // const double length = outerMostBoundaryBox.Max().X() - outerMostBoundaryBox.Min().X();
-  const double minX = 0.0;
-  const double minY = 0.0;
-  constexpr double length = 3.6 + (2.5 + 3.1)*5 + 1.1 + 0.818;
-  const double intervalX = length / (sampleAmount - 1);
-
-  // const double width = outerMostBoundaryBox.Max().Y() - outerMostBoundaryBox.Min().Y();
-  constexpr double width = 1.0 + 3.3*17 + 6.3*2;
-  const double intervalY = width / (sampleAmount - 1);
-
-  const ignition::math::Vector2d target2d {target.X(), target.Y()};
-  std::ofstream writing_file;
-  writing_file.open("potentialMap.csv", std::ios::out);
-  for (int i = 0; i < sampleAmount; ++i) {
-    for (int j = 0; j < sampleAmount; ++j) {
-      const double x {minX + intervalX*i};
-      const double y {minY + intervalY*j};
-      const ignition::math::Vector2d position {x, y};
-      const double potential = this->__generatePotentialAtPoint(position, target2d);
-      // write to file
-      writing_file << x << "," << y << "," << potential << std::endl;
-    }
-  }
-  writing_file.close();
-  std::cout << "potentialMap.csv written." << std::endl;
-  counter += 1;
 }
