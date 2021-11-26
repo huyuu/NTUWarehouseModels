@@ -120,9 +120,9 @@ inline double AStarPathPlanner::__getJudgeNumber(ignition::math::Vector3d& baseP
 
 
 inline bool AStarPathPlanner::__didIntersect(ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2) {
-  if (AStartPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point1) * AStartPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
+  if (AStarPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point1) * AStarPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
     return false;
-  else if (AStartPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point1) * AStartPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
+  else if (AStarPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point1) * AStarPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
     return false;
   else
     return true;
