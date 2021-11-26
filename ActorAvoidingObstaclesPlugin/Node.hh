@@ -80,7 +80,7 @@ namespace gazebo {
 
 
     bool compareAndUpdateCostIfNeccessary(Node& anotherParentNode) {
-      const ignition::math:Vector3d vectorFromParentToNewNode {this->position - anotherParentNode.position};
+      const ignition::math::Vector3d vectorFromParentToNewNode {this->position - anotherParentNode.position};
       const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
       const double newTotalCost {anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget};
       if (newTotalCost < this->actualCostFromStart) {

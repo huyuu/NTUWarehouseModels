@@ -48,7 +48,7 @@ void AStarPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBo
 ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) const {
   // if distance to next node is large, return vector to nextNode.
   if (this->nextNode.getDistanceFrom(currentPosition) >= 0.3)
-    return nextNode - currentPosition;
+    return this->nextNode.position - currentPosition;
   // robot has reached nextNode
   this->__addNodesNearToOpenList(this->nextNode);
   this->nextNode = this->__getNextNodeToMove();
@@ -104,7 +104,7 @@ Node& AStarPathPlanner::__getNextNodeToMove() {
   Node* nextNode {this->openList[this->openList.size()-1]};
   this->openList.pop_back();
   this->closeList.push_back(nextNode);
-  return nextNode;
+  return *nextNode;
 }
 
 
