@@ -51,7 +51,7 @@ namespace gazebo {
 
     // MARK: - Private Functions
 
-    void __addNodesNearToOpenList(const Node& currentNode)
+    void __addNodesNearToOpenList(const Node& currentNode);
     Node* __getNextNodeToMove();
     bool __isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const;
     static double __getJudgeNumber(ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1);
