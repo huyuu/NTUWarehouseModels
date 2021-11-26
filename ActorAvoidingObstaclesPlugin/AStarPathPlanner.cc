@@ -6,7 +6,6 @@ using std::vector;
 // MARK: - Constructors
 
 AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels):
-  nodeCounter{},
   start{start},
   target{target} {
   // set actor boundingBox
@@ -66,29 +65,30 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode != *(this->currentNode.parentNodePtr) ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
       if (potentialNode.id < 0) {
-        Node newNode {Node(
-          this->nodeCounter,// id
+        const int nodeCounter {this->nodes.size()};
+        this->nodes.push_back(Node{
+          nodeCounter,// id
           &currentNode,// parent node
           potentialNode.position,// position
           this->target,// target
-        )};
-        this->nodes.push_back(newNode);
-        this->nodeCounter += 1;
-        this->openList.push_back(newNode);
-        potential.id = newNode.id;
+        });
+        const Node* newNodePtr {&(this->nodes.back())};
+        this->openList.push_back(newNodePtr);
+        potential.id = newNodePtr->id;
       }
       else { // if potential node is already created
-        Node* nodePtrInOpenList = std::find(this->openList.begin(), this->openList.end(), this->potentialNode);
+        Node** nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
         // if it is in the open list, compare and update the cost if neccessary
         if (nodePtrInOpenList != this->openList.end()) {
-          const bool __nouse = nodePtrInOpenList->compareAndUpdateCostIfNeccessary(currentNode);
+          const bool __nouse = (*nodePtrInOpenList)->compareAndUpdateCostIfNeccessary(currentNode);
         }
         else {// if it is in the close list
-          Node* nodePtrInCloseList = std::find(this->closeList.begin(), this->closeList.end(), this->potentialNode);
+          Node** __nodePtrPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](Node* node) { return node->id == potentialNode.id; });
+          Node* nodePtrInCloseList {*__nodePtrPtrInCloseList};
           const bool didUpdate = nodePtrInCloseList->compareAndUpdateCostIfNeccessary(currentNode);
           if (didUpdate == true) {
-            this->openList.push_back(*nodePtrInCloseList);
-            this->closeList.erase(nodePtrInCloseList);
+            this->openList.push_back(nodePtrInCloseList);
+            this->closeList.erase(__nodePtrPtrInCloseList);
           }
         }
       }
@@ -99,9 +99,9 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
 
 Node& AStarPathPlanner::__getNextNodeToMove() {
   // https://cpprefjp.github.io/reference/algorithm/sort.html
-  std::sort(this->openList.begin(), this->openList.end(), [&](Node& left, Node& right) { return left.totalCost > right.totalCost;});
+  std::sort(this->openList.begin(), this->openList.end(), [&](Node* left, Node* right) { return left->totalCost > right->totalCost;});
   // https://cpprefjp.github.io/reference/vector/vector.html
-  Node& nextNode {this->openList[this->openList.size()-1]};
+  Node* nextNode {this->openList[this->openList.size()-1]};
   this->openList.pop_back();
   this->closeList.push_back(nextNode);
   return nextNode;

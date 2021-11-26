@@ -32,14 +32,12 @@ namespace gazebo {
     vector<Node> allNodesInMap;
     /// all nodes
     vector<Node> nodes;
-    /// node counter
-    int nodeCounter {0};
     /// nextNode
-    mutable Node& nextNode;
+    Node& nextNode;
     /// open list
-    vector<Node&> openList;
+    vector<Node*> openList;
     /// close list
-    vector<Node&> closeList;
+    vector<Node*> closeList;
     /// obstacles bounding boxes
     vector<ignition::math::AxisAlignedBox> obstacleBoundingBoxes;
     /// actor bounding box

@@ -75,12 +75,12 @@ namespace gazebo {
 
     /// get distance from point
     double getDistanceFrom(ignition::math::Vector3d& point) {
-      return std::sqrt( std::pow(this->position.x - point.X(), 2) + std::pow(this->position.y - point.Y(), 2) );
+      return std::sqrt( std::pow(this->position.X() - point.X(), 2) + std::pow(this->position.Y() - point.Y(), 2) );
     }
 
 
     bool compareAndUpdateCostIfNeccessary(Node& anotherParentNode) {
-      const double vectorFromParentToNewNode {this->position - anotherParentNode.position};
+      const ignition::math:Vector3d vectorFromParentToNewNode {this->position - anotherParentNode.position};
       const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
       const double newTotalCost {anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget};
       if (newTotalCost < this->actualCostFromStart) {
