@@ -30,6 +30,31 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   Node* startNodePtr = &this->nodes[0];
   this->openList.push_back(startNodePtr);
   this->nextNode = startNodePtr;
+
+  // print openList
+  std::cout << "openList: ";
+  for (const Node* node: this->openList) {
+    std::cout << node->id << ", ";
+  }
+  std::cout << std::endl;
+  // print closeList
+  std::cout << "closeList: ";
+  for (const Node* node: this->closeList) {
+    std::cout << node->id << ", ";
+  }
+  std::cout << std::endl;
+  // print allNodes
+  std::cout << "nodes: ";
+  for (const Node& node: this->nodes) {
+    std::cout << node.id << ", ";
+  }
+  std::cout << std::endl;
+  // print allNodes
+  std::cout << "allNodesInMap: ";
+  for (const Node& node: this->allNodesInMap) {
+    std::cout << node.id << ", ";
+  }
+  std::cout << std::endl;
 }
 
 
