@@ -56,6 +56,12 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 }
 
 
+// AStarPathPlanner::AStarPathPlanner& operator=(AStarPathPlanner&& source) {
+//   this->allNodesInMap = source.allNodesInMap;
+//   this->nodes = source.
+// }
+
+
 // MARK: - Private Member Functions
 
 // nextNode

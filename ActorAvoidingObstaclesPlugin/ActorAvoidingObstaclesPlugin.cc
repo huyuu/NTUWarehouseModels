@@ -55,15 +55,14 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   if (_sdf->HasElement("ignore_obstacles"))
   {
     sdf::ElementPtr modelElem = _sdf->GetElement("ignore_obstacles")->GetElement("model");
-    while (modelElem)
-    {
+    while (modelElem) {
       this->ignoreModels.push_back(modelElem->Get<std::string>());
       modelElem = modelElem->GetNextElement("model");
     }
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner {this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels};
+  this->pathPlanner = std::move(AStarPathPlanner(his->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels));
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
 
