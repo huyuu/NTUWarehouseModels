@@ -54,8 +54,8 @@ namespace gazebo {
     void __addNodesNearToOpenList(const Node& currentNode);
     Node* __getNextNodeToMove();
     bool __isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const;
-    static double __getJudgeNumber(ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1);
-    static bool __didIntersect(ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2);
+    static double __getJudgeNumber(const ignition::math::Vector3d& basePoint1, const ignition::math::Vector3d& basePoint2, const ignition::math::Vector3d& testPoint);
+    static bool __didIntersect(const ignition::math::Vector3d& group1Point1, const ignition::math::Vector3d& group1Point2, const ignition::math::Vector3d& group2Point1, const ignition::math::Vector3d& group2Point2);
   };
 }
 
