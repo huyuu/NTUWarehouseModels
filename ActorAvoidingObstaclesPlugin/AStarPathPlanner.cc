@@ -23,11 +23,13 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     this->allNodesInMap.push_back(Node{-1, leftDownPosition, target});
     const ignition::math::Vector3d rightUpPosition {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
     this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
-    this->allNodesInMap.push_back(Node{0, start, target});
-    this->nodes.push_back(Node{0, start, target});
   }
+  this->allNodesInMap.push_back(Node{0, start, target});
+  this->nodes.push_back(Node{0, start, target});
   // set nextNode
-  this->nextNode = &(this->nodes[0]);
+  Node* startNodePtr = &this->nodes[0];
+  this->openList.push_back(startNodePtr);
+  this->nextNode = startNodePtr;
 }
 
 
@@ -53,6 +55,27 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
   this->nextNode = this->__getNextNodeToMove();
+  // print nextNode, openList, closeList, nodes
+  std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
+  // print openList
+  std::cout << "openList: ";
+  for (const Node* node: this->openList) {
+    std::cout << node->id << ", ";
+  }
+  std::cout << std::endl;
+  // print closeList
+  std::cout << "closeList: ";
+  for (const Node* node: this->closeList) {
+    std::cout << node->id << ", ";
+  }
+  std::cout << std::endl;
+  // print allNodes
+  std::cout << "nodes: ";
+  for (const Node* node: this->nodes) {
+    std::cout << node->id << ", ";
+  }
+  std::cout << std::endl;
+
   return this->nextNode->position - currentPosition;
 }
 
@@ -116,18 +139,6 @@ Node* AStarPathPlanner::__getNextNodeToMove() {
 
 
 bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const {
-  // define judge functions
-  // auto didIntersect = [&] (ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2) -> bool {
-  //   auto getJudgeNumber = [&] (ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1) -> double {
-  //     return (basePoint2.Y() - basePoint2.Y())/(basePoint2.X() - basePoint1.Y()) * (testPoint.X() - basePoint1.X()) + basePoint1.Y() - testPoint.Y();
-  //   };
-  //   if (getJudgeNumber(group1Point1, group1Point2, group2Point1) * getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
-  //     return false;
-  //   else if (getJudgeNumber(group2Point1, group2Point2, group1Point1) * getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
-  //     return false;
-  //   else
-  //     return true;
-  // };
   // loop over everu obstacles
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
     // get box edges
@@ -141,6 +152,8 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
   return true;
 }
 
+
+// MARK: - Private Static Functions
 
 inline double AStarPathPlanner::__getJudgeNumber(const ignition::math::Vector3d& basePoint1, const ignition::math::Vector3d& basePoint2, const ignition::math::Vector3d& testPoint) {
   return (basePoint2.Y() - basePoint2.Y())/(basePoint2.X() - basePoint1.Y()) * (testPoint.X() - basePoint1.X()) + basePoint1.Y() - testPoint.Y();
