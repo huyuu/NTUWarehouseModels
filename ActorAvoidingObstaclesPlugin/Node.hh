@@ -11,7 +11,7 @@ namespace gazebo {
     // MARK: - Constructor
     Node(): isOpen{false}, id{-1}, parentNodePtr{nullptr}, position{ignition::math::Vector3d{}}, heuristicCostToTarget{Node::bigNumber}, totalCost{Node::bigNumber} {}
     /// Default all terms constructor
-    Node(bool isOpen, int id, Node* parentNodePtr, ignition::math::Vector3d position, double heuristicCostToTarget, double totalCost): isOpen{isOpen}, id{id}, parentNodePtr{parentNodePtr}, position{position}, heuristicCostToTarget{heuristicCostToTarget}, totalCost{totalCost} {
+    Node(bool isOpen, int id, const Node* parentNodePtr, ignition::math::Vector3d position, double heuristicCostToTarget, double totalCost): isOpen{isOpen}, id{id}, parentNodePtr{parentNodePtr}, position{position}, heuristicCostToTarget{heuristicCostToTarget}, totalCost{totalCost} {
       this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
     }
     /// Constructor for new start point
@@ -28,7 +28,7 @@ namespace gazebo {
         this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
     }
     /// Constructor for new normal points
-    Node(int id, Node* parentNodePtr, ignition::math::Vector3d EstimatedNewNodePosition, ignition::math::Vector3d& target):
+    Node(int id, const Node* parentNodePtr, ignition::math::Vector3d EstimatedNewNodePosition, ignition::math::Vector3d& target):
       isOpen{true},
       id{id},
       parentNodePtr{parentNodePtr},
@@ -59,7 +59,7 @@ namespace gazebo {
     /// id
     int id;
     /// parent node ptr
-    Node* parentNodePtr;
+    const Node* parentNodePtr;
     /// position in coordinate
     ignition::math::Vector3d position;
     /// heuristic cost from current position to target
@@ -75,12 +75,12 @@ namespace gazebo {
     // MARK: - Public Functions
 
     /// get distance from point
-    double getDistanceFrom(ignition::math::Vector3d& point) {
+    double getDistanceFrom(const ignition::math::Vector3d& point) const {
       return std::sqrt( std::pow(this->position.X() - point.X(), 2) + std::pow(this->position.Y() - point.Y(), 2) );
     }
 
 
-    bool compareAndUpdateCostIfNeccessary(Node& anotherParentNode) {
+    bool compareAndUpdateCostIfNeccessary(const Node& anotherParentNode) {
       const ignition::math::Vector3d vectorFromParentToNewNode {this->position - anotherParentNode.position};
       const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
       const double newTotalCost {anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget};

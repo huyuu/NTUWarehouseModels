@@ -50,7 +50,8 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   if (this->nextNode->getDistanceFrom(currentPosition) >= 0.3)
     return this->nextNode->position - currentPosition;
   // robot has reached nextNode
-  this->__addNodesNearToOpenList(*(this->nextNode));
+  Node& currentNode = *this->nextNode;
+  this->__addNodesNearToOpenList(currentNode);
   this->nextNode = this->__getNextNodeToMove();
   return this->nextNode->position - currentPosition;
 }
@@ -68,7 +69,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
     // if the potentialNode is visible from currentNode and it's not the parent node
-    if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode != *(this->currentNode.parentNodePtr) ) {
+    if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode != *(currentNode.parentNodePtr) ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
       if (potentialNode.id < 0) {
         const int nodeCounter {this->nodes.size()};
@@ -78,19 +79,19 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
           potentialNode.position,// position
           this->target,// target
         });
-        const Node* newNodePtr {&(this->nodes.back())};
+        Node* newNodePtr = &(this->nodes.back());
         this->openList.push_back(newNodePtr);
-        potential.id = newNodePtr->id;
+        potentialNode.id = newNodePtr->id;
       }
       else { // if potential node is already created
-        Node** nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
+        auto nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
         // if it is in the open list, compare and update the cost if neccessary
         if (nodePtrInOpenList != this->openList.end()) {
           const bool __nouse = (*nodePtrInOpenList)->compareAndUpdateCostIfNeccessary(currentNode);
         }
         else {// if it is in the close list
-          Node** __nodePtrPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](Node* node) { return node->id == potentialNode.id; });
-          Node* nodePtrInCloseList {*__nodePtrPtrInCloseList};
+          auto __nodePtrPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](Node* node) { return node->id == potentialNode.id; });
+          Node* nodePtrInCloseList = *__nodePtrPtrInCloseList;
           const bool didUpdate = nodePtrInCloseList->compareAndUpdateCostIfNeccessary(currentNode);
           if (didUpdate == true) {
             this->openList.push_back(nodePtrInCloseList);
