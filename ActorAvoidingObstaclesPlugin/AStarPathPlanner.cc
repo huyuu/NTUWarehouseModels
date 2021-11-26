@@ -71,8 +71,8 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   std::cout << std::endl;
   // print allNodes
   std::cout << "nodes: ";
-  for (const Node* node: this->nodes) {
-    std::cout << node->id << ", ";
+  for (const Node& node: this->nodes) {
+    std::cout << node.id << ", ";
   }
   std::cout << std::endl;
 
