@@ -45,12 +45,12 @@ void AStarPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBo
 }
 
 // generate gradient near point
-ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) const {
+ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) {
   // if distance to next node is large, return vector to nextNode.
   if (this->nextNode->getDistanceFrom(currentPosition) >= 0.3)
     return this->nextNode->position - currentPosition;
   // robot has reached nextNode
-  Node& currentNode = *this->nextNode;
+  Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
   this->nextNode = this->__getNextNodeToMove();
   return this->nextNode->position - currentPosition;
@@ -108,7 +108,7 @@ Node* AStarPathPlanner::__getNextNodeToMove() {
   // https://cpprefjp.github.io/reference/algorithm/sort.html
   std::sort(this->openList.begin(), this->openList.end(), [&](Node* left, Node* right) { return left->totalCost > right->totalCost;});
   // https://cpprefjp.github.io/reference/vector/vector.html
-  Node* nextNode {this->openList[this->openList.size()-1]};
+  Node* nextNode = this->openList[this->openList.size()-1];
   this->openList.pop_back();
   this->closeList.push_back(nextNode);
   return nextNode;
@@ -142,12 +142,12 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
 }
 
 
-inline double AStarPathPlanner::__getJudgeNumber(ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1) {
+inline double AStarPathPlanner::__getJudgeNumber(const ignition::math::Vector3d& basePoint1, const ignition::math::Vector3d& basePoint2, const ignition::math::Vector3d& testPoint) {
   return (basePoint2.Y() - basePoint2.Y())/(basePoint2.X() - basePoint1.Y()) * (testPoint.X() - basePoint1.X()) + basePoint1.Y() - testPoint.Y();
 }
 
 
-inline bool AStarPathPlanner::__didIntersect(ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2) {
+inline bool AStarPathPlanner::__didIntersect(const ignition::math::Vector3d& group1Point1, const ignition::math::Vector3d& group1Point2, const ignition::math::Vector3d& group2Point1, const ignition::math::Vector3d& group2Point2) {
   if (AStarPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point1) * AStarPathPlanner::__getJudgeNumber(group1Point1, group1Point2, group2Point2) > 0.0)
     return false;
   else if (AStarPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point1) * AStarPathPlanner::__getJudgeNumber(group2Point1, group2Point2, group1Point2) > 0.0)
