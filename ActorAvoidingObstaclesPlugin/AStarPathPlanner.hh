@@ -35,7 +35,7 @@ namespace gazebo {
     /// all nodes
     vector<Node> nodes;
     /// nextNode
-    Node& nextNode;
+    Node* nextNode;
     /// open list
     vector<Node*> openList;
     /// close list
@@ -46,13 +46,13 @@ namespace gazebo {
     ignition::math::AxisAlignedBox actorBoundingBox;
     /// target
     ignition::math::Vector3d target;
-    ignition::math::Vector3d& start;
+    ignition::math::Vector3d start;
 
 
     // MARK: - Private Functions
 
     void __addNodesNearToOpenList(const Node& currentNode);
-    Node& __getNextNodeToMove();
+    Node* __getNextNodeToMove();
     bool __isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const;
     static double __getJudgeNumber(ignition::math::Vector3d& basePoint1, ignition::math::Vector3d& basePoint2, ignition::math::Vector3d& testPoint1);
     static bool __didIntersect(ignition::math::Vector3d& group1Point1, ignition::math::Vector3d& group1Point2, ignition::math::Vector3d& group2Point1, ignition::math::Vector3d& group2Point2);

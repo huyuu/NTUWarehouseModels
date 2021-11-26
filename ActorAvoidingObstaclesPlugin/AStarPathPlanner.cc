@@ -27,7 +27,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     this->nodes.push_back(Node{0, start, target});
   }
   // set nextNode
-  this->nextNode = this->nodes[0];
+  this->nextNode = &(this->nodes[0]);
 }
 
 
@@ -47,12 +47,12 @@ void AStarPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBo
 // generate gradient near point
 ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) const {
   // if distance to next node is large, return vector to nextNode.
-  if (this->nextNode.getDistanceFrom(currentPosition) >= 0.3)
-    return this->nextNode.position - currentPosition;
+  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.3)
+    return this->nextNode->position - currentPosition;
   // robot has reached nextNode
-  this->__addNodesNearToOpenList(this->nextNode);
+  this->__addNodesNearToOpenList(*(this->nextNode));
   this->nextNode = this->__getNextNodeToMove();
-  return this->nextNode.position - currentPosition;
+  return this->nextNode->position - currentPosition;
 }
 
 
@@ -103,14 +103,14 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
 }
 
 
-Node& AStarPathPlanner::__getNextNodeToMove() {
+Node* AStarPathPlanner::__getNextNodeToMove() {
   // https://cpprefjp.github.io/reference/algorithm/sort.html
   std::sort(this->openList.begin(), this->openList.end(), [&](Node* left, Node* right) { return left->totalCost > right->totalCost;});
   // https://cpprefjp.github.io/reference/vector/vector.html
   Node* nextNode {this->openList[this->openList.size()-1]};
   this->openList.pop_back();
   this->closeList.push_back(nextNode);
-  return *nextNode;
+  return nextNode;
 }
 
 

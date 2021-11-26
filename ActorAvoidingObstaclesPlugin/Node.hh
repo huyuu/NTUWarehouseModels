@@ -10,7 +10,6 @@ namespace gazebo {
   public:
     // MARK: - Constructor
     Node(): isOpen{false}, id{-1}, parentNodePtr{nullptr}, position{ignition::math::Vector3d{}}, heuristicCostToTarget{Node::bigNumber}, totalCost{Node::bigNumber} {}
-    Node(Node&&) = default;
     /// Default all terms constructor
     Node(bool isOpen, int id, Node* parentNodePtr, ignition::math::Vector3d position, double heuristicCostToTarget, double totalCost): isOpen{isOpen}, id{id}, parentNodePtr{parentNodePtr}, position{position}, heuristicCostToTarget{heuristicCostToTarget}, totalCost{totalCost} {
       this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
