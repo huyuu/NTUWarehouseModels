@@ -125,6 +125,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
+    std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
     // if the potentialNode is visible from currentNode and it's not the parent node
     if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode.id != currentNode.parentNodePtr->id ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
@@ -186,9 +187,12 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d leftUp {boundingBox.Min().X(), boundingBox.Max().Y(), 0.0};
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
+    std::cout << "checking " << fromNode << " and " << toNode << " is or not behind " << leftDown << ", " << rightDown << ", " << leftUp << ", " << rightUp << std::endl;
     if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position))
+      std::cout << "result -> false" << std::endl;
       return false;
   }
+  std::cout << "result -> true" << std::endl;
   return true;
 }
 
