@@ -62,7 +62,8 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner = std::move(AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels));
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels);
+  std::cout << "here!" << std::endl;
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
 

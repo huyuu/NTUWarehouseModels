@@ -20,6 +20,7 @@ namespace gazebo {
     AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels);
     ~AStarPathPlanner() = default;
     AStarPathPlanner& operator=(AStarPathPlanner&&) = default;
+    AStarPathPlanner& operator=(AStarPathPlanner&) = default;
 
     /// update models when there is any change
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
