@@ -167,10 +167,6 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         }
       }
     }
-    // // if the potentialNode is visible from currentNode and it's not the parent node
-    // if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && currentNode.parentNodePtr != nullptr && potentialNode.id != currentNode.parentNodePtr->id ) {
-    //
-    // }
     std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
   }
 }
@@ -195,15 +191,15 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d leftUp {boundingBox.Min().X(), boundingBox.Max().Y(), 0.0};
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
-    std::cout << "checking " << fromNode << " and " << toNode << " is visible in " << leftDown << ", " << rightDown << ", " << leftUp << ", " << rightUp << std::endl;
+    // std::cout << "checking " << fromNode << " and " << toNode << " is visible in " << leftDown << ", " << rightDown << ", " << leftUp << ", " << rightUp << std::endl;
     std::cout << AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) << ", ";
     std::cout << AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position) << std::endl;
     if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position)) {
-      std::cout << "result -> false" << std::endl;
+      // std::cout << "result -> false" << std::endl;
       return false;
     }
   }
-  std::cout << "result -> true" << std::endl;
+  // std::cout << "result -> true" << std::endl;
   return true;
 }
 
