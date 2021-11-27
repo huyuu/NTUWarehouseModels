@@ -31,13 +31,13 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
   }
   this->allNodesInMap.push_back(Node{0, start, target});
-  this->nodes.reserve(this->allNodesInMap.size());
+  this->nodes.reserve(this->allNodesInMap.size() + 10);
   this->nodes.push_back(Node{0, start, target});
   // set nextNode
   Node* startNodePtr = &this->nodes[0];
-  this->openList.reserve(this->allNodesInMap.size());
+  this->openList.reserve(this->allNodesInMap.size() + 10);
   this->openList.push_back(startNodePtr->id);
-  this->closeList.reserve(this->allNodesInMap.size());
+  this->closeList.reserve(this->allNodesInMap.size() + 10);
   this->nextNode = startNodePtr;
 
   // print openList
@@ -128,7 +128,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
-    std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
+    // std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
       continue;
@@ -138,7 +138,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     }
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
-      std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
+      // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       const int nodeCounter = this->nodes.size();
       const Node* const currentNodePtr = &currentNode;
       this->nodes.push_back(Node{
@@ -147,26 +147,26 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         potentialNode.position,// position
         this->target,// target
       });
-      std::cout << "currentNode(1) = " << currentNode << std::endl;
+      // std::cout << "currentNode(1) = " << currentNode << std::endl;
       const Node& newNode = this->nodes.back();
-      std::cout << "currentNode(2) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
+      // std::cout << "currentNode(2) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       potentialNode.id = nodeCounter;
-      std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
+      // std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       this->openList.push_back(nodeCounter);
-      std::cout << "currentNode(4) = " << currentNode << std::endl;
-      std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
+      // std::cout << "currentNode(4) = " << currentNode << std::endl;
+      // std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
     }
     else { // if potential node is already created
-      std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
+      // std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
       auto nodeIdPtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](int openListNodeId) { return openListNodeId == potentialNode.id; });
       // if it is in the open list, compare and update the cost if neccessary
       if (nodeIdPtrInOpenList != this->openList.end()) {
-        std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
+        // std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
 
         const bool __nouse = this->nodes[*nodeIdPtrInOpenList].compareAndUpdateCostIfNeccessary(currentNode);
       }
       else {// if it is in the close list
-        std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
+        // std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
         auto nodeIdPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](int closeListNodeId) { return closeListNodeId == potentialNode.id; });
         const int nodeId = *nodeIdPtrInCloseList;
         const bool didUpdate = this->nodes[nodeId].compareAndUpdateCostIfNeccessary(currentNode);
@@ -176,7 +176,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         }
       }
     }
-    std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
+    // std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
   }
 }
 
@@ -188,7 +188,7 @@ Node* AStarPathPlanner::__getNextNodeToMove() {
   const int nextNodeId = this->openList.back();
   this->openList.pop_back();
   this->closeList.push_back(nextNodeId);
-  return nextNode;
+  return this->nodes[nextNodeId];
 }
 
 

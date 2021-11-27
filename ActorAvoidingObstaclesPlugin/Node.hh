@@ -100,7 +100,7 @@ namespace gazebo {
     }
 
     friend std::ostream& operator<<(std::ostream &out, const Node& data) {
-        out << "(" <<  data.position.X() << ", " << data.position.Y() << ")";
+        out << "id=" << data.id << " (" <<  data.position.X() << ", " << data.position.Y() << ")";
         return out;
     }
   };
