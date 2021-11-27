@@ -46,6 +46,8 @@ namespace gazebo {
     /// \brief Pointer to the parent actor.
     physics::ActorPtr actor;
 
+    double actorWidth; 
+
     /// \brief Pointer to the world, for convenience.
     physics::WorldPtr world;
 

@@ -5,9 +5,10 @@ using std::vector;
 
 // MARK: - Constructors
 
-AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels):
+AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth):
   start{start},
-  target{target} {
+  target{target},
+  actorWidth{actorWidth} {
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
   // set obstacleBoundingBoxes
@@ -41,7 +42,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   this->nextNode = startNodePtr;
 
   // print openList
-  std::cout << "openList: ";
+  std::cout << "openList: size=" << this->openList.size() << "; ";
   for (const int& id: this->openList) {
     std::cout << id << ", ";
   }
@@ -96,7 +97,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   // print nextNode, openList, closeList, nodes
   std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
   // print openList
-  std::cout << "openList: ";
+  std::cout << "openList: size=" << this->openList.size() << "; ";
   for (const int& id: this->openList) {
     std::cout << id << ", ";
   }
@@ -201,11 +202,23 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d leftUp {boundingBox.Min().X(), boundingBox.Max().Y(), 0.0};
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
-    // std::cout << "checking " << fromNode << " and " << toNode << " is visible in " << leftDown << ", " << rightDown << ", " << leftUp << ", " << rightUp << std::endl;
-    // std::cout << AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) << ", ";
-    // std::cout << AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position) << std::endl;
+    // center
     if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position)) {
       // std::cout << "result -> false" << std::endl;
+      return false;
+    }
+    // right
+    const ignition::math::Vector3d lineVector {toNode.position - fromNode.position};
+    const ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
+    const ignition::math::Vector3d verticalVector_realDistance = verticalVector.Normalize() * this->actorWidth / 2.0;
+    const ignition::math::Vector3d fromNode_right = fromNode.position + verticalVector_realDistance;
+    const ignition::math::Vector3d toNode_right = toNode.position + verticalVector_realDistance;
+    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_right, toNode_right) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_right, toNode_right)) {
+      return false;
+    }
+    const ignition::math::Vector3d fromNode_left = fromNode.position - verticalVector_realDistance;
+    const ignition::math::Vector3d toNode_left = toNode.position - verticalVector_realDistance;
+    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_left, toNode_left) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_left, toNode_left)) {
       return false;
     }
   }

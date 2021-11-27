@@ -17,7 +17,7 @@ namespace gazebo {
   public:
     /// Constructor
     AStarPathPlanner(): start{ignition::math::Vector3d{}}, nextNode{} {}
-    AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels);
+    AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth);
     ~AStarPathPlanner() = default;
     AStarPathPlanner& operator=(AStarPathPlanner&&) = default;
     AStarPathPlanner& operator=(AStarPathPlanner&) = default;
@@ -48,6 +48,8 @@ namespace gazebo {
     /// target
     ignition::math::Vector3d target;
     ignition::math::Vector3d start;
+    // actor width
+    double actorWidth;
 
 
     // MARK: - Private Functions

@@ -24,6 +24,7 @@ ActorAvoidingObstaclesPlugin::ActorAvoidingObstaclesPlugin(): ModelPlugin() {
 void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   this->sdf = _sdf;
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
+  this->actorWidth = 1.5
   this->world = this->actor->GetWorld();
 
   this->connections.push_back(event::Events::ConnectWorldUpdateBegin(std::bind(&ActorAvoidingObstaclesPlugin::OnUpdate, this, std::placeholders::_1)));
@@ -62,7 +63,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels);
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth);
   // std::cout << "here!" << std::endl;
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
