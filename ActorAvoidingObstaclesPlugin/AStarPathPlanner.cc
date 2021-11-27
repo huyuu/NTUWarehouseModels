@@ -120,7 +120,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   nodesMap_file.open("nodesMap.csv", std::ios::out);
   nodesMap_file << "id, x, y" << std::endl;
   for (const Node& node: this->nodes) {
-    nodesMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << "," << potential << std::endl;
+    nodesMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
   }
   nodesMap_file.close();
 
@@ -145,13 +145,13 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   std::ofstream startNode_file;
   startNode_file.open("startNode.csv", std::ios::out);
   startNode_file << "id, x, y" << std::endl;
-  startNode_file << "0" << ", " << this->start.position.X() << "," << this->start.position.Y() << std::endl;
+  startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
   startNode_file.close();
 
   std::ofstream targetNode_file;
   targetNode_file.open("targetNode.csv", std::ios::out);
   targetNode_file << "id, x, y" << std::endl;
-  targetNode_file << "-" << ", " << this->target.position.X() << "," << this->target.position.Y() << std::endl;
+  targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
   targetNode_file.close();
 
   const ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
