@@ -119,6 +119,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
+    std::cout << "processing potentialNode: " << potentialNode.id << ", " << potentialNode.position.X() << std::endl;
     // if the potentialNode is visible from currentNode and it's not the parent node
     if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode.id != currentNode.parentNodePtr->id ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
