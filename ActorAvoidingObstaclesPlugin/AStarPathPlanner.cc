@@ -148,7 +148,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       Node* newNodePtr = &(this->nodes.back());
       std::cout << "currentNode(2) = " << currentNode << "with newNode's parent: " << *(newNodePtr->parentNodePtr) <<  std::endl;
       this->openList.push_back(nullptr);
-      this->openList[this->size()-1] = newNodePtr;
+      this->openList[this->openList.size()-1] = newNodePtr;
       std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNodePtr->parentNodePtr) <<  std::endl;
       potentialNode.id = newNodePtr->id;
       std::cout << "currentNode(4) = " << currentNode << std::endl;
