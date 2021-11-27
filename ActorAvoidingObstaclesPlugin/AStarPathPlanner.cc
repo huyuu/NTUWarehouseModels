@@ -90,7 +90,8 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
   std::cout << "added nodes near to openList" << std::endl;
-  this->nextNode = this->__getNextNodeToMove();
+  const int nextNodeId = this->__getNextNodeIdToMove()
+  this->nextNode = &(this->nodes[nextNodeId]);
   std::cout << "get next node to move" << std::endl;
   // print nextNode, openList, closeList, nodes
   std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
@@ -181,14 +182,14 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
 }
 
 
-Node* AStarPathPlanner::__getNextNodeToMove() {
+int AStarPathPlanner::__getNextNodeIdToMove() {
   // https://cpprefjp.github.io/reference/algorithm/sort.html
   std::sort(this->openList.begin(), this->openList.end(), [&](int leftId, int rightId) { return this->nodes[leftId].totalCost > this->nodes[rightId].totalCost;});
   // https://cpprefjp.github.io/reference/vector/vector.html
   const int nextNodeId = this->openList.back();
   this->openList.pop_back();
   this->closeList.push_back(nextNodeId);
-  return this->nodes[nextNodeId];
+  return nextNodeId;
 }
 
 
