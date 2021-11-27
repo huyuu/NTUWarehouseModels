@@ -95,7 +95,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   this->nextNode = &(this->nodes[nextNodeId]);
   std::cout << "get next node to move" << std::endl;
   // print nextNode, openList, closeList, nodes
-  std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
+  std::cout << "nextNode: " << *(this->nextNode) << std::endl;
   // print openList
   std::cout << "openList: size=" << this->openList.size() << "; ";
   for (const int& id: this->openList) {
@@ -134,7 +134,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     // std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
-      std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
+      // std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
       continue;
     }
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
