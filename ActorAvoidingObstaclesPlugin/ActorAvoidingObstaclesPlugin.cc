@@ -152,6 +152,7 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
 // Private Function: OnUpdate
 void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 {
+  std::cout << "OnUpdate Conducted";
   // Time delta
   const double dt = (_info.simTime - this->lastUpdate).Double();
 
