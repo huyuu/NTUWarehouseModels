@@ -31,13 +31,13 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
   }
   this->allNodesInMap.push_back(Node{0, start, target});
-  this->nodes.reverse(this->allNodesInMap.size());
+  this->nodes.reserve(this->allNodesInMap.size());
   this->nodes.push_back(Node{0, start, target});
   // set nextNode
   Node* startNodePtr = &this->nodes[0];
-  this->openList.reverse(this->allNodesInMap.size());
+  this->openList.reserve(this->allNodesInMap.size());
   this->openList.push_back(startNodePtr->id);
-  this->closeList.reverse(this->allNodesInMap.size());
+  this->closeList.reserve(this->allNodesInMap.size());
   this->nextNode = startNodePtr;
 
   // print openList
