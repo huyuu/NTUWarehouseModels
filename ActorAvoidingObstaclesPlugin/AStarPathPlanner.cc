@@ -190,9 +190,10 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     std::cout << "checking " << fromNode << " and " << toNode << " is visible in " << leftDown << ", " << rightDown << ", " << leftUp << ", " << rightUp << std::endl;
     std::cout << AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) << ", ";
     std::cout << AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position) << std::endl;
-    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position))
+    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position)) {
       std::cout << "result -> false" << std::endl;
       return false;
+    }
   }
   std::cout << "result -> true" << std::endl;
   return true;
