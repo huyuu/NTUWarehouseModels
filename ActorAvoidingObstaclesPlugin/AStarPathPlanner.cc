@@ -129,6 +129,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode.id != currentNode.parentNodePtr->id ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
       if (potentialNode.id < 0) {
+        std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
         const int nodeCounter = this->nodes.size();
         this->nodes.push_back(Node{
           nodeCounter,// id
@@ -139,9 +140,10 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         Node* newNodePtr = &(this->nodes.back());
         this->openList.push_back(newNodePtr);
         potentialNode.id = newNodePtr->id;
-        std::cout << "insert potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
+        std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       }
       else { // if potential node is already created
+        std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
         auto nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
         // if it is in the open list, compare and update the cost if neccessary
         if (nodePtrInOpenList != this->openList.end()) {
