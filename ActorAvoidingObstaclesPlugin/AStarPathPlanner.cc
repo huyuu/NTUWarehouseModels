@@ -119,7 +119,6 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
-    std::cout << "processing potentialNode: " << potentialNode.id << ", " << potentialNode.position.X() << std::endl;
     // if the potentialNode is visible from currentNode and it's not the parent node
     if ( this->__isNodeVisibleFrom(currentNode, potentialNode) == true && potentialNode.id != currentNode.parentNodePtr->id ) {
       // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
@@ -134,14 +133,17 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         Node* newNodePtr = &(this->nodes.back());
         this->openList.push_back(newNodePtr);
         potentialNode.id = newNodePtr->id;
+        std::cout << "insert potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       }
       else { // if potential node is already created
         auto nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
         // if it is in the open list, compare and update the cost if neccessary
         if (nodePtrInOpenList != this->openList.end()) {
+          std::cout << "potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
           const bool __nouse = (*nodePtrInOpenList)->compareAndUpdateCostIfNeccessary(currentNode);
         }
         else {// if it is in the close list
+          std::cout << "potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
           auto __nodePtrPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](Node* node) { return node->id == potentialNode.id; });
           Node* nodePtrInCloseList = *__nodePtrPtrInCloseList;
           const bool didUpdate = nodePtrInCloseList->compareAndUpdateCostIfNeccessary(currentNode);
@@ -152,6 +154,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         }
       }
     }
+    std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
   }
 }
 
