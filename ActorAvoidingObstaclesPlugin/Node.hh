@@ -28,7 +28,7 @@ namespace gazebo {
         this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
     }
     /// Constructor for new normal points
-    Node(int id, const Node* parentNodePtr, ignition::math::Vector3d EstimatedNewNodePosition, ignition::math::Vector3d& target):
+    Node(int id, const Node* const parentNodePtr, ignition::math::Vector3d EstimatedNewNodePosition, ignition::math::Vector3d& target):
       isOpen{true},
       id{id},
       parentNodePtr{parentNodePtr},
@@ -61,7 +61,7 @@ namespace gazebo {
     /// parent node ptr
     const Node* parentNodePtr;
     /// position in coordinate
-    ignition::math::Vector3d position;
+    const ignition::math::Vector3d position;
     /// heuristic cost from current position to target
     double heuristicCostToTarget;
     /// total cost from start to target
