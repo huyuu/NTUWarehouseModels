@@ -114,7 +114,9 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   }
   std::cout << std::endl;
 
-  return this->nextNode->position - currentPosition;
+  const ignition::math::Vector3d gradient {this->nextNode->position - currentPosition};
+  gradient.Y() = 0.0;
+  return gradient;
 }
 
 
