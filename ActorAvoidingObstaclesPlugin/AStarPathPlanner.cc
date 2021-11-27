@@ -141,6 +141,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     }
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
+      std::cout << "potentialNode " << potentialNode << " is visible from " << currentNode << std::endl;
       // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       const int nodeCounter = this->nodes.size();
       const Node* const currentNodePtr = &currentNode;
