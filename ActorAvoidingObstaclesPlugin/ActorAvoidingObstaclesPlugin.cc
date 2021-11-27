@@ -62,8 +62,8 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels);
-  std::cout << "here!" << std::endl;
+  // this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels);
+  // std::cout << "here!" << std::endl;
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
 
@@ -172,7 +172,8 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
+  // this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
+  this->goingVector = ignition::math::Vector3d {0.0, 0.0, 0.0};
   // this->pathPlanner.storePotentialsOnSamplePoints(this->outerMostBoundaryBox, this->target);
 
   // Compute the yaw orientation
