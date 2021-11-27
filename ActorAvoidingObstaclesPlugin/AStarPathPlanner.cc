@@ -138,17 +138,17 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       const int nodeCounter = this->nodes.size();
       const Node* currentNodePtr = &currentNode;
-      this->nodes.emplace_back(Node{
+      this->nodes.push_back(Node{
         nodeCounter,// id
         currentNodePtr,// parent node
         potentialNode.position,// position
         this->target,// target
       });
       std::cout << "currentNode(1) = " << currentNode << std::endl;
-      Node* newNodePtr = &(this->nodes.back());
-      std::cout << "currentNode(2) = " << currentNode << "with newNode: " << *newNodePtr <<  std::endl;
-      this->openList.emplace_back(newNodePtr);
-      std::cout << "currentNode(3) = " << currentNode << "with newNode: " << *newNodePtr <<  std::endl;
+      Node* newNodePtr = &(this->nodes[this->nodes.size()-1]);
+      std::cout << "currentNode(2) = " << currentNode << "with newNode's parent: " << *(newNodePtr->parentNodePtr) <<  std::endl;
+      this->openList.push_back(newNodePtr);
+      std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNodePtr->parentNodePtr) <<  std::endl;
       potentialNode.id = newNodePtr->id;
       std::cout << "currentNode(4) = " << currentNode << std::endl;
       std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
