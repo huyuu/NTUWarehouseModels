@@ -137,15 +137,18 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     if (potentialNode.id < 0) {
       std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       const int nodeCounter = this->nodes.size();
+      std::cout << "currentNode(1) = " << currentNode << std::endl;
       this->nodes.push_back(Node{
         nodeCounter,// id
         &currentNode,// parent node
         potentialNode.position,// position
         this->target,// target
       });
+      std::cout << "currentNode(2) = " << currentNode << std::endl;
       Node* newNodePtr = &(this->nodes.back());
       this->openList.push_back(newNodePtr);
       potentialNode.id = newNodePtr->id;
+      std::cout << "currentNode(3) = " << currentNode << std::endl;
       std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
     }
     else { // if potential node is already created
