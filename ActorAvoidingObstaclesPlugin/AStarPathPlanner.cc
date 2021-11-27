@@ -141,7 +141,6 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     }
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
-      std::cout << "potentialNode " << potentialNode << " is visible from " << currentNode << std::endl;
       // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       const int nodeCounter = this->nodes.size();
       const Node* const currentNodePtr = &currentNode;
@@ -158,7 +157,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       // std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       this->openList.push_back(nodeCounter);
       // std::cout << "currentNode(4) = " << currentNode << std::endl;
-      // std::cout << "inserted potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
+      std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
     }
     else { // if potential node is already created
       // std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
@@ -167,8 +166,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       if (nodeIdPtrInOpenList != this->openList.end()) {
         // std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
         const bool __nouse = this->nodes[*nodeIdPtrInOpenList].compareAndUpdateCostIfNeccessary(currentNode);
-      }
-      else {// if it is in the close list
+      } else {// if it is in the close list
         // std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
         auto nodeIdPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](int closeListNodeId) { return closeListNodeId == potentialNode.id; });
         const int nodeId = *nodeIdPtrInCloseList;
