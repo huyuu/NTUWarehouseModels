@@ -38,9 +38,9 @@ namespace gazebo {
     /// nextNode
     Node* nextNode;
     /// open list
-    vector<Node*> openList;
+    vector<int> openList;
     /// close list
-    vector<Node*> closeList;
+    vector<int> closeList;
     /// obstacles bounding boxes
     vector<ignition::math::AxisAlignedBox> obstacleBoundingBoxes;
     /// actor bounding box
