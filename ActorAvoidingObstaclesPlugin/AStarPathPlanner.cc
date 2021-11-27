@@ -39,13 +39,13 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
 
   // print openList
   std::cout << "openList: ";
-  for (const int* id: this->openList) {
+  for (const int& id: this->openList) {
     std::cout << id << ", ";
   }
   std::cout << std::endl;
   // print closeList
   std::cout << "closeList: ";
-  for (const int* id: this->closeList) {
+  for (const int& id: this->closeList) {
     std::cout << id << ", ";
   }
   std::cout << std::endl;
@@ -93,13 +93,13 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
   // print openList
   std::cout << "openList: ";
-  for (const int* id: this->openList) {
+  for (const int& id: this->openList) {
     std::cout << id << ", ";
   }
   std::cout << std::endl;
   // print closeList
   std::cout << "closeList: ";
-  for (const int* id: this->closeList) {
+  for (const int& id: this->closeList) {
     std::cout << id << ", ";
   }
   std::cout << std::endl;
@@ -164,9 +164,9 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       }
       else {// if it is in the close list
         std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
-        int* nodeIdPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](int closeListNodeId) { return closeListNodeId == potentialNode.id; });
+        auto nodeIdPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](int closeListNodeId) { return closeListNodeId == potentialNode.id; });
         const int nodeId = *nodeIdPtrInCloseList;
-        const bool didUpdate = cthis->nodes[nodeId].compareAndUpdateCostIfNeccessary(currentNode);
+        const bool didUpdate = this->nodes[nodeId].compareAndUpdateCostIfNeccessary(currentNode);
         if (didUpdate == true) {
           this->openList.push_back(nodeId);
           this->closeList.erase(nodeIdPtrInCloseList);
