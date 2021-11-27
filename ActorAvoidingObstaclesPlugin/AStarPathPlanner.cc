@@ -133,17 +133,17 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         Node* newNodePtr = &(this->nodes.back());
         this->openList.push_back(newNodePtr);
         potentialNode.id = newNodePtr->id;
-        std::cout << "insert potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
+        std::cout << "insert potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
       }
       else { // if potential node is already created
         auto nodePtrInOpenList = std::find_if(this->openList.begin(), this->openList.end(), [&](Node* node) { return node->id == potentialNode.id; });
         // if it is in the open list, compare and update the cost if neccessary
         if (nodePtrInOpenList != this->openList.end()) {
-          std::cout << "potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
+          std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
           const bool __nouse = (*nodePtrInOpenList)->compareAndUpdateCostIfNeccessary(currentNode);
         }
         else {// if it is in the close list
-          std::cout << "potential node: " << potentialNode.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
+          std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in closeList." << std::endl;
           auto __nodePtrPtrInCloseList = std::find_if(this->closeList.begin(), this->closeList.end(), [&](Node* node) { return node->id == potentialNode.id; });
           Node* nodePtrInCloseList = *__nodePtrPtrInCloseList;
           const bool didUpdate = nodePtrInCloseList->compareAndUpdateCostIfNeccessary(currentNode);
@@ -154,7 +154,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
         }
       }
     }
-    std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
+    std::cout << "potential node id=" << potentialNode.id << " : " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is processed." << std::endl;
   }
 }
 
