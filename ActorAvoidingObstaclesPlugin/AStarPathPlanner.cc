@@ -133,6 +133,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     // std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
+      std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
       continue;
     }
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
@@ -164,7 +165,6 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       // if it is in the open list, compare and update the cost if neccessary
       if (nodeIdPtrInOpenList != this->openList.end()) {
         // std::cout << "potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList." << std::endl;
-
         const bool __nouse = this->nodes[*nodeIdPtrInOpenList].compareAndUpdateCostIfNeccessary(currentNode);
       }
       else {// if it is in the close list
