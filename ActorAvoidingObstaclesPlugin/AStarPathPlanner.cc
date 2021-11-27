@@ -77,9 +77,12 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   if (this->nextNode->getDistanceFrom(currentPosition) >= 0.3)
     return this->nextNode->position - currentPosition;
   // robot has reached nextNode
+  std::cout << "robot has reached nextNode" << std::endl;
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
+  std::cout << "added nodes near to openList" << std::endl;
   this->nextNode = this->__getNextNodeToMove();
+  std::cout << "get next node to move" << std::endl;
   // print nextNode, openList, closeList, nodes
   std::cout << "nextNode: " << this->nextNode->position.X() << ", " << this->nextNode->position.Y() << std::endl;
   // print openList
