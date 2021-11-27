@@ -84,7 +84,7 @@ void AStarPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBo
 // generate gradient near point
 ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) {
   // if distance to next node is large, return vector to nextNode.
-  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.3)
+  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.1)
     return this->nextNode->position - currentPosition;
   // robot has reached nextNode
   std::cout << "robot has reached nextNode" << std::endl;
@@ -114,6 +114,45 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
     std::cout << node.id << ", ";
   }
   std::cout << std::endl;
+
+  // store debug file
+  std::ofstream nodesMap_file;
+  nodesMap_file.open("nodesMap.csv", std::ios::out);
+  nodesMap_file << "id, x, y" << std::endl;
+  for (const Node& node: this->nodes) {
+    nodesMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << "," << potential << std::endl;
+  }
+  nodesMap_file.close();
+
+  std::ofstream openListMap_file;
+  openListMap_file.open("openListMap.csv", std::ios::out);
+  openListMap_file << "id, x, y" << std::endl;
+  for (const int& id: this->openList) {
+    const Node& node = this->nodes[id];
+    openListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  }
+  openListMap_file.close();
+
+  std::ofstream closeListMap_file;
+  closeListMap_file.open("closeListMap.csv", std::ios::out);
+  closeListMap_file << "id, x, y" << std::endl;
+  for (const int& id: this->openList) {
+    const Node& node = this->nodes[id];
+    closeListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  }
+  closeListMap_file.close();
+
+  std::ofstream startNode_file;
+  startNode_file.open("startNode.csv", std::ios::out);
+  startNode_file << "id, x, y" << std::endl;
+  startNode_file << "0" << ", " << this->start.position.X() << "," << this->start.position.Y() << std::endl;
+  startNode_file.close();
+
+  std::ofstream targetNode_file;
+  targetNode_file.open("targetNode.csv", std::ios::out);
+  targetNode_file << "id, x, y" << std::endl;
+  targetNode_file << "-" << ", " << this->target.position.X() << "," << this->target.position.Y() << std::endl;
+  targetNode_file.close();
 
   const ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
   return gradient;
