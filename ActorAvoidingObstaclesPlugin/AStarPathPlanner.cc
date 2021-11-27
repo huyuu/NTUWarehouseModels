@@ -209,7 +209,8 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     }
     // right
     const ignition::math::Vector3d lineVector {toNode.position - fromNode.position};
-    const ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
+    ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
+    verticalVector.Normalize();
     const ignition::math::Vector3d verticalVector_realDistance = verticalVector.Normalize() * this->actorWidth / 2.0;
     const ignition::math::Vector3d fromNode_right = fromNode.position + verticalVector_realDistance;
     const ignition::math::Vector3d toNode_right = toNode.position + verticalVector_realDistance;
