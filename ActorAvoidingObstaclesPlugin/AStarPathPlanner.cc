@@ -19,6 +19,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
       this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->BoundingBox());
   }
   // set allNodesInMap
+  this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
     const ignition::math::Vector3d min {boundingBox.Min() * 0.99};
     const ignition::math::Vector3d max {boundingBox.Max() * 0.101};
