@@ -16,8 +16,10 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
-    if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
+    if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
       this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->CollisionBoundingBox());
+      std::cout << "model added: " << model->GetName() << std::endl;
+    }
   }
   // set allNodesInMap
   this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
@@ -207,7 +209,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       // std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       this->openList.push_back(nodeCounter);
       // std::cout << "currentNode(4) = " << currentNode << std::endl;
-      std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
+      // std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
     }
     else { // if potential node is already created
       // std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
