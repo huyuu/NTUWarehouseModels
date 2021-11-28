@@ -323,9 +323,10 @@ inline bool AStarPathPlanner::__didIntersect(const ignition::math::Vector3d& gro
 
 bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point, const double actorWidth, const vector<ignition::math::AxisAlignedBox>& boxes) {
   static constexpr double epsilon {0.000001};
+  const double boxHeight = boxes[0].Z();
 
-  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() - epsilon - actorWidth, box.Z()};
-  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() - epsilon, box.Z()};
+  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() - epsilon - actorWidth, boxHeight};
+  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() - epsilon, boxHeight};
   const ignition::math::AxisAlignedBox leftDownBox {minCorner, maxCorner};
   bool isLeftDownBoxAvailable {true};
   for (const auto& box: boxes) {
@@ -337,8 +338,8 @@ bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point,
     return true;
   }
 
-  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() + epsilon, box.Z()};
-  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() + epsilon + actorWidth, box.Z()};
+  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() + epsilon, boxHeight};
+  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() + epsilon + actorWidth, boxHeight};
   const ignition::math::AxisAlignedBox leftUpBox {minCorner, maxCorner};
   bool isLeftUpBoxAvailable {true};
   for (const auto& box: boxes) {
@@ -350,8 +351,8 @@ bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point,
     return true;
   }
 
-  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() - epsilon - actorWidth, box.Z()};
-  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() - epsilon, box.Z()};
+  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() - epsilon - actorWidth, boxHeight};
+  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() - epsilon, boxHeight};
   const ignition::math::AxisAlignedBox rightDownBox {minCorner, maxCorner};
   bool isRightDownBoxAvailable {true};
   for (const auto& box: boxes) {
@@ -363,8 +364,8 @@ bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point,
     return true;
   }
 
-  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() + epsilon, box.Z()};
-  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() + epsilon + actorWidth, box.Z()};
+  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() + epsilon, boxHeight};
+  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() + epsilon + actorWidth, boxHeight};
   const ignition::math::AxisAlignedBox rightUpBox {minCorner, maxCorner};
   bool isRightUpBoxAvailable {true};
   for (const auto& box: boxes) {
