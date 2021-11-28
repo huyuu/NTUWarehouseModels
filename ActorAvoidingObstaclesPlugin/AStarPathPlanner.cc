@@ -31,10 +31,18 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     const ignition::math::Vector3d leftUpPosition {min.X(), max.Y(), 0.0};
     const ignition::math::Vector3d rightDownPosition {max.X(), min.Y(), 0.0};
     const ignition::math::Vector3d rightUpPosition {max.X(), max.Y(), 0.0};
-    this->allNodesInMap.push_back(Node{-1, leftDownPosition, target});
-    this->allNodesInMap.push_back(Node{-1, leftUpPosition, target});
-    this->allNodesInMap.push_back(Node{-1, rightDownPosition, target});
-    this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
+    if (AStarPathPlanner::__pointIsReachable(leftDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+      this->allNodesInMap.push_back(Node{-1, leftDownPosition, target});
+    }
+    if (AStarPathPlanner::__pointIsReachable(leftUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+      this->allNodesInMap.push_back(Node{-1, leftUpPosition, target});
+    }
+    if (AStarPathPlanner::__pointIsReachable(rightDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+      this->allNodesInMap.push_back(Node{-1, rightDownPosition, target});
+    }
+    if (AStarPathPlanner::__pointIsReachable(rightUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+      this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
+    }
   }
   this->allNodesInMap.push_back(Node{0, start, target});
   this->nodes.reserve(this->allNodesInMap.size() + 10);
@@ -310,4 +318,63 @@ inline bool AStarPathPlanner::__didIntersect(const ignition::math::Vector3d& gro
     return false;
   else
     return true;
+}
+
+
+bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point, const double actorWidth, const vector<ignition::math::AxisAlignedBox>& boxes) {
+  static constexpr double epsilon {0.000001};
+
+  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() - epsilon - actorWidth, box.Z()};
+  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() - epsilon, box.Z()};
+  const ignition::math::AxisAlignedBox leftDownBox {minCorner, maxCorner};
+  bool isLeftDownBoxAvailable {true};
+  for (const auto& box: boxes) {
+    if (box.Intersects(leftDownBox) == true) {
+      isLeftDownBoxAvailable = false;
+    }
+  }
+  if (isLeftDownBoxAvailable == true) {
+    return true;
+  }
+
+  ignition::math::Vector3d minCorner {point.X() - epsilon - actorWidth, point.Y() + epsilon, box.Z()};
+  ignition::math::Vector3d maxCorner {point.X() - epsilon, point.Y() + epsilon + actorWidth, box.Z()};
+  const ignition::math::AxisAlignedBox leftUpBox {minCorner, maxCorner};
+  bool isLeftUpBoxAvailable {true};
+  for (const auto& box: boxes) {
+    if (box.Intersects(leftUpBox) == true) {
+      isLeftUpBoxAvailable = false;
+    }
+  }
+  if (isLeftUpBoxAvailable == true) {
+    return true;
+  }
+
+  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() - epsilon - actorWidth, box.Z()};
+  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() - epsilon, box.Z()};
+  const ignition::math::AxisAlignedBox rightDownBox {minCorner, maxCorner};
+  bool isRightDownBoxAvailable {true};
+  for (const auto& box: boxes) {
+    if (box.Intersects(rightDownBox) == true) {
+      isRightDownBoxAvailable = false;
+    }
+  }
+  if (isRightDownBoxAvailable == true) {
+    return true;
+  }
+
+  ignition::math::Vector3d minCorner {point.X() + epsilon, point.Y() + epsilon, box.Z()};
+  ignition::math::Vector3d maxCorner {point.X() + epsilon + actorWidth, point.Y() + epsilon + actorWidth, box.Z()};
+  const ignition::math::AxisAlignedBox rightUpBox {minCorner, maxCorner};
+  bool isRightUpBoxAvailable {true};
+  for (const auto& box: boxes) {
+    if (box.Intersects(rightUpBox) == true) {
+      isRightUpBoxAvailable = false;
+    }
+  }
+  if (isRightUpBoxAvailable == true) {
+    return true;
+  }
+
+  return false;
 }

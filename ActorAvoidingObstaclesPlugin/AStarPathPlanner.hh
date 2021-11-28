@@ -59,6 +59,7 @@ namespace gazebo {
     bool __isNodeVisibleFrom(const Node& fromNode, const Node& toNode) const;
     static double __getJudgeNumber(const ignition::math::Vector3d& basePoint1, const ignition::math::Vector3d& basePoint2, const ignition::math::Vector3d& testPoint);
     static bool __didIntersect(const ignition::math::Vector3d& group1Point1, const ignition::math::Vector3d& group1Point2, const ignition::math::Vector3d& group2Point1, const ignition::math::Vector3d& group2Point2);
+    static bool __pointIsReachable(const ignition::math::Vector3d& point, const double actorWidth, const vector<ignition::math::AxisAlignedBox>& boxes);
   };
 }
 
