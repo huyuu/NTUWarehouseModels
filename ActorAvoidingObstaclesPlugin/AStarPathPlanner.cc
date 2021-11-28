@@ -259,21 +259,21 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
       // std::cout << "result -> false" << std::endl;
       return false;
     }
-    // right
-    const ignition::math::Vector3d lineVector {toNode.position - fromNode.position};
-    ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
-    verticalVector.Normalize();
-    const ignition::math::Vector3d verticalVector_realDistance = verticalVector.Normalize() * this->actorWidth / 2.0;
-    const ignition::math::Vector3d fromNode_right = fromNode.position + verticalVector_realDistance;
-    const ignition::math::Vector3d toNode_right = toNode.position + verticalVector_realDistance;
-    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_right, toNode_right) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_right, toNode_right)) {
-      return false;
-    }
-    const ignition::math::Vector3d fromNode_left = fromNode.position - verticalVector_realDistance;
-    const ignition::math::Vector3d toNode_left = toNode.position - verticalVector_realDistance;
-    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_left, toNode_left) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_left, toNode_left)) {
-      return false;
-    }
+    // // right
+    // const ignition::math::Vector3d lineVector {toNode.position - fromNode.position};
+    // ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
+    // verticalVector.Normalize();
+    // const ignition::math::Vector3d verticalVector_realDistance = verticalVector.Normalize() * this->actorWidth / 2.0;
+    // const ignition::math::Vector3d fromNode_right = fromNode.position + verticalVector_realDistance;
+    // const ignition::math::Vector3d toNode_right = toNode.position + verticalVector_realDistance;
+    // if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_right, toNode_right) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_right, toNode_right)) {
+    //   return false;
+    // }
+    // const ignition::math::Vector3d fromNode_left = fromNode.position - verticalVector_realDistance;
+    // const ignition::math::Vector3d toNode_left = toNode.position - verticalVector_realDistance;
+    // if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode_left, toNode_left) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode_left, toNode_left)) {
+    //   return false;
+    // }
   }
   // std::cout << "result -> true" << std::endl;
   return true;
