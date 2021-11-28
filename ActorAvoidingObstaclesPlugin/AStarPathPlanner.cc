@@ -17,7 +17,8 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
-      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->CollisionBoundingBox());
+      ignition::math::AxisAlignedBox boundingBox = world->ModelByIndex(i)->CollisionBoundingBox();
+      this->obstacleBoundingBoxes.push_back(boundingBox);
       std::cout << "model added: " << model->GetName() << std::endl;
     }
   }
@@ -66,7 +67,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   // print allNodes
   std::cout << "allNodesInMap: ";
   for (const Node& node: this->allNodesInMap) {
-    std::cout << node.id << ", ";
+    std::cout << node << std::endl;
   }
   std::cout << std::endl;
 }
