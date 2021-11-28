@@ -19,7 +19,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
       ignition::math::AxisAlignedBox boundingBox = world->ModelByIndex(i)->CollisionBoundingBox();
       this->obstacleBoundingBoxes.push_back(boundingBox);
-      std::cout << "model added: " << model->GetName() << std::endl;
+      // std::cout << "model added: " << model->GetName() << std::endl;
     }
   }
   // set allNodesInMap

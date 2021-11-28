@@ -24,7 +24,7 @@ ActorAvoidingObstaclesPlugin::ActorAvoidingObstaclesPlugin(): ModelPlugin() {
 void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) {
   this->sdf = _sdf;
   this->actor = boost::dynamic_pointer_cast<physics::Actor>(_model);
-  this->actorWidth = 0.5;
+  this->actorWidth = 1.5;
   this->world = this->actor->GetWorld();
 
   this->connections.push_back(event::Events::ConnectWorldUpdateBegin(std::bind(&ActorAvoidingObstaclesPlugin::OnUpdate, this, std::placeholders::_1)));
