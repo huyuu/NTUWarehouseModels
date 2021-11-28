@@ -17,7 +17,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end())
-      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->BoundingBox());
+      this->obstacleBoundingBoxes.push_back(world->ModelByIndex(i)->CollisionBoundingBox());
   }
   // set allNodesInMap
   this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
