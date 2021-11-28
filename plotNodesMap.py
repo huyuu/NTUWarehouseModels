@@ -14,8 +14,8 @@ openListMap = pd.read_csv("./openListMap.csv", index_col=0)
 
 
 pl.scatter(nodesMap.iloc[:, 0], nodesMap.iloc[:, 1])
-pl.scatter(allNodesInMap.iloc[:, 0], allNodesInMap.iloc[:, 1], marker='x')
-pl.scatter(openListMap.iloc[:, 0], openListMap.iloc[:, 1], marker='O', alpha=0.7)
+pl.scatter(allNodesInMap.iloc[:, 0], allNodesInMap.iloc[:, 1], marker='x', color='gray')
+pl.scatter(openListMap.iloc[:, 0], openListMap.iloc[:, 1], marker='>', alpha=0.7, color='orange')
 pl.scatter(startMap.iloc[:, 0], startMap.iloc[:, 1], marker='+')
-pl.scatter(targetMap.iloc[:, 0], targetMap.iloc[:, 1], marker='-')
+pl.scatter(targetMap.iloc[:, 0], targetMap.iloc[:, 1], marker='v')
 pl.show()
