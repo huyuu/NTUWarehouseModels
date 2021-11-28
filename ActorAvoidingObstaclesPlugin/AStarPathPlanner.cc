@@ -12,6 +12,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
   // set obstacleBoundingBoxes
+  this->actorBoundingBox.reserve(world->Models().size());
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
