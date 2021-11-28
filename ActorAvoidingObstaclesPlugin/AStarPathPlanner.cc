@@ -25,8 +25,8 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   // set allNodesInMap
   this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
-    const ignition::math::Vector3d min {boundingBox.Min() * 0.99};
-    const ignition::math::Vector3d max {boundingBox.Max() * 1.01};
+    const ignition::math::Vector3d min {boundingBox.Min().X() - 0.01, boundingBox.Min().Y() - 0.01, 0.0};
+    const ignition::math::Vector3d max {boundingBox.Max().X() + 0.01, boundingBox.Max().Y() + 0.01, 0.0};
     const ignition::math::Vector3d leftDownPosition {min.X(), min.Y(), 0.0};
     const ignition::math::Vector3d leftUpPosition {min.X(), max.Y(), 0.0};
     const ignition::math::Vector3d rightDownPosition {max.X(), min.Y(), 0.0};
