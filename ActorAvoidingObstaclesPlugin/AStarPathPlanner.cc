@@ -73,7 +73,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
 
   std::ofstream trajectoryNodes_file;
   trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::out);
-  trajectoryNodes_file << "";
+  trajectoryNodes_file << "id, x, y" << std::endl;
   trajectoryNodes_file.close();
 }
 
@@ -180,7 +180,6 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 
   std::ofstream trajectoryNodes_file;
   trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::app);
-  trajectoryNodes_file << "id, x, y" << std::endl;
   trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
   trajectoryNodes_file.close();
 
