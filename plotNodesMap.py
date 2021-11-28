@@ -4,16 +4,18 @@ from matplotlib import pyplot as pl
 from mpl_toolkits.mplot3d import Axes3D
 
 
-nodesMap = pd.read_csv("./nodesMap.csv")
+nodesMap = pd.read_csv("./nodesMap.csv", index_col=0)
+allNodesInMap = pd.read_csv("./allNodesInMap.csv", index_col=0)
 print(nodesMap)
 # nodesMap = potentialMap.pivot(index='x', columns='y', values='potential')
-startMap = pd.read_csv("./startMap.csv")
-targetMap = pd.read_csv("./targetMap.csv")
-openListMap = pd.read_csv("./openListMap.csv")
+startMap = pd.read_csv("./startNode.csv", index_col=0)
+targetMap = pd.read_csv("./targetNode.csv", index_col=0)
+openListMap = pd.read_csv("./openListMap.csv", index_col=0)
 
 
-pl.scatter(nodesMap['x'], nodesMap['y'])
-pl.scatter(openListMap['x'], openListMap['y'], 'X')
-pl.scatter(startMap['x'], startMap['y'])
-pl.scatter(targetMap['x'], targetMap['y'])
+pl.scatter(nodesMap.iloc[:, 0], nodesMap.iloc[:, 1])
+pl.scatter(allNodesInMap.iloc[:, 0], allNodesInMap.iloc[:, 1], marker='x')
+pl.scatter(openListMap.iloc[:, 0], openListMap.iloc[:, 1], marker='O', alpha=0.7)
+pl.scatter(startMap.iloc[:, 0], startMap.iloc[:, 1], marker='+')
+pl.scatter(targetMap.iloc[:, 0], targetMap.iloc[:, 1], marker='-')
 pl.show()

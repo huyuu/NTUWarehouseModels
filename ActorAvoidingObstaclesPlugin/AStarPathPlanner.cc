@@ -116,6 +116,14 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   std::cout << std::endl;
 
   // store debug file
+  std::ofstream allNodesInMap_file;
+  allNodesInMap_file.open("allNodesInMap.csv", std::ios::out);
+  allNodesInMap_file << "id, x, y" << std::endl;
+  for (const Node& node: this->allNodesInMap) {
+    allNodesInMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  }
+  allNodesInMap_file.close();
+
   std::ofstream nodesMap_file;
   nodesMap_file.open("nodesMap.csv", std::ios::out);
   nodesMap_file << "id, x, y" << std::endl;
