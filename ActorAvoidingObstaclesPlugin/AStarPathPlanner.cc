@@ -186,7 +186,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     // std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
-      // std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
+      std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
       continue;
     }
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
@@ -210,7 +210,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       // std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       this->openList.push_back(nodeCounter);
       // std::cout << "currentNode(4) = " << currentNode << std::endl;
-      // std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
+      std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
     }
     else { // if potential node is already created
       // std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
