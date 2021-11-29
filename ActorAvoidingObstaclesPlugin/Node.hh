@@ -39,8 +39,8 @@ namespace gazebo {
         const double costFromStartToParent {parentNodePtr->actualCostFromStart};
         const ignition::math::Vector3d vectorFromParentToNewNode {EstimatedNewNodePosition - parentNodePtr->position};
         const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
-        const ignition::math::Vector3d vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
-        const double costFromNewNodeToTarget {vectorFromNewNodeToTarget.Length()};
+        // const ignition::math::Vector3d vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
+        const double costFromNewNodeToTarget {Node::getManhattanDistance(EstimatedNewNodePosition, target)};
         // calculate heuristic cost from new node to target
         this->heuristicCostToTarget = costFromNewNodeToTarget;
         this->totalCost = costFromStartToParent + costFromParentToNewNode + costFromNewNodeToTarget;
@@ -84,7 +84,7 @@ namespace gazebo {
       const ignition::math::Vector3d vectorFromParentToNewNode {this->position - anotherParentNode.position};
       const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
       const double newTotalCost {anotherParentNode.actualCostFromStart + costFromParentToNewNode + this->heuristicCostToTarget};
-      if (newTotalCost < this->actualCostFromStart) {
+      if (newTotalCost < this->totalCost) {
         this->parentNodePtr = &anotherParentNode;
         this->totalCost = newTotalCost;
         this->actualCostFromStart = this->totalCost - this->heuristicCostToTarget;
@@ -102,6 +102,11 @@ namespace gazebo {
     friend std::ostream& operator<<(std::ostream &out, const Node& data) {
         out << "id=" << data.id << " (" <<  data.position.X() << ", " << data.position.Y() << ")";
         return out;
+    }
+
+
+    static double getManhattanDistance(const ignition::math::Vector3d& from, const ignition::math::Vector3d& to) {
+      return std::abs(to.X() - from.X()) + std::abs(to.Y() - from.Y());
     }
   };
 }
