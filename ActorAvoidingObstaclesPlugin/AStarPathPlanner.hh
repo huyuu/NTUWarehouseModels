@@ -54,8 +54,8 @@ namespace gazebo {
     // actor width
     double actorWidth;
     // deltaFromCollision
-    static constexpr double deltaFromCollision {0.05}; // 2 cm
-    static constexpr double distanceAsReached {0.15}; // 15 cm
+    static constexpr double deltaFromCollision {0.50}; // 50 cm
+    static constexpr double distanceAsReached {0.30}; // 15 cm
 
 
     // MARK: - Private Functions

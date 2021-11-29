@@ -128,6 +128,7 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   this->target = newTarget;
   this->goingVector = newTarget - this->actor->WorldPose().Pos();
   this->goingVector.Normalize();
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth);
 }
 
 
@@ -166,7 +167,7 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Choose a new target position if the actor has reached its current
   // target.
-  if (vectorFromActorToTarget.Length() < 0.3) {
+  if (vectorFromActorToTarget.Length() < AStarPathPlanner::distanceAsReached) {
     this->ChooseNewTarget();
   }
 
