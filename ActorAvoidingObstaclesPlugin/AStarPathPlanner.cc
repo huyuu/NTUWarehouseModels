@@ -8,7 +8,8 @@ using std::vector;
 AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth):
   start{start},
   target{target},
-  actorWidth{actorWidth} {
+  actorWidth{actorWidth},
+  midwayNodeIds{vector<int>{}} {
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
   // set obstacleBoundingBoxes
@@ -54,6 +55,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   this->openList.push_back(startNodePtr->id);
   this->closeList.reserve(this->allNodesInMap.size() + 10);
   this->nextNode = startNodePtr;
+  this->midwayNodeIds.reserve(40);
 
   // print openList
   std::cout << "openList: size=" << this->openList.size() << "; ";
@@ -105,6 +107,13 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   // if distance to next node is large, return vector to nextNode.
   if (this->nextNode->getDistanceFrom(currentPosition) >= 0.1)
     return this->nextNode->position - currentPosition;
+  // if any midway node exists, pop from back.
+  if (this->midwayNodeIds.size() > 0) {
+    const int nextNodeId = this->midwayNodeIds.back();
+    this->nextNode = &(this->nodes[nextNodeId]);
+    this->midwayNodeIds.pop_back();
+    return this->nextNode->position - currentPosition;
+  }
   // robot has reached nextNode
   std::cout << "robot has reached nextNode" << std::endl;
   Node& currentNode = *(this->nextNode);
@@ -268,13 +277,26 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
 }
 
 
-int AStarPathPlanner::__getNextNodeIdToMove() {
+int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
   // https://cpprefjp.github.io/reference/algorithm/sort.html
   std::sort(this->openList.begin(), this->openList.end(), [&](int leftId, int rightId) { return this->nodes[leftId].totalCost > this->nodes[rightId].totalCost;});
   // https://cpprefjp.github.io/reference/vector/vector.html
   const int nextNodeId = this->openList.back();
   this->openList.pop_back();
   this->closeList.push_back(nextNodeId);
+
+  // if (thi->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
+  //   return nextNodeId
+  // }
+  // // if not visible, add midway nodes
+  // vector<int> ancestorIds_nextNode;
+  // ancestorIds_nextNode.reserve(20);
+  // int parentNodeId = nextNodeId;
+  // ancestorIds_nextNode.push_back(parentNodeId);
+  // while(this->nodes[parentNodeId].parentNodePtr->id != 0) {
+  //   parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
+  //   ancestorIds_nextNode.push_back(parentNodeId);
+  // }
   return nextNodeId;
 }
 

@@ -81,7 +81,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
 // Override Function: Reset
 void ActorAvoidingObstaclesPlugin::Reset() {
-  this->velocity = 1.0;
+  this->velocity = 2.0;
   this->lastUpdate = 0;
 
   if (this->sdf && this->sdf->HasElement("target"))
