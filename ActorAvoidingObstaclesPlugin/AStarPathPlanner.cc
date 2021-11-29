@@ -117,7 +117,12 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   // print openList
   std::cout << "openList: size=" << this->openList.size() << "; ";
   for (const int& id: this->openList) {
-    std::cout << this->nodes[id] << " heuricost=" << this->nodes[id].heuristicCostToTarget << ";  ";
+    const Node& node = this->nodes[id];
+    std::cout << node << ", ";
+    std::cout << "start->parent: "<< node.parentNodePtr->actualCostFromStart << ", ";
+    std::cout << "parent->node: "<< (node.position - node.parentNodePtr->position).Length() << ", ";
+    std::cout << "node->target: "<< node.actualCostFromStart << ", ";
+    std::cout << "total: "<< node.totalCost << std::endl;
   }
   std::cout << std::endl;
   // print closeList
