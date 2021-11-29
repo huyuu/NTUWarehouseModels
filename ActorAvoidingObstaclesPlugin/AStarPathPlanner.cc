@@ -45,6 +45,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     }
   }
   this->allNodesInMap.push_back(Node{0, start, target});
+  this->allNodesInMap.push_back(Node{-1, target, target});
   this->nodes.reserve(this->allNodesInMap.size() + 10);
   this->nodes.push_back(Node{0, start, target});
   // set nextNode
@@ -198,6 +199,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   trajectoryNodes_file.close();
 
   const ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
+  gradient.Normalize();
   return gradient;
 }
 
