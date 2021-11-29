@@ -119,7 +119,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
   std::cout << "added nodes near to openList" << std::endl;
-  const int nextNodeId = this->__getNextNodeIdToMove();
+  const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
   this->nextNode = &(this->nodes[nextNodeId]);
   std::cout << "get next node to move" << std::endl;
   // print nextNode, openList, closeList, nodes
