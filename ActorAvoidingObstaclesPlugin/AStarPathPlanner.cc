@@ -213,6 +213,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
   trajectoryNodes_file.close();
 
+  printf("here!!!");
   if (this->midwayNodeIds.size() > 0) {
     const int nextNodeId = this->midwayNodeIds.front();
     this->nextNode = &(this->nodes[nextNodeId]);
@@ -237,7 +238,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
-    std::cout << std::endl << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
+    // std::cout << std::endl << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
       std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
@@ -265,7 +266,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
       // std::cout << "currentNode(3) = " << currentNode << "with newNode's parent: " << *(newNode.parentNodePtr) <<  std::endl;
       this->openList.push_back(nodeCounter);
       // std::cout << "currentNode(4) = " << currentNode << std::endl;
-      std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
+      // std::cout << "inserted node: " << newNode << " Into openList. openList becomes size :" << this->openList.size() << std::endl;
     }
     else { // if potential node is already created
       // std::cout << "judging potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " is in openList or not." << std::endl;
@@ -301,6 +302,8 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
   if (this->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
     return nextNodeId;
   }
+
+  std::cout << "start calculating midway nodes" << std::endl;
   // if not visible, add midway nodes
   vector<int> ancestorIds_nextNode {};
   ancestorIds_nextNode.reserve(30);
