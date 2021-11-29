@@ -207,15 +207,16 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
 // nextNode
 void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
   for (Node& potentialNode: this->allNodesInMap) {
-    // std::cout << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
+    std::cout << std::endl << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
-      // std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
+      std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
       continue;
     }
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
       continue;
     }
+    std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
       // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
@@ -279,10 +280,27 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
     // center
-    if (AStarPathPlanner::__didIntersect(leftDown, rightDown, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightUp, leftUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position)) {
-      // std::cout << "result -> false" << std::endl;
+    // if (AStarPathPlanner::__didIntersect(leftDown, rightDown, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightUp, leftUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position)) {
+    //   return false;
+    // }
+    if (AStarPathPlanner::__didIntersect(leftDown, rightDown, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightDown)" << rightDown << std::endl;
       return false;
     }
+    if (AStarPathPlanner::__didIntersect(rightDown, rightUp, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (rightUp)" << rightUp << std::endl;
+      return false;
+    }
+    if (AStarPathPlanner::__didIntersect(rightUp, leftUp, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightUp)" << rightUp << " to (leftUp)" << leftUp << std::endl;
+      return false;
+    }
+    if (AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftUp)" << leftUp << " to (leftDown)" << leftDown << std::endl;
+      return false;
+    }
+
+
     // // right
     // const ignition::math::Vector3d lineVector {toNode.position - fromNode.position};
     // ignition::math::Vector3d verticalVector {-lineVector.Y(), lineVector.X(), 0.0};
