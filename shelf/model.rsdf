@@ -56,7 +56,7 @@
 
 <sdf version='1.6'>
 <model name="shelf">
-  <!-- <static>true</static> -->
+  <static>true</static>
 
   <!-- link for the four pillars -->
   <% for pillarIndex in (0...pillarNames.size) %>
