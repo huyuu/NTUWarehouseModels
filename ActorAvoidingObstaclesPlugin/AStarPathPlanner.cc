@@ -198,7 +198,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
   trajectoryNodes_file.close();
 
-  const ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
+  ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
   gradient.Normalize();
   return gradient;
 }
