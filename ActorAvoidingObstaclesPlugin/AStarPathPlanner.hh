@@ -43,6 +43,7 @@ namespace gazebo {
     vector<int> closeList;
     /// midway nodes list
     vector<int> midwayNodeIds;
+    vector<int> ancestorIds_nextNode;
     /// obstacles bounding boxes
     vector<ignition::math::AxisAlignedBox> obstacleBoundingBoxes;
     /// actor bounding box

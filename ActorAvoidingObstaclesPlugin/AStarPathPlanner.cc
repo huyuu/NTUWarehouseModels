@@ -9,7 +9,10 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   start{start},
   target{target},
   actorWidth{actorWidth},
-  midwayNodeIds{vector<int>{}} {
+  openList{vector<int>{}},
+  closeList{vector<int>{}},
+  midwayNodeIds{vector<int>{}},
+  ancestorIds_nextNode{vector<int>{}} {
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
   // set obstacleBoundingBoxes
@@ -56,6 +59,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   this->closeList.reserve(this->allNodesInMap.size() + 10);
   this->nextNode = startNodePtr;
   this->midwayNodeIds.reserve(40);
+  this->ancestorIds_nextNode.reserve(30);
 
   // print openList
   std::cout << "openList: size=" << this->openList.size() << "; ";
@@ -305,28 +309,27 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
 
   std::cout << "start calculating midway nodes" << std::endl;
   // if not visible, add midway nodes
-  vector<int> ancestorIds_nextNode {};
-  ancestorIds_nextNode.reserve(30);
+  this->ancestorIds_nextNode.clear();
   int parentNodeId = nextNodeId;
-  ancestorIds_nextNode.push_back(parentNodeId);
   while(this->nodes[parentNodeId].parentNodePtr->id != 0) {
+    this->ancestorIds_nextNode.push_back(parentNodeId);
     parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
-    ancestorIds_nextNode.push_back(parentNodeId);
   }
+  this->ancestorIds_nextNode.push_back(0);
 
   this->midwayNodeIds.clear();
-  parentNodeId = currentNode.id;
-  this->midwayNodeIds.push_back(parentNodeId);
-  while(std::find(ancestorIds_nextNode.begin(), ancestorIds_nextNode.end(), parentNodeId) == ancestorIds_nextNode.end()) {
-    parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
+  parentNodeId = currentNode.parentNodePtr->id;
+  // if that parentNodeId is not a common ancestor, 
+  while(std::find(this->ancestorIds_nextNode.begin(), this->ancestorIds_nextNode.end(), parentNodeId) == this->ancestorIds_nextNode.end()) {
     this->midwayNodeIds.push_back(parentNodeId);
+    parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
   }
-  auto positionPtr = std::find(ancestorIds_nextNode.begin(), ancestorIds_nextNode.end(), parentNodeId);
-  for (; positionPtr != ancestorIds_nextNode.begin(); --positionPtr) {
+  auto positionPtr = std::find(this->ancestorIds_nextNode.begin(), this->ancestorIds_nextNode.end(), parentNodeId);
+  for (; positionPtr != this->ancestorIds_nextNode.begin(); --positionPtr) {
     const int _id = *positionPtr;
     this->midwayNodeIds.push_back(_id);
   }
-  this->midwayNodeIds.push_back(ancestorIds_nextNode[0]);
+  this->midwayNodeIds.push_back(this->ancestorIds_nextNode[0]);
   std::cout << "from " << currentNode << " to " << this->nodes[nextNodeId] << " needs midway nodes: [ ";
   for (const auto nodeId: this->midwayNodeIds) {
     std::cout << nodeId << ", ";
