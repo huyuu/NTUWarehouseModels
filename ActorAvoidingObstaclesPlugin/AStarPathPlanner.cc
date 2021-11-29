@@ -324,6 +324,11 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
     this->midwayNodeIds.push_back(_id);
   }
   this->midwayNodeIds.push_back(ancestorIds_nextNode[0]);
+  std::cout << "from " << currentNode << " to " << this->nodes[nextNodeId] << " needs midway nodes: [ ";
+  for (const auto nodeId: this->midwayNodeIds) {
+    std::cout << nodeId << ", ";
+  }
+  std::cout << "]" << std::endl << std::endl;
 
   return nextNodeId;
 }
@@ -342,27 +347,27 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     //   return false;
     // }
     if (AStarPathPlanner::__didIntersect(leftDown, rightDown, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightDown)" << rightDown << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightDown)" << rightDown << std::endl;
       return false;
     }
     if (AStarPathPlanner::__didIntersect(rightDown, rightUp, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (rightUp)" << rightUp << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (rightUp)" << rightUp << std::endl;
       return false;
     }
     if (AStarPathPlanner::__didIntersect(rightUp, leftUp, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightUp)" << rightUp << " to (leftUp)" << leftUp << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightUp)" << rightUp << " to (leftUp)" << leftUp << std::endl;
       return false;
     }
     if (AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftUp)" << leftUp << " to (leftDown)" << leftDown << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftUp)" << leftUp << " to (leftDown)" << leftDown << std::endl;
       return false;
     }
     if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightUp)" << rightUp << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightUp)" << rightUp << std::endl;
       return false;
     }
     if (AStarPathPlanner::__didIntersect(rightDown, leftUp, fromNode.position, toNode.position) == true) {
-      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (leftUp)" << leftUp << std::endl;
+      // std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (leftUp)" << leftUp << std::endl;
       return false;
     }
 
