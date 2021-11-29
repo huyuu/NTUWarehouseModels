@@ -298,8 +298,8 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
   this->openList.pop_back();
   this->closeList.push_back(nextNodeId);
 
-  if (thi->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
-    return nextNodeId
+  if (this->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
+    return nextNodeId;
   }
   // if not visible, add midway nodes
   vector<int> ancestorIds_nextNode {};
@@ -312,7 +312,7 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
   }
 
   this->midwayNodeIds.clear();
-  parentNodeId = currentNodeId;
+  parentNodeId = currentNode.id;
   this->midwayNodeIds.push_back(parentNodeId);
   while(std::find(ancestorIds_nextNode.begin(), ancestorIds_nextNode.end(), parentNodeId) == ancestorIds_nextNode.end()) {
     parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
