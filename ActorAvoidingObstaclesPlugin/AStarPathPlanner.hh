@@ -50,6 +50,9 @@ namespace gazebo {
     ignition::math::Vector3d start;
     // actor width
     double actorWidth;
+    // deltaFromCollision
+    static constexpr double deltaFromCollision {0.05}; // 2 cm
+    static constexpr double distanceAsReached {0.1}; // 10 cm
 
 
     // MARK: - Private Functions
@@ -60,6 +63,7 @@ namespace gazebo {
     static double __getJudgeNumber(const ignition::math::Vector3d& basePoint1, const ignition::math::Vector3d& basePoint2, const ignition::math::Vector3d& testPoint);
     static bool __didIntersect(const ignition::math::Vector3d& group1Point1, const ignition::math::Vector3d& group1Point2, const ignition::math::Vector3d& group2Point1, const ignition::math::Vector3d& group2Point2);
     static bool __pointIsReachable(const ignition::math::Vector3d& point, const double actorWidth, const vector<ignition::math::AxisAlignedBox>& boxes);
+    static bool __pointIsNotNearOtherNodes(const ignition::math::Vector3d& point, const vector<Node>& otherNodes);
   };
 }
 

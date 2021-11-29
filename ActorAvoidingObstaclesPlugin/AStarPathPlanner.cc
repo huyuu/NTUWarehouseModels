@@ -25,22 +25,22 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   // set allNodesInMap
   this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
-    const ignition::math::Vector3d min {boundingBox.Min().X() - 0.01, boundingBox.Min().Y() - 0.01, 0.0};
-    const ignition::math::Vector3d max {boundingBox.Max().X() + 0.01, boundingBox.Max().Y() + 0.01, 0.0};
+    const ignition::math::Vector3d min {boundingBox.Min().X() - AStarPathPlanner::deltaFromCollision, boundingBox.Min().Y() - AStarPathPlanner::deltaFromCollision, 0.0};
+    const ignition::math::Vector3d max {boundingBox.Max().X() + AStarPathPlanner::deltaFromCollision, boundingBox.Max().Y() + AStarPathPlanner::deltaFromCollision, 0.0};
     const ignition::math::Vector3d leftDownPosition {min.X(), min.Y(), 0.0};
     const ignition::math::Vector3d leftUpPosition {min.X(), max.Y(), 0.0};
     const ignition::math::Vector3d rightDownPosition {max.X(), min.Y(), 0.0};
     const ignition::math::Vector3d rightUpPosition {max.X(), max.Y(), 0.0};
-    if (AStarPathPlanner::__pointIsReachable(leftDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+    if (AStarPathPlanner::__pointIsReachable(leftDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true && AStarPathPlanner::__pointIsNotNearOtherNodes(leftDownPosition, this->allNodesInMap) == true) {
       this->allNodesInMap.push_back(Node{-1, leftDownPosition, target});
     }
-    if (AStarPathPlanner::__pointIsReachable(leftUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+    if (AStarPathPlanner::__pointIsReachable(leftUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true && AStarPathPlanner::__pointIsNotNearOtherNodes(leftUpPosition, this->allNodesInMap) == true) {
       this->allNodesInMap.push_back(Node{-1, leftUpPosition, target});
     }
-    if (AStarPathPlanner::__pointIsReachable(rightDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+    if (AStarPathPlanner::__pointIsReachable(rightDownPosition, this->actorWidth, this->obstacleBoundingBoxes) == true && AStarPathPlanner::__pointIsNotNearOtherNodes(rightDownPosition, this->allNodesInMap) == true) {
       this->allNodesInMap.push_back(Node{-1, rightDownPosition, target});
     }
-    if (AStarPathPlanner::__pointIsReachable(rightUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true) {
+    if (AStarPathPlanner::__pointIsReachable(rightUpPosition, this->actorWidth, this->obstacleBoundingBoxes) == true && AStarPathPlanner::__pointIsNotNearOtherNodes(rightUpPosition, this->allNodesInMap) == true) {
       this->allNodesInMap.push_back(Node{-1, rightUpPosition, target});
     }
   }
@@ -379,4 +379,14 @@ bool AStarPathPlanner::__pointIsReachable(const ignition::math::Vector3d& point,
   }
 
   return false;
+}
+
+
+bool AStarPathPlanner::__pointIsNotNearOtherNodes(const ignition::math::Vector3d& point, const vector<Node>& otherNodes) {
+  for (const Node& otherNode: otherNodes) {
+    if (otherNode.getDistanceFrom(point) < AStarPathPlanner::distanceAsReached) {
+      return false;
+    }
+  }
+  return true;
 }
