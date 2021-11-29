@@ -39,8 +39,8 @@ namespace gazebo {
         const double costFromStartToParent {parentNodePtr->actualCostFromStart};
         const ignition::math::Vector3d vectorFromParentToNewNode {EstimatedNewNodePosition - parentNodePtr->position};
         const double costFromParentToNewNode {vectorFromParentToNewNode.Length()};
-        // const ignition::math::Vector3d vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
-        const double costFromNewNodeToTarget {Node::getManhattanDistance(EstimatedNewNodePosition, target)};
+        const ignition::math::Vector3d vectorFromNewNodeToTarget {target - EstimatedNewNodePosition};
+        const double costFromNewNodeToTarget {Node::getManhattanDistance(EstimatedNewNodePosition, target) + vectorFromNewNodeToTarget.Length()*0.05};
         // calculate heuristic cost from new node to target
         this->heuristicCostToTarget = costFromNewNodeToTarget;
         this->totalCost = costFromStartToParent + costFromParentToNewNode + costFromNewNodeToTarget;
