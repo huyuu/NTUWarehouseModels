@@ -105,14 +105,20 @@ void AStarPathPlanner::updateModels(const ignition::math::AxisAlignedBox actorBo
 // generate gradient near point
 ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ignition::math::Vector3d& currentPosition, const ignition::math::Vector3d& target) {
   // if distance to next node is large, return vector to nextNode.
-  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.1)
-    return this->nextNode->position - currentPosition;
+  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.1) {
+    ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
+    gradient.Normalize();
+    return gradient;
+  }
+
   // if any midway node exists, pop from back.
   if (this->midwayNodeIds.size() > 0) {
-    const int nextNodeId = this->midwayNodeIds.back();
+    const int nextNodeId = this->midwayNodeIds.front();
     this->nextNode = &(this->nodes[nextNodeId]);
-    this->midwayNodeIds.pop_back();
-    return this->nextNode->position - currentPosition;
+    this->midwayNodeIds.erase(this->midwayNodeIds.begin());
+    ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
+    gradient.Normalize();
+    return gradient;
   }
   // robot has reached nextNode
   std::cout << "robot has reached nextNode" << std::endl;
@@ -207,6 +213,13 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
   trajectoryNodes_file.close();
 
+  if (this->midwayNodeIds.size() > 0) {
+    const int nextNodeId = this->midwayNodeIds.front();
+    this->nextNode = &(this->nodes[nextNodeId]);
+    ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
+    gradient.Normalize();
+    return gradient;
+  }
   ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
   gradient.Normalize();
   return gradient;
@@ -285,18 +298,33 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
   this->openList.pop_back();
   this->closeList.push_back(nextNodeId);
 
-  // if (thi->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
-  //   return nextNodeId
-  // }
-  // // if not visible, add midway nodes
-  // vector<int> ancestorIds_nextNode;
-  // ancestorIds_nextNode.reserve(20);
-  // int parentNodeId = nextNodeId;
-  // ancestorIds_nextNode.push_back(parentNodeId);
-  // while(this->nodes[parentNodeId].parentNodePtr->id != 0) {
-  //   parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
-  //   ancestorIds_nextNode.push_back(parentNodeId);
-  // }
+  if (thi->__isNodeVisibleFrom(currentNode, this->nodes[nextNodeId])) {
+    return nextNodeId
+  }
+  // if not visible, add midway nodes
+  vector<int> ancestorIds_nextNode {};
+  ancestorIds_nextNode.reserve(30);
+  int parentNodeId = nextNodeId;
+  ancestorIds_nextNode.push_back(parentNodeId);
+  while(this->nodes[parentNodeId].parentNodePtr->id != 0) {
+    parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
+    ancestorIds_nextNode.push_back(parentNodeId);
+  }
+
+  this->midwayNodeIds.clear();
+  parentNodeId = currentNodeId;
+  this->midwayNodeIds.push_back(parentNodeId);
+  while(std::find(ancestorIds_nextNode.begin(), ancestorIds_nextNode.end(), parentNodeId) == ancestorIds_nextNode.end()) {
+    parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;
+    this->midwayNodeIds.push_back(parentNodeId);
+  }
+  auto positionPtr = std::find(ancestorIds_nextNode.begin(), ancestorIds_nextNode.end(), parentNodeId);
+  for (; positionPtr != ancestorIds_nextNode.begin(); --positionPtr) {
+    const int _id = *positionPtr;
+    this->midwayNodeIds.push_back(_id);
+  }
+  this->midwayNodeIds.push_back(ancestorIds_nextNode[0]);
+
   return nextNodeId;
 }
 
