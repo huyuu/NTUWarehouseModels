@@ -279,7 +279,7 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     const ignition::math::Vector3d rightDown {boundingBox.Max().X(), boundingBox.Min().Y(), 0.0};
     const ignition::math::Vector3d rightUp {boundingBox.Max().X(), boundingBox.Max().Y(), 0.0};
     // center
-    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, rightDown, fromNode.position, toNode.position)) {
+    if (AStarPathPlanner::__didIntersect(leftDown, rightDown, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightDown, rightUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(rightUp, leftUp, fromNode.position, toNode.position) || AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position)) {
       // std::cout << "result -> false" << std::endl;
       return false;
     }
