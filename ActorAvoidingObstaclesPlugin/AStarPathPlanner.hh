@@ -27,6 +27,10 @@ namespace gazebo {
     /// generate vector to next node
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&, const ignition::math::Vector3d&);
 
+    // deltaFromCollision
+    static constexpr double deltaFromCollision {0.50}; // 50 cm
+    static constexpr double distanceAsReached {0.30}; // 15 cm
+
 
   private:
     // MARK: - Private Properties
@@ -53,9 +57,6 @@ namespace gazebo {
     ignition::math::Vector3d start;
     // actor width
     double actorWidth;
-    // deltaFromCollision
-    static constexpr double deltaFromCollision {0.50}; // 50 cm
-    static constexpr double distanceAsReached {0.30}; // 15 cm
 
 
     // MARK: - Private Functions
