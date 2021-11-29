@@ -216,7 +216,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
       continue;
     }
-    std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
+    std::cout << "potentialNode " << potentialNode << " is visible from " << currentNode << std::endl;
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
       // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
@@ -297,6 +297,14 @@ bool AStarPathPlanner::__isNodeVisibleFrom(const Node& fromNode, const Node& toN
     }
     if (AStarPathPlanner::__didIntersect(leftUp, leftDown, fromNode.position, toNode.position) == true) {
       std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftUp)" << leftUp << " to (leftDown)" << leftDown << std::endl;
+      return false;
+    }
+    if (AStarPathPlanner::__didIntersect(leftDown, rightUp, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (leftDown)" << leftDown << " to (rightUp)" << rightUp << std::endl;
+      return false;
+    }
+    if (AStarPathPlanner::__didIntersect(rightDown, leftUp, fromNode.position, toNode.position) == true) {
+      std::cout << "nodes: " << fromNode << " and " << toNode << " intersects with line: (rightDown)" << rightDown << " to (leftUp)" << leftUp << std::endl;
       return false;
     }
 
