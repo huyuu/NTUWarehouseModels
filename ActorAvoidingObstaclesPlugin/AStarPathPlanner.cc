@@ -130,14 +130,14 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
     return gradient;
   }
   // robot has reached nextNode
-  std::cout << "robot has reached nextNode" << std::endl;
+  // std::cout << "robot has reached nextNode" << std::endl;
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
-  std::cout << "added nodes near to openList" << std::endl;
+  // std::cout << "added nodes near to openList" << std::endl;
 
   const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
   this->nextNode = &(this->nodes[nextNodeId]);
-  std::cout << "get next node to move" << std::endl;
+  // std::cout << "get next node to move" << std::endl;
 
   // // print nextNode, openList, closeList, nodes
   // std::cout << "nextNode: " << *(this->nextNode) << std::endl;
@@ -400,11 +400,11 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
     this->midwayNodeIds.push_back(_id);
   }
   this->midwayNodeIds.push_back(this->ancestorIds_nextNode[0]);
-  std::cout << "from " << currentNode << " to " << this->nodes[nextNodeId] << " needs midway nodes: [ ";
-  for (const auto nodeId: this->midwayNodeIds) {
-    std::cout << nodeId << ", ";
-  }
-  std::cout << "]" << std::endl << std::endl;
+  // std::cout << "from " << currentNode << " to " << this->nodes[nextNodeId] << " needs midway nodes: [ ";
+  // for (const auto nodeId: this->midwayNodeIds) {
+  //   std::cout << nodeId << ", ";
+  // }
+  // std::cout << "]" << std::endl << std::endl;
 
   return nextNodeId;
 }
