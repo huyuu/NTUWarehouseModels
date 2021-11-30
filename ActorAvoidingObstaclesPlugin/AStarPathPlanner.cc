@@ -242,9 +242,9 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition_cheatMod
     return gradient;
   }
   // if any midway node exists, pop from back.
-  const int nextNodeId = this->searchedMinPathIds.front();
+  const int nextNodeId = this->searchedMinPathIds.back();
   this->nextNode = &(this->nodes[nextNodeId]);
-  this->searchedMinPathIds.erase(this->searchedMinPathIds.begin());
+  this->searchedMinPathIds.pop_back();
   ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
   gradient.Normalize();
   return gradient;
@@ -257,12 +257,16 @@ void AStarPathPlanner::generatePathInCheatMode() {
   // get minPathIds
   while (currentNodePtr->getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
     Node& currentNode = *currentNodePtr;
-    this->searchedMinPathIds.push_back(currentNode.id);
+    // this->searchedMinPathIds.push_back(currentNode.id);
     this->__addNodesNearToOpenList(currentNode);
     const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
     currentNodePtr = &(this->nodes[nextNodeId]);
   }
-  this->searchedMinPathIds.push_back(currentNodePtr->id);
+  // add min route
+  while (currentNodePtr->id != 0) {
+    this->searchedMinPathIds.push_back(currentNodePtr->id);
+    currentNodePtr = currentNodePtr->parentNodePtr;
+  }
   currentNodePtr = nullptr;
   // draw minPath
   std::ofstream startNode_file;
@@ -280,15 +284,16 @@ void AStarPathPlanner::generatePathInCheatMode() {
   std::ofstream searchedMinPath_file;
   searchedMinPath_file.open("searchedMinPath.csv", std::ios::out);
   searchedMinPath_file << "id, x, y" << std::endl;
-  for (const int& id: this->searchedMinPathIds) {
-    const Node& node = this->nodes[id];
+  for (auto p = this->searchedMinPathIds.end(); p != this->searchedMinPathIds.begin(); --p) {
+  // for (const int& id: this->searchedMinPathIds) {
+    const Node& node = this->nodes[(*p)];
     searchedMinPath_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
   }
   searchedMinPath_file.close();
   // set nextNode
-  const int nextNodeId = this->searchedMinPathIds.front();
+  const int nextNodeId = this->searchedMinPathIds.back();
   this->nextNode = &(this->nodes[nextNodeId]);
-  this->searchedMinPathIds.erase(this->searchedMinPathIds.begin());
+  this->searchedMinPathIds.pop_back();
 }
 
 
@@ -306,7 +311,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     // std::cout << std::endl << "check if (" << potentialNode.position.X() << ", " << potentialNode.position.Y() << ") is visible from (" << currentNode.position.X() << ", " << currentNode.position.Y() << ")" <<std::endl;
 
     if (this->__isNodeVisibleFrom(currentNode, potentialNode) == false) {
-      std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
+      // std::cout << "potentialNode " << potentialNode << " is not visible from " << currentNode << std::endl;
       continue;
     }
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
