@@ -65,6 +65,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   if (isCheating == true) {
     this->searchedMinPathIds.reserve(30);
   }
+  std::cout << "AStar Path Planning Generated.";
 
   // // print openList
   // std::cout << "openList: size=" << this->openList.size() << "; ";
