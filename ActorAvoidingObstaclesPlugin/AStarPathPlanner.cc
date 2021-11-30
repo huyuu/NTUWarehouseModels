@@ -15,10 +15,21 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   ancestorIds_nextNode{vector<int>{}},
   isCheating{isCheating},
   searchedMinPathIds{vector<int>{}} {
+  std::cout << "Entered AStarPathPlanner(...)" << std::endl;
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
-  // set obstacleBoundingBoxes
   this->obstacleBoundingBoxes.reserve(world->Models().size());
+  this->allNodesInMap.reserve((world->ModelCount())*4 + 10);
+  this->nodes.reserve((world->ModelCount())*4 + 10);
+  this->openList.reserve((world->ModelCount())*4 + 10);
+  this->closeList.reserve((world->ModelCount())*4 + 10);
+  this->midwayNodeIds.reserve(40);
+  this->ancestorIds_nextNode.reserve(30);
+  if (isCheating == true) {
+    this->searchedMinPathIds.reserve(30);
+  }
+  std::cout << "Vectors allocated." << std::endl;
+  // set obstacleBoundingBoxes
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = world->ModelByIndex(i);
@@ -28,8 +39,8 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
       this->obstacleBoundingBoxes.push_back(boundingBox);
     }
   }
+  std::cout << "obstacleBoundingBoxes set." << std::endl;
   // set allNodesInMap
-  this->allNodesInMap.reserve(this->obstacleBoundingBoxes.size()*4 + 10);
   for (const auto& boundingBox: this->obstacleBoundingBoxes) {
     const ignition::math::Vector3d min {boundingBox.Min().X() - AStarPathPlanner::deltaFromCollision, boundingBox.Min().Y() - AStarPathPlanner::deltaFromCollision, 0.0};
     const ignition::math::Vector3d max {boundingBox.Max().X() + AStarPathPlanner::deltaFromCollision, boundingBox.Max().Y() + AStarPathPlanner::deltaFromCollision, 0.0};
@@ -52,19 +63,13 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   }
   this->allNodesInMap.push_back(Node{0, start, target});
   this->allNodesInMap.push_back(Node{-1, target, target});
-  this->nodes.reserve(this->allNodesInMap.size() + 10);
+  std::cout << "allNodesInMap set." << std::endl;
   this->nodes.push_back(Node{0, start, target});
   // set nextNode
   Node* startNodePtr = &this->nodes[0];
-  this->openList.reserve(this->allNodesInMap.size() + 10);
   this->openList.push_back(startNodePtr->id);
-  this->closeList.reserve(this->allNodesInMap.size() + 10);
+
   this->nextNode = startNodePtr;
-  this->midwayNodeIds.reserve(40);
-  this->ancestorIds_nextNode.reserve(30);
-  if (isCheating == true) {
-    this->searchedMinPathIds.reserve(30);
-  }
   std::cout << "AStar Path Planning Generated.";
 
   // // print openList
