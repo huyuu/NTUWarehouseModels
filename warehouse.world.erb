@@ -236,7 +236,7 @@
     personTargetX = rand(1...(roomLength-1))
     personTargetY = rand(1...(roomWidth-1))
   %>
-    <actor name="free_person">
+    <actor name="free_person_<%=personIndex%>">
       <pose>personStartX personStartY 1.24 0 0 0</pose>
       <skin>
         <filename>walk.dae</filename>
