@@ -63,7 +63,9 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
+  std::cout << "About to create AStarPathPlanner ..." << std::endl;
   this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
+  std::cout << "AStarPathPlanner Created." << std::endl;
   this->pathPlanner.generatePathInCheatMode();
 
   const unsigned int modelCount {world->ModelCount()};
@@ -74,6 +76,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
       break;
     }
   }
+  std::cout << "Actor Avoiding Obstacls Plugin Loaded." << std::endl;
 }
 
 
