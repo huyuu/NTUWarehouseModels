@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as pl
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.cm as cm
 
 
 nodesMap = pd.read_csv("./nodesMap.csv", index_col=0)
@@ -19,7 +20,8 @@ pl.scatter(60 - allNodesInMap.iloc[:, 1], allNodesInMap.iloc[:, 0], marker='x', 
 pl.scatter(60 - nodesMap.iloc[:, 1], nodesMap.iloc[:, 0], color='red')
 pl.scatter(60 - openListMap.iloc[:, 1], openListMap.iloc[:, 0], marker='>', alpha=0.7, color='orange')
 pl.scatter(60 - currentNode.iloc[:, 1], currentNode.iloc[:, 0], marker='+', s=80, color='green')
-pl.scatter(60 - trajectoryNodes.iloc[:, 1], trajectoryNodes.iloc[:, 0], marker='^', s=75, color='black')
+colorValues = trajectoryNodes.index.values / trajectoryNodes.index.shape[0]
+pl.scatter(60 - trajectoryNodes.iloc[:, 1], trajectoryNodes.iloc[:, 0], marker='^', s=75, c=colorValues, cmap=cm.viridis)
 # pl.scatter(startMap.iloc[:, 0], startMap.iloc[:, 1], marker='+')
 pl.scatter(60 - targetMap.iloc[:, 1], targetMap.iloc[:, 0], marker='v', color='orange')
 pl.show()
