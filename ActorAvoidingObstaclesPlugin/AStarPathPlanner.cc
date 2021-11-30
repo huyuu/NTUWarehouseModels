@@ -24,7 +24,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
       ignition::math::AxisAlignedBox boundingBox = world->ModelByIndex(i)->CollisionBoundingBox();
-      std::cout << "model added: " << model->GetName() << ": " << boundingBox.Min() << ", " << boundingBox.Max() << std::endl;
+      // std::cout << "model added: " << model->GetName() << ": " << boundingBox.Min() << ", " << boundingBox.Max() << std::endl;
       this->obstacleBoundingBoxes.push_back(boundingBox);
     }
   }
