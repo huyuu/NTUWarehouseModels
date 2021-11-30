@@ -66,35 +66,35 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     this->searchedMinPathIds.reserve(30);
   }
 
-  // print openList
-  std::cout << "openList: size=" << this->openList.size() << "; ";
-  for (const int& id: this->openList) {
-    std::cout << this->nodes[id] << " heuricost=" << this->nodes[id].heuristicCostToTarget << ";  ";
-  }
-  std::cout << std::endl;
-  // print closeList
-  std::cout << "closeList: ";
-  for (const int& id: this->closeList) {
-    std::cout << id << ", ";
-  }
-  std::cout << std::endl;
-  // print allNodes
-  std::cout << "nodes: ";
-  for (const Node& node: this->nodes) {
-    std::cout << node.id << ", ";
-  }
-  std::cout << std::endl;
-  // print allNodes
-  std::cout << "allNodesInMap: ";
-  for (const Node& node: this->allNodesInMap) {
-    std::cout << node << std::endl;
-  }
-  std::cout << std::endl;
-
-  std::ofstream trajectoryNodes_file;
-  trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::out);
-  trajectoryNodes_file << "id, x, y" << std::endl;
-  trajectoryNodes_file.close();
+  // // print openList
+  // std::cout << "openList: size=" << this->openList.size() << "; ";
+  // for (const int& id: this->openList) {
+  //   std::cout << this->nodes[id] << " heuricost=" << this->nodes[id].heuristicCostToTarget << ";  ";
+  // }
+  // std::cout << std::endl;
+  // // print closeList
+  // std::cout << "closeList: ";
+  // for (const int& id: this->closeList) {
+  //   std::cout << id << ", ";
+  // }
+  // std::cout << std::endl;
+  // // print allNodes
+  // std::cout << "nodes: ";
+  // for (const Node& node: this->nodes) {
+  //   std::cout << node.id << ", ";
+  // }
+  // std::cout << std::endl;
+  // // print allNodes
+  // std::cout << "allNodesInMap: ";
+  // for (const Node& node: this->allNodesInMap) {
+  //   std::cout << node << std::endl;
+  // }
+  // std::cout << std::endl;
+  //
+  // std::ofstream trajectoryNodes_file;
+  // trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::out);
+  // trajectoryNodes_file << "id, x, y" << std::endl;
+  // trajectoryNodes_file.close();
 }
 
 
