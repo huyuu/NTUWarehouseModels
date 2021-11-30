@@ -134,93 +134,95 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   Node& currentNode = *(this->nextNode);
   this->__addNodesNearToOpenList(currentNode);
   std::cout << "added nodes near to openList" << std::endl;
+
   const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
   this->nextNode = &(this->nodes[nextNodeId]);
   std::cout << "get next node to move" << std::endl;
-  // print nextNode, openList, closeList, nodes
-  std::cout << "nextNode: " << *(this->nextNode) << std::endl;
-  // print openList
-  std::cout << "openList: size=" << this->openList.size() << "; ";
-  for (const int& id: this->openList) {
-    const Node& node = this->nodes[id];
-    std::cout << node << ", ";
-    std::cout << "parentNode: " << *(node.parentNodePtr) << ", ";
-    std::cout << "start->parent: "<< node.parentNodePtr->actualCostFromStart << ", ";
-    std::cout << "parent->node: "<< (node.position - node.parentNodePtr->position).Length() << ", ";
-    std::cout << "node->target: "<< node.heuristicCostToTarget << ", ";
-    std::cout << "total: "<< node.totalCost << std::endl;
-  }
-  std::cout << std::endl;
-  // print closeList
-  std::cout << "closeList: ";
-  for (const int& id: this->closeList) {
-    std::cout << id << ", ";
-  }
-  std::cout << std::endl;
-  // print allNodes
-  std::cout << "nodes: ";
-  for (const Node& node: this->nodes) {
-    std::cout << node.id << ", ";
-  }
-  std::cout << std::endl;
 
-  // store debug file
-  std::ofstream allNodesInMap_file;
-  allNodesInMap_file.open("allNodesInMap.csv", std::ios::out);
-  allNodesInMap_file << "id, x, y" << std::endl;
-  for (const Node& node: this->allNodesInMap) {
-    allNodesInMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
-  }
-  allNodesInMap_file.close();
-
-  std::ofstream nodesMap_file;
-  nodesMap_file.open("nodesMap.csv", std::ios::out);
-  nodesMap_file << "id, x, y" << std::endl;
-  for (const Node& node: this->nodes) {
-    nodesMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
-  }
-  nodesMap_file.close();
-
-  std::ofstream openListMap_file;
-  openListMap_file.open("openListMap.csv", std::ios::out);
-  openListMap_file << "id, x, y" << std::endl;
-  for (const int& id: this->openList) {
-    const Node& node = this->nodes[id];
-    openListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
-  }
-  openListMap_file.close();
-
-  std::ofstream closeListMap_file;
-  closeListMap_file.open("closeListMap.csv", std::ios::out);
-  closeListMap_file << "id, x, y" << std::endl;
-  for (const int& id: this->openList) {
-    const Node& node = this->nodes[id];
-    closeListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
-  }
-  closeListMap_file.close();
-
-  std::ofstream startNode_file;
-  startNode_file.open("startNode.csv", std::ios::out);
-  startNode_file << "id, x, y" << std::endl;
-  startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
-  startNode_file.close();
-
-  std::ofstream targetNode_file;
-  targetNode_file.open("targetNode.csv", std::ios::out);
-  targetNode_file << "id, x, y" << std::endl;
-  targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
-  targetNode_file.close();
-
-  std::ofstream currentNode_file;
-  currentNode_file.open("currentNode.csv", std::ios::out);
-  currentNode_file << "id, x, y" << std::endl;
-  currentNode_file << "-" << ", " << currentPosition.X() << "," << currentPosition.Y() << std::endl;
-  currentNode_file.close();
-
-  std::ofstream trajectoryNodes_file;
-  trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::app);
-  trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
-  trajectoryNodes_file.close();
+  // // print nextNode, openList, closeList, nodes
+  // std::cout << "nextNode: " << *(this->nextNode) << std::endl;
+  // // print openList
+  // std::cout << "openList: size=" << this->openList.size() << "; ";
+  // for (const int& id: this->openList) {
+  //   const Node& node = this->nodes[id];
+  //   std::cout << node << ", ";
+  //   std::cout << "parentNode: " << *(node.parentNodePtr) << ", ";
+  //   std::cout << "start->parent: "<< node.parentNodePtr->actualCostFromStart << ", ";
+  //   std::cout << "parent->node: "<< (node.position - node.parentNodePtr->position).Length() << ", ";
+  //   std::cout << "node->target: "<< node.heuristicCostToTarget << ", ";
+  //   std::cout << "total: "<< node.totalCost << std::endl;
+  // }
+  // std::cout << std::endl;
+  // // print closeList
+  // std::cout << "closeList: ";
+  // for (const int& id: this->closeList) {
+  //   std::cout << id << ", ";
+  // }
+  // std::cout << std::endl;
+  // // print allNodes
+  // std::cout << "nodes: ";
+  // for (const Node& node: this->nodes) {
+  //   std::cout << node.id << ", ";
+  // }
+  // std::cout << std::endl;
+  //
+  // // store debug file
+  // std::ofstream allNodesInMap_file;
+  // allNodesInMap_file.open("allNodesInMap.csv", std::ios::out);
+  // allNodesInMap_file << "id, x, y" << std::endl;
+  // for (const Node& node: this->allNodesInMap) {
+  //   allNodesInMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  // }
+  // allNodesInMap_file.close();
+  //
+  // std::ofstream nodesMap_file;
+  // nodesMap_file.open("nodesMap.csv", std::ios::out);
+  // nodesMap_file << "id, x, y" << std::endl;
+  // for (const Node& node: this->nodes) {
+  //   nodesMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  // }
+  // nodesMap_file.close();
+  //
+  // std::ofstream openListMap_file;
+  // openListMap_file.open("openListMap.csv", std::ios::out);
+  // openListMap_file << "id, x, y" << std::endl;
+  // for (const int& id: this->openList) {
+  //   const Node& node = this->nodes[id];
+  //   openListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  // }
+  // openListMap_file.close();
+  //
+  // std::ofstream closeListMap_file;
+  // closeListMap_file.open("closeListMap.csv", std::ios::out);
+  // closeListMap_file << "id, x, y" << std::endl;
+  // for (const int& id: this->openList) {
+  //   const Node& node = this->nodes[id];
+  //   closeListMap_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  // }
+  // closeListMap_file.close();
+  //
+  // std::ofstream startNode_file;
+  // startNode_file.open("startNode.csv", std::ios::out);
+  // startNode_file << "id, x, y" << std::endl;
+  // startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
+  // startNode_file.close();
+  //
+  // std::ofstream targetNode_file;
+  // targetNode_file.open("targetNode.csv", std::ios::out);
+  // targetNode_file << "id, x, y" << std::endl;
+  // targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
+  // targetNode_file.close();
+  //
+  // std::ofstream currentNode_file;
+  // currentNode_file.open("currentNode.csv", std::ios::out);
+  // currentNode_file << "id, x, y" << std::endl;
+  // currentNode_file << "-" << ", " << currentPosition.X() << "," << currentPosition.Y() << std::endl;
+  // currentNode_file.close();
+  //
+  // std::ofstream trajectoryNodes_file;
+  // trajectoryNodes_file.open("trajectoryNodes.csv", std::ios::app);
+  // trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
+  // trajectoryNodes_file.close();
 
   if (this->midwayNodeIds.size() > 0) {
     const int nextNodeId = this->midwayNodeIds.front();
@@ -271,28 +273,27 @@ void AStarPathPlanner::generatePathInCheatMode() {
   // clear allNodesInMap
   this->allNodesInMap.clear();
   this->allNodesInMap.shrink_to_fit();
-  // draw minPath
-  std::ofstream startNode_file;
-  startNode_file.open("startNode.csv", std::ios::out);
-  startNode_file << "id, x, y" << std::endl;
-  startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
-  startNode_file.close();
-
-  std::ofstream targetNode_file;
-  targetNode_file.open("targetNode.csv", std::ios::out);
-  targetNode_file << "id, x, y" << std::endl;
-  targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
-  targetNode_file.close();
-
-  std::ofstream searchedMinPath_file;
-  searchedMinPath_file.open("searchedMinPath.csv", std::ios::out);
-  searchedMinPath_file << "id, x, y" << std::endl;
-  for (auto p = this->searchedMinPathIds.end(); p != this->searchedMinPathIds.begin(); --p) {
-  // for (const int& id: this->searchedMinPathIds) {
-    const Node& node = this->nodes[(*p)];
-    searchedMinPath_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
-  }
-  searchedMinPath_file.close();
+  // // draw minPath
+  // std::ofstream startNode_file;
+  // startNode_file.open("startNode.csv", std::ios::out);
+  // startNode_file << "id, x, y" << std::endl;
+  // startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
+  // startNode_file.close();
+  //
+  // std::ofstream targetNode_file;
+  // targetNode_file.open("targetNode.csv", std::ios::out);
+  // targetNode_file << "id, x, y" << std::endl;
+  // targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
+  // targetNode_file.close();
+  //
+  // std::ofstream searchedMinPath_file;
+  // searchedMinPath_file.open("searchedMinPath.csv", std::ios::out);
+  // searchedMinPath_file << "id, x, y" << std::endl;
+  // for (auto p = this->searchedMinPathIds.end(); p != this->searchedMinPathIds.begin(); --p) {
+  //   const Node& node = this->nodes[(*p)];
+  //   searchedMinPath_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  // }
+  // searchedMinPath_file.close();
   // set nextNode
   const int nextNodeId = this->searchedMinPathIds.back();
   this->nextNode = &(this->nodes[nextNodeId]);

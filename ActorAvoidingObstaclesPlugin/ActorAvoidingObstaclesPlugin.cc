@@ -63,8 +63,8 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, false);
-  // this->pathPlanner.generatePathInCheatMode();
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
+  this->pathPlanner.generatePathInCheatMode();
 
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
@@ -126,8 +126,8 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   this->target = newTarget;
   this->goingVector = newTarget - this->actor->WorldPose().Pos();
   this->goingVector.Normalize();
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, false);
-  // this->pathPlanner.generatePathInCheatMode();
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
+  this->pathPlanner.generatePathInCheatMode();
 }
 
 
@@ -172,8 +172,8 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
-  // this->goingVector = this->pathPlanner.generateGradientNearPosition_cheatMode(currentPosition);
+  // this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
+  this->goingVector = this->pathPlanner.generateGradientNearPosition_cheatMode(currentPosition);
   // this->goingVector = ignition::math::Vector3d {0.0, 0.0, 0.0};
 
   // Compute the yaw orientation
