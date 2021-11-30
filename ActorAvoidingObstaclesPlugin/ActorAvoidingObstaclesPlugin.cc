@@ -63,7 +63,8 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth);
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
+  this->pathPlanner->generatePathInCheatMode();
   // std::cout << "here!" << std::endl;
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
@@ -128,7 +129,8 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   this->target = newTarget;
   this->goingVector = newTarget - this->actor->WorldPose().Pos();
   this->goingVector.Normalize();
-  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth);
+  this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
+  this->pathPlanner->generatePathInCheatMode();
 }
 
 
@@ -173,9 +175,9 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   // Adjust the direction vector by avoiding obstacles
   // this->HandleObstacles();
-  this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
+  // this->goingVector = this->pathPlanner.generateGradientNearPosition(currentPosition, this->target);
+  this->goingVector = this->pathPlanner.generateGradientNearPosition_cheatMode(currentPosition);
   // this->goingVector = ignition::math::Vector3d {0.0, 0.0, 0.0};
-  // this->pathPlanner.storePotentialsOnSamplePoints(this->outerMostBoundaryBox, this->target);
 
   // Compute the yaw orientation
   ignition::math::Angle yaw = atan2(currentPosition.Y(), currentPosition.X()) + 1.5707 - rpy.Z();

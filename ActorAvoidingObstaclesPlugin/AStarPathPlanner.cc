@@ -5,14 +5,16 @@ using std::vector;
 
 // MARK: - Constructors
 
-AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth):
+AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth, const bool isCheating):
   start{start},
   target{target},
   actorWidth{actorWidth},
   openList{vector<int>{}},
   closeList{vector<int>{}},
   midwayNodeIds{vector<int>{}},
-  ancestorIds_nextNode{vector<int>{}} {
+  ancestorIds_nextNode{vector<int>{}},
+  isCheating{isCheating},
+  searchedMinPathIds{vector<int>{}} {
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
   // set obstacleBoundingBoxes
@@ -60,6 +62,9 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   this->nextNode = startNodePtr;
   this->midwayNodeIds.reserve(40);
   this->ancestorIds_nextNode.reserve(30);
+  if (isCheating == true) {
+    this->searchedMinPathIds.reserve(30);
+  }
 
   // print openList
   std::cout << "openList: size=" << this->openList.size() << "; ";
@@ -217,7 +222,6 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   trajectoryNodes_file << this->nextNode->id << ", " << this->nextNode->position.X() << "," << this->nextNode->position.Y() << std::endl;
   trajectoryNodes_file.close();
 
-  printf("here!!!");
   if (this->midwayNodeIds.size() > 0) {
     const int nextNodeId = this->midwayNodeIds.front();
     this->nextNode = &(this->nodes[nextNodeId]);
@@ -228,6 +232,61 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition(const ig
   ignition::math::Vector3d gradient {this->nextNode->position.X() - currentPosition.X(), this->nextNode->position.Y() - currentPosition.Y(), 0.0};
   gradient.Normalize();
   return gradient;
+}
+
+
+ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition_cheatMode(const ignition::math::Vector3d& currentPosition) {
+  if (this->nextNode->getDistanceFrom(currentPosition) >= 0.2) {
+    ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
+    gradient.Normalize();
+    return gradient;
+  }
+  // if any midway node exists, pop from back.
+  const int nextNodeId = this->searchedMinPathIds.front();
+  this->nextNode = &(this->nodes[nextNodeId]);
+  this->searchedMinPathIds.erase(this->searchedMinPathIds.begin());
+  ignition::math::Vector3d&& gradient = this->nextNode->position - currentPosition;
+  gradient.Normalize();
+  return gradient;
+}
+
+
+void AStarPathPlanner::generatePathInCheatMode() {
+  this->searchedMinPathIds.clear();
+  Node& currentNode = *(this->nodes[0]);
+  // get minPathIds
+  while (currentNode.getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
+    this->searchedMinPathIds.push_back(currentNode.id);
+    this->__addNodesNearToOpenList(currentNode);
+    const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
+    currentNode = this->nodes[nextNodeId];
+  }
+  this->searchedMinPathIds.push_back(currentNode.id);
+  // draw minPath
+  std::ofstream startNode_file;
+  startNode_file.open("startNode.csv", std::ios::out);
+  startNode_file << "id, x, y" << std::endl;
+  startNode_file << "0" << ", " << this->start.X() << "," << this->start.Y() << std::endl;
+  startNode_file.close();
+
+  std::ofstream targetNode_file;
+  targetNode_file.open("targetNode.csv", std::ios::out);
+  targetNode_file << "id, x, y" << std::endl;
+  targetNode_file << "-" << ", " << this->target.X() << "," << this->target.Y() << std::endl;
+  targetNode_file.close();
+
+  std::ofstream searchedMinPath_file;
+  searchedMinPath_file.open("searchedMinPath.csv", std::ios::out);
+  searchedMinPath_file << "id, x, y" << std::endl;
+  for (const int& id: this->searchedMinPathIds) {
+    const Node& node = this->nodes[id];
+    searchedMinPath_file << node.id << ", " << node.position.X() << "," << node.position.Y() << std::endl;
+  }
+  searchedMinPath_file.close();
+  // set nextNode
+  const int nextNodeId = this->searchedMinPathIds.front();
+  this->nextNode = &(this->nodes[nextNodeId]);
+  this->searchedMinPathIds.erase(this->searchedMinPathIds.begin());
 }
 
 
@@ -319,7 +378,7 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
 
   this->midwayNodeIds.clear();
   parentNodeId = currentNode.parentNodePtr->id;
-  // if that parentNodeId is not a common ancestor, 
+  // if that parentNodeId is not a common ancestor,
   while(std::find(this->ancestorIds_nextNode.begin(), this->ancestorIds_nextNode.end(), parentNodeId) == this->ancestorIds_nextNode.end()) {
     this->midwayNodeIds.push_back(parentNodeId);
     parentNodeId = this->nodes[parentNodeId].parentNodePtr->id;

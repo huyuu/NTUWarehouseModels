@@ -17,7 +17,7 @@ namespace gazebo {
   public:
     /// Constructor
     AStarPathPlanner(): start{ignition::math::Vector3d{}}, nextNode{} {}
-    AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth);
+    AStarPathPlanner(ignition::math::Vector3d start, ignition::math::Vector3d& target, const ignition::math::AxisAlignedBox actorBoundingBox, const physics::WorldPtr world, const std::vector<std::string>& ignoreModels, const double actorWidth, const bool isCheating);
     ~AStarPathPlanner() = default;
     AStarPathPlanner& operator=(AStarPathPlanner&&) = default;
     AStarPathPlanner& operator=(AStarPathPlanner&) = default;
@@ -26,6 +26,9 @@ namespace gazebo {
     void updateModels(const ignition::math::AxisAlignedBox, const physics::WorldPtr, const std::vector<std::string>&);
     /// generate vector to next node
     virtual ignition::math::Vector3d generateGradientNearPosition(const ignition::math::Vector3d&, const ignition::math::Vector3d&);
+    /// generate vector to next node in cheat mode
+    virtual ignition::math::Vector3d generateGradientNearPosition_cheatMode(const ignition::math::Vector3d& currentPosition);
+    virtual void generatePathInCheatMode();
 
     // deltaFromCollision
     static constexpr double deltaFromCollision {0.50}; // 50 cm
@@ -48,6 +51,9 @@ namespace gazebo {
     /// midway nodes list
     vector<int> midwayNodeIds;
     vector<int> ancestorIds_nextNode;
+    /// searchedMinPath
+    const bool isCheating {false};
+    vector<int> searchedMinPathIds;
     /// obstacles bounding boxes
     vector<ignition::math::AxisAlignedBox> obstacleBoundingBoxes;
     /// actor bounding box
