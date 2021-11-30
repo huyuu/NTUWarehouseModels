@@ -64,7 +64,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
   // handle pathPlanner related stuffs
   this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
-  this->pathPlanner->generatePathInCheatMode();
+  this->pathPlanner.generatePathInCheatMode();
   // std::cout << "here!" << std::endl;
   // this->pathPlanner.lazyConstructor(this->actor->WorldPose().Pos(), this->target);
   // this->pathPlanner.updateModels(this->actor->BoundingBox(), this->world, this->ignoreModels);
@@ -130,7 +130,7 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   this->goingVector = newTarget - this->actor->WorldPose().Pos();
   this->goingVector.Normalize();
   this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
-  this->pathPlanner->generatePathInCheatMode();
+  this->pathPlanner.generatePathInCheatMode();
 }
 
 
