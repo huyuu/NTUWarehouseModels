@@ -64,7 +64,7 @@
   ceilingLightOuterAngle = Math::PI*5/6
 
   # person
-  peopleAmount = 10
+  peopleAmount = 20
 %>
 
 
@@ -248,7 +248,7 @@
 
 
       <plugin name="free_person_<%=personIndex%>_plugin" filename="libActorAvoidingObstaclesPlugin.so">
-        <target><%=personTargetX%> 52 1.24</target>
+        <target>30 <%=personTargetY%> 1.24</target>
         <target_weight>1.15</target_weight>
         <obstacle_weight>1.8</obstacle_weight>
         <ignore_obstacles>
