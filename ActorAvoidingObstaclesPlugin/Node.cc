@@ -50,9 +50,9 @@ Node::Node(int id, const Node* const parentNodePtr, ignition::math::Vector3d Est
 }
 
 /// Deconstructor
-~Node::Node() {
-  this->parentNodePtr = nullptr;
-}
+// ~Node::Node() {
+//   this->parentNodePtr = nullptr;
+// }
 
 
 // MARK: - Public Functions
@@ -82,10 +82,10 @@ bool Node::operator==(const Node& anotherNode) const {
   return anotherNode.id == this->id;
 }
 
-friend std::ostream& Node::operator<<(std::ostream &out, const Node& data) {
-    out << "id=" << data.id << " (" <<  data.position.X() << ", " << data.position.Y() << ")";
-    return out;
-}
+// std::ostream& Node::operator<<(std::ostream &out, const Node& data) {
+//     out << "id=" << data.id << " (" <<  data.position.X() << ", " << data.position.Y() << ")";
+//     return out;
+// }
 
 
 double Node::getManhattanDistance(const ignition::math::Vector3d& from, const ignition::math::Vector3d& to) {

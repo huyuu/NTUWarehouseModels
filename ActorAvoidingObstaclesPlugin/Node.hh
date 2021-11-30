@@ -17,7 +17,7 @@ namespace gazebo {
     /// Constructor for new normal points
     Node(int id, const Node* const parentNodePtr, ignition::math::Vector3d EstimatedNewNodePosition, ignition::math::Vector3d& target);
     /// Deconstructor
-    ~Node();
+    ~Node() = default;
 
 
     // MARK: - Public Properties
@@ -47,7 +47,7 @@ namespace gazebo {
     bool compareAndUpdateCostIfNeccessary(const Node& anotherParentNode);
 
     bool operator==(const Node& anotherNode) const;
-    friend std::ostream& operator<<(std::ostream &out, const Node& data);
+    // friend std::ostream& operator<<(std::ostream &out, const Node& data);
 
     static double getManhattanDistance(const ignition::math::Vector3d& from, const ignition::math::Vector3d& to);
   };
