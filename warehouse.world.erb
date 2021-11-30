@@ -64,7 +64,7 @@
   ceilingLightOuterAngle = Math::PI*5/6
 
   # person
-  peopleAmount = 1
+  peopleAmount = 2
 %>
 
 
@@ -247,7 +247,7 @@
         <interpolate_x>true</interpolate_x>
       </animation>
 
-      <plugin name="free_person_plugin" filename="libActorAvoidingObstaclesPlugin.so">
+      <plugin name="free_person_plugin_<%=personIndex%>" filename="libActorAvoidingObstaclesPlugin.so">
         <!-- <target><%=personTargetX%> 52 1.24</target> -->
         <target>28 52 1.24</target>
         <target_weight>1.15</target_weight>
