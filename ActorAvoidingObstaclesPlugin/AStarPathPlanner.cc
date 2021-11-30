@@ -9,12 +9,17 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   start{start},
   target{target},
   actorWidth{actorWidth},
-  openList{vector<int>{}},
-  closeList{vector<int>{}},
-  midwayNodeIds{vector<int>{}},
-  ancestorIds_nextNode{vector<int>{}},
-  isCheating{isCheating},
-  searchedMinPathIds{vector<int>{}} {
+  // openList{vector<int>{}},
+  // closeList{vector<int>{}},
+  // midwayNodeIds{vector<int>{}},
+  // ancestorIds_nextNode{vector<int>{}},
+  // searchedMinPathIds{vector<int>{}},
+  openList{},
+  closeList{},
+  midwayNodeIds{},
+  ancestorIds_nextNode{},
+  searchedMinPathIds{},
+  isCheating{isCheating} {
   std::cout << "Entered AStarPathPlanner(...)" << std::endl;
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
