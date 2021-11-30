@@ -64,7 +64,7 @@
   ceilingLightOuterAngle = Math::PI*5/6
 
   # person
-  peopleAmount = 1
+  peopleAmount = 10
 %>
 
 
@@ -231,13 +231,11 @@
 
   <% for personIndex in (0...peopleAmount) %>
   <%
-    personStartX = rand(1...(roomLength-1))
     personStartY = rand(1...(roomWidth-1))
     personTargetX = rand(1...(roomLength-1))
-    personTargetY = rand(1...(roomWidth-1))
   %>
     <actor name="free_person_<%=personIndex%>">
-      <pose><%=personStartX%> <%=personStartY%> 1.24 0 0 0</pose>
+      <pose>3 <%=personStartY%> 1.24 0 0 0</pose>
       <skin>
         <filename>walk.dae</filename>
         <scale>1.0</scale>
@@ -249,7 +247,7 @@
       </animation>
 
       <plugin name="free_person_plugin" filename="libActorAvoidingObstaclesPlugin.so">
-        <target><%=personTargetX%> <%=personTargetY%> 1.24</target>
+        <target><%=personTargetX%> 52 1.24</target>
         <target_weight>1.15</target_weight>
         <obstacle_weight>1.8</obstacle_weight>
         <ignore_obstacles>
