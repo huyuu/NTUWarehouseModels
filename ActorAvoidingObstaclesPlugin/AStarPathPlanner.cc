@@ -253,7 +253,7 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition_cheatMod
 
 void AStarPathPlanner::generatePathInCheatMode() {
   this->searchedMinPathIds.clear();
-  Node* currentNodePtr = &(this->nodes[0]);
+  const Node* currentNodePtr = &(this->nodes[0]);
   // get minPathIds
   while (currentNodePtr->getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
     Node& currentNode = *currentNodePtr;
