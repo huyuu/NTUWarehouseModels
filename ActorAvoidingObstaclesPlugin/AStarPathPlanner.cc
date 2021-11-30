@@ -39,6 +39,9 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
     std::cout << "for model: " << i << std::endl;
+    if (i >= 155) {
+      break;
+    }
     const physics::ModelPtr model = world->ModelByIndex(i);
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
       ignition::math::AxisAlignedBox boundingBox = world->ModelByIndex(i)->CollisionBoundingBox();
