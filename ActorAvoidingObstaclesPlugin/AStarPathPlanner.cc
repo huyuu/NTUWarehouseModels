@@ -253,15 +253,17 @@ ignition::math::Vector3d AStarPathPlanner::generateGradientNearPosition_cheatMod
 
 void AStarPathPlanner::generatePathInCheatMode() {
   this->searchedMinPathIds.clear();
-  Node& currentNode = *(this->nodes[0]);
+  Node* currentNodePtr = &(this->nodes[0]);
   // get minPathIds
-  while (currentNode.getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
+  while (currentNodePtr->getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
+    Node& currentNode = *currentNodePtr;
     this->searchedMinPathIds.push_back(currentNode.id);
     this->__addNodesNearToOpenList(currentNode);
     const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
-    currentNode = this->nodes[nextNodeId];
+    currentNodePtr = &(this->nodes[nextNodeId]);
   }
-  this->searchedMinPathIds.push_back(currentNode.id);
+  this->searchedMinPathIds.push_back(currentNodePtr->id);
+  currentNodePtr = nullptr;
   // draw minPath
   std::ofstream startNode_file;
   startNode_file.open("startNode.csv", std::ios::out);
