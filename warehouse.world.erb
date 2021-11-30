@@ -62,6 +62,9 @@
   lightHeight = shelfHeight*1.5
   ceilingLightInnerAngle = Math::PI/6
   ceilingLightOuterAngle = Math::PI*5/6
+
+  # person
+  peopleAmount = 10
 %>
 
 
@@ -104,6 +107,12 @@
   rowIndex = 0
 
   shelfNames = []
+
+  # person
+  personStartX = rand(1...(roomLength-1))
+  personStartY = rand(1...(roomWidth-1))
+  personTargetX = rand(1...(roomLength-1))
+  personTargetY = rand(1...(roomWidth-1))
 %>
 
 <!-- MARK: - Main -->
@@ -220,32 +229,37 @@
   </include>
 
 
-  <actor name="free_person">
-    <pose>3 3 1.24 0 0 0</pose>
-    <skin>
-      <filename>walk.dae</filename>
-      <scale>1.0</scale>
-    </skin>
-    <animation name="walking">
-      <filename>walk.dae</filename>
-      <scale>1.0</scale>
-      <interpolate_x>true</interpolate_x>
-    </animation>
+  <% for personIndex in (0...peopleAmount) %>
+  <%
+    personStartX = rand(1...(roomLength-1))
+    personStartY = rand(1...(roomWidth-1))
+    personTargetX = rand(1...(roomLength-1))
+    personTargetY = rand(1...(roomWidth-1))
+  %>
+    <actor name="free_person">
+      <pose>personStartX personStartY 1.24 0 0 0</pose>
+      <skin>
+        <filename>walk.dae</filename>
+        <scale>1.0</scale>
+      </skin>
+      <animation name="walking">
+        <filename>walk.dae</filename>
+        <scale>1.0</scale>
+        <interpolate_x>true</interpolate_x>
+      </animation>
 
-    <plugin name="free_person_plugin" filename="libActorAvoidingObstaclesPlugin.so">
-      <target>25 35 1.24</target>
-      <target_weight>1.15</target_weight>
-      <obstacle_weight>1.8</obstacle_weight>
-      <ignore_obstacles>
-        <model>walls</model>
-        <model>ground_plane</model>
-        <!--
-        <% for shelfName in shelfNames %>
-          <model><%=shelfName%></model>
-        <% end %> -->
-      </ignore_obstacles>
-    </plugin>
-  </actor>
+      <plugin name="free_person_plugin" filename="libActorAvoidingObstaclesPlugin.so">
+        <target>personTargetX personTargetY 1.24</target>
+        <target_weight>1.15</target_weight>
+        <obstacle_weight>1.8</obstacle_weight>
+        <ignore_obstacles>
+          <!-- <model><%=shelfNames%></model> need to add a for loop -->
+          <model>walls</model>
+          <model>ground_plane</model>
+        </ignore_obstacles>
+      </plugin>
+    </actor>
+  <% end %>
 
 </world>
 </sdf>

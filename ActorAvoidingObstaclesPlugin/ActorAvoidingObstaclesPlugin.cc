@@ -112,8 +112,8 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   ignition::math::Vector3d newTarget(this->target);
   while ((newTarget - this->target).Length() < 2.0)
   {
-    newTarget.X(ignition::math::Rand::DblUniform(20, 10)); // (mean, sigma) for normal distribution
-    newTarget.Y(ignition::math::Rand::DblUniform(20, 10)); // (mean, sigma) for normal distribution
+    newTarget.X(ignition::math::Rand::DblUniform(15, 15)); // (mean, sigma) for normal distribution
+    newTarget.Y(ignition::math::Rand::DblUniform(30, 15)); // (mean, sigma) for normal distribution
 
     for (unsigned int i = 0; i < this->world->ModelCount(); ++i)
     {

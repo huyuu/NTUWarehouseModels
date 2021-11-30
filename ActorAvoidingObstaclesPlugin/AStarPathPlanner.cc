@@ -268,6 +268,9 @@ void AStarPathPlanner::generatePathInCheatMode() {
     currentNodePtr = currentNodePtr->parentNodePtr;
   }
   currentNodePtr = nullptr;
+  // clear allNodesInMap
+  this->allNodesInMap.clear();
+  this->allNodesInMap.shrink_to_fit();
   // draw minPath
   std::ofstream startNode_file;
   startNode_file.open("startNode.csv", std::ios::out);
@@ -317,7 +320,7 @@ void AStarPathPlanner::__addNodesNearToOpenList(const Node& currentNode) {
     if (currentNode.parentNodePtr != nullptr && potentialNode.id == currentNode.parentNodePtr->id ) {
       continue;
     }
-    std::cout << "potentialNode " << potentialNode << " is visible from " << currentNode << std::endl;
+    // std::cout << "potentialNode " << potentialNode << " is visible from " << currentNode << std::endl;
     // if potentialNode is not created in nodesTank yet, calculate the total cost and insert into nodesTank.
     if (potentialNode.id < 0) {
       // std::cout << "inserting potential node: " << potentialNode.position.X() << ", " << potentialNode.position.Y() << " Into nodes." << std::endl;
@@ -373,7 +376,7 @@ int AStarPathPlanner::__getNextNodeIdToMove(const Node& currentNode) {
     return nextNodeId;
   }
 
-  std::cout << "start calculating midway nodes" << std::endl;
+  // std::cout << "start calculating midway nodes" << std::endl;
   // if not visible, add midway nodes
   this->ancestorIds_nextNode.clear();
   int parentNodeId = nextNodeId;
