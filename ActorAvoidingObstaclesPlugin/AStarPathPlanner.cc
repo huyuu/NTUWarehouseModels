@@ -256,7 +256,7 @@ void AStarPathPlanner::generatePathInCheatMode() {
   const Node* currentNodePtr = &(this->nodes[0]);
   // get minPathIds
   while (currentNodePtr->getDistanceFrom(this->target) > AStarPathPlanner::distanceAsReached) {
-    Node& currentNode = *currentNodePtr;
+    const Node& currentNode = *currentNodePtr;
     // this->searchedMinPathIds.push_back(currentNode.id);
     this->__addNodesNearToOpenList(currentNode);
     const int nextNodeId = this->__getNextNodeIdToMove(currentNode);
