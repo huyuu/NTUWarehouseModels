@@ -23,7 +23,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   std::cout << "Entered AStarPathPlanner(...)" << std::endl;
   // set actor boundingBox
   this->actorBoundingBox = actorBoundingBox;
-  this->obstacleBoundingBoxes.reserve(world->Models().size());
+  this->obstacleBoundingBoxes.reserve(world->ModelCount());
   this->allNodesInMap.reserve((world->ModelCount())*4 + 10);
   this->nodes.reserve((world->ModelCount())*4 + 10);
   this->openList.reserve((world->ModelCount())*4 + 10);
