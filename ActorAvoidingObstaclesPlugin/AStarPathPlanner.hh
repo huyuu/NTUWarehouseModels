@@ -52,7 +52,7 @@ namespace gazebo {
     vector<int> midwayNodeIds;
     vector<int> ancestorIds_nextNode;
     /// searchedMinPath
-    const bool isCheating {false};
+    bool isCheating {false};
     vector<int> searchedMinPathIds;
     /// obstacles bounding boxes
     vector<ignition::math::AxisAlignedBox> obstacleBoundingBoxes;
