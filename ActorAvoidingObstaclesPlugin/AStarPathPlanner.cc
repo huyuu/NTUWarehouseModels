@@ -19,6 +19,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   midwayNodeIds{},
   ancestorIds_nextNode{},
   searchedMinPathIds{},
+  obstacleBoundingBoxes{},
   isCheating{isCheating} {
   std::cout << "Entered AStarPathPlanner(...)" << std::endl;
   // set actor boundingBox
