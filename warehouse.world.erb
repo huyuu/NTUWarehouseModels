@@ -202,7 +202,7 @@
             shelfNames.push(shelfName)
           %>
           <include>
-            <uri>shelf</uri>
+            <uri>model://shelf</uri>
             <name><%=shelfName%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
           </include>
@@ -224,7 +224,7 @@
 
   <!-- include walls -->
   <include>
-    <uri>walls</uri>
+    <uri>model://walls</uri>
     <pose>0 0 0 0 0 0</pose>
   </include>
 
