@@ -77,7 +77,8 @@
 
   # room spec
   roomLength = columnInfos.map{ |columnInfo| columnInfo['space'] }.sum
-  roomWidth = rowInfos.map{ |rowInfo| rowInfo['space'] }.sum
+  # roomWidth = rowInfos.map{ |rowInfo| rowInfo['space'] }.sum
+  roomWidth = 1.0 + 3.3*17 + 6.3*2 # [m]
 
   # lights
   lightInfos = []
