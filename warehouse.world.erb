@@ -197,8 +197,10 @@
     <region>
       <name>region1</name>
       <volume>
-        <min><%=templateElevatorCenterX+1.5%> <%=templateElevatorCenterY-1%> 0</min>
-        <max><%=templateElevatorCenterX+2.5%> <%=templateElevatorCenterY+1%> 1</max>
+        <!-- <min><%=templateElevatorCenterX+1.5%> <%=templateElevatorCenterY-1%> 0</min> -->
+        <!-- <max><%=templateElevatorCenterX+2.5%> <%=templateElevatorCenterY+1%> 1</max> -->
+        <min><%=templateElevatorCenterX-1.0%> <%=templateElevatorCenterY-2.5%> 0</min>
+        <max><%=templateElevatorCenterX+1.0%> <%=templateElevatorCenterY-1.5%> 1</max>
       </volume>
     </region>
 
@@ -206,8 +208,10 @@
     <region>
       <name>region2</name>
       <volume>
-        <min><%=templateElevatorCenterX+1.5%> <%=templateElevatorCenterY-1%> 3</min>
-        <max><%=templateElevatorCenterX+2.5%> <%=templateElevatorCenterY+1%> 4</max>
+        <!-- <min><%=templateElevatorCenterX+1.5%> <%=templateElevatorCenterY-1%> 3</min> -->
+        <!-- <max><%=templateElevatorCenterX+2.5%> <%=templateElevatorCenterY+1%> 4</max> -->
+        <min><%=templateElevatorCenterX-1.0%> <%=templateElevatorCenterY-2.5%> 3</min>
+        <max><%=templateElevatorCenterX+1.0%> <%=templateElevatorCenterY-1.5%> 4</max>
       </volume>
     </region>
 
@@ -232,7 +236,7 @@
 
   <!-- The elevator car -->
   <model name="elevator">
-    <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 0 0</pose>
+    <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 <%=Math::PI/(-4)%> 0</pose>
     <link name="link">
       <inertial>
         <mass>800</mass>
@@ -466,7 +470,7 @@
   </model>
 
   <model name="floor0">
-    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 0.075 0 0 0</pose>
+    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 0.075 0 <%=Math::PI/(-4)%> 0</pose>
     <static>true</static>
     <link name="link">
       <collision name="floor_collision">
@@ -487,7 +491,7 @@
   </model>
 
   <model name="floor1">
-    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 3.075 0 0 0</pose>
+    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 3.075 0 <%=Math::PI/(-4)%> 0</pose>
     <static>true</static>
     <link name="link">
       <collision name="floor_collision">
