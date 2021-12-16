@@ -236,7 +236,7 @@
 
   <!-- The elevator car -->
   <model name="elevator">
-    <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 <%=Math::PI/(-4)%> 0</pose>
+    <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 0 <%=Math::PI/(-4)%></pose>
     <link name="link">
       <inertial>
         <mass>800</mass>
@@ -470,7 +470,7 @@
   </model>
 
   <model name="floor0">
-    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 0.075 0 <%=Math::PI/(-4)%> 0</pose>
+    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 0.075 0 0 <%=Math::PI/(-4)%></pose>
     <static>true</static>
     <link name="link">
       <collision name="floor_collision">
@@ -491,7 +491,7 @@
   </model>
 
   <model name="floor1">
-    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 3.075 0 <%=Math::PI/(-4)%> 0</pose>
+    <pose><%=templateElevatorCenterX+2.25%> <%=templateElevatorCenterY+0%> 3.075 0 0 <%=Math::PI/(-4)%></pose>
     <static>true</static>
     <link name="link">
       <collision name="floor_collision">
