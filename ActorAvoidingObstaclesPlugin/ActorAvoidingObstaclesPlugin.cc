@@ -118,10 +118,10 @@ void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
     const double shouldGoToBottom = ignition::math::Rand::DblUniform(0, 2);
     if (shouldGoToBottom > 1.0) {
       newTarget.X(3.0); // (mean, sigma) for normal distribution
-      newTarget.Y(ignition::math::Rand::DblUniform(1.0, 68.0)); // (mean, sigma) for normal distribution
+      newTarget.Y(ignition::math::Rand::DblUniform(1.0, 60.0)); // (mean, sigma) for normal distribution
     } else {
       newTarget.X(30.0); // (mean, sigma) for normal distribution
-      newTarget.Y(ignition::math::Rand::DblUniform(1.0, 68.0)); // (mean, sigma) for normal distribution
+      newTarget.Y(ignition::math::Rand::DblUniform(1.0, 60.0)); // (mean, sigma) for normal distribution
     }
 
 
