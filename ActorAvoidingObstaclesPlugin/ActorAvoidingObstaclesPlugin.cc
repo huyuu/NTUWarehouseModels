@@ -49,6 +49,9 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   else
     this->animationFactor = 4.5;
 
+  // set velocity
+  this->velocity = 1.0;
+
   // Add our own name to models we should ignore when avoiding obstacles.
   this->ignoreModels.push_back(this->actor->GetName());
 
@@ -82,7 +85,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
 // Override Function: Reset
 void ActorAvoidingObstaclesPlugin::Reset() {
-  this->velocity = 4.0;
+  this->velocity = 1.0;
   this->lastUpdate = 0;
 
   if (this->sdf && this->sdf->HasElement("target"))
