@@ -50,7 +50,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
     this->animationFactor = 4.5;
 
   // set velocity
-  this->velocity = 0.5;
+  this->velocity = 2.0;
 
   // Add our own name to models we should ignore when avoiding obstacles.
   this->ignoreModels.push_back(this->actor->GetName());
@@ -85,7 +85,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
 // Override Function: Reset
 void ActorAvoidingObstaclesPlugin::Reset() {
-  this->velocity = 0.5;
+  this->velocity = 2.0;
   this->lastUpdate = 0;
 
   if (this->sdf && this->sdf->HasElement("target"))
@@ -201,12 +201,12 @@ void ActorAvoidingObstaclesPlugin::OnUpdate(const common::UpdateInfo &_info)
   }
   else
   {
-    // pose.Pos() += this->goingVector * this->velocity * dt;
+    // pose.Pos() += this->goingVector * this->city * dt;
     pose.Rot() = ignition::math::Quaterniond(1.5707, 0, rpy.Z()+yaw.Radian());
   }
   // std::cout << "old position: " << pose.Pos() << ", ";
-  pose.Pos() += this->goingVector * this->velocity * dt;
-  // std::cout << "goingVector: " << this->goingVector * this->velocity * dt << std::endl;
+  pose.Pos() += this->goingVector * this->city * dt;
+  // std::cout << "goingVector: " << this->goingVector * this->city * dt << std::endl;
 
   // Make sure the actor stays within bounds
   pose.Pos().X(std::max(this->outerMostBoundaryBox.Min().X(), std::min(this->outerMostBoundaryBox.Max().X(), pose.Pos().X())));
