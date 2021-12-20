@@ -38,7 +38,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
   // set obstacleBoundingBoxes
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
-    std::cout << "for model: " << i << std::endl;
+    // std::cout << "for model: " << i << std::endl;
     if (i >= 155) {
       break;
     }
@@ -46,7 +46,7 @@ AStarPathPlanner::AStarPathPlanner(ignition::math::Vector3d start, ignition::mat
     if (std::find(ignoreModels.begin(), ignoreModels.end(), model->GetName()) == ignoreModels.end()) {
       ignition::math::AxisAlignedBox boundingBox = world->ModelByIndex(i)->CollisionBoundingBox();
       this->obstacleBoundingBoxes.push_back(boundingBox);
-      std::cout << "model added: " << model->GetName() << ": " << boundingBox.Min() << ", " << boundingBox.Max() << std::endl;
+      // std::cout << "model added: " << model->GetName() << ": " << boundingBox.Min() << ", " << boundingBox.Max() << std::endl;
     }
   }
   std::cout << "obstacleBoundingBoxes set." << std::endl;

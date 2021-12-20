@@ -50,7 +50,7 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
     this->animationFactor = 4.5;
 
   // set velocity
-  this->velocity = 1.0;
+  this->velocity = 0.5;
 
   // Add our own name to models we should ignore when avoiding obstacles.
   this->ignoreModels.push_back(this->actor->GetName());
@@ -85,13 +85,13 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
 
 // Override Function: Reset
 void ActorAvoidingObstaclesPlugin::Reset() {
-  this->velocity = 1.0;
+  this->velocity = 0.5;
   this->lastUpdate = 0;
 
   if (this->sdf && this->sdf->HasElement("target"))
     this->target = this->sdf->Get<ignition::math::Vector3d>("target");
   else
-    this->target = ignition::math::Vector3d(0, -5, 1.2138);
+    this->target = ignition::math::Vector3d(3, 3, 1.2138);
 
   auto skelAnims = this->actor->SkeletonAnimations();
   if (skelAnims.find(WALKING_ANIMATION) == skelAnims.end())
