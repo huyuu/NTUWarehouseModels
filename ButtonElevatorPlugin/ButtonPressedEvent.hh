@@ -135,6 +135,12 @@ namespace gazebo
 
     /// \brief True when the joint is currently inside the trigger condition
     private: bool isTriggered;
+
+    /// \brief Pointer to a transport node.
+    private: transport::NodePtr node;
+
+    /// \brief Publisher that transmits the message when an event occurs.
+    public: transport::PublisherPtr msgPub;
   };
 }
 

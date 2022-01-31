@@ -36,6 +36,9 @@ JointEventSource::JointEventSource(transport::PublisherPtr _pub,
 ////////////////////////////////////////////////////////////////////////////////
 void JointEventSource::Load(const sdf::ElementPtr _sdf)
 {
+  std::string topic;
+  std::string data;
+
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
