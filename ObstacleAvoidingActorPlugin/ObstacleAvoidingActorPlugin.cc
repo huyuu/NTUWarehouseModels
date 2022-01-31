@@ -50,7 +50,16 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
     this->animationFactor = 4.5;
 
   // set velocity
-  this->velocity = 2.0;
+  if (_sdf->HasElement("velocity"))
+    this->velocity = _sdf->Get<double>("velocity");
+  else
+    this->velocity = 2.0;
+
+  // set closeEnoughDistance
+  if (_sdf->HasElement("closeEnoughDistance"))
+    this->closeEnoughDistance = _sdf->Get<double>("closeEnoughDistance");
+  else
+    this->closeEnoughDistance = 2.0;
 
   // Add our own name to models we should ignore when avoiding obstacles.
   this->ignoreModels.push_back(this->actor->GetName());
@@ -66,11 +75,9 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
   }
 
   // handle pathPlanner related stuffs
-  std::cout << "About to create AStarPathPlanner ..." << std::endl;
   this->pathPlanner = AStarPathPlanner(this->actor->WorldPose().Pos(), this->target, this->actor->BoundingBox(), this->world, this->ignoreModels, this->actorWidth, true);
-  std::cout << "AStarPathPlanner Created." << std::endl;
   this->pathPlanner.generatePathInCheatMode();
-
+  // set outerMostBoundaryBox
   const unsigned int modelCount {world->ModelCount()};
   for (unsigned int i = 0; i < modelCount; ++i) {
     const physics::ModelPtr model = this->world->ModelByIndex(i);
@@ -79,13 +86,11 @@ void ActorAvoidingObstaclesPlugin::Load(physics::ModelPtr _model, sdf::ElementPt
       break;
     }
   }
-  std::cout << "Actor Avoiding Obstacls Plugin Loaded." << std::endl;
 }
 
 
 // Override Function: Reset
 void ActorAvoidingObstaclesPlugin::Reset() {
-  this->velocity = 2.0;
   this->lastUpdate = 0;
 
   if (this->sdf && this->sdf->HasElement("target"))
@@ -113,14 +118,15 @@ void ActorAvoidingObstaclesPlugin::Reset() {
 // Private Function: Choose New Target
 void ActorAvoidingObstaclesPlugin::ChooseNewTarget() {
   ignition::math::Vector3d newTarget(this->target);
-  while ((newTarget - this->target).Length() < 2.0)
+  while ((newTarget - this->target).Length() < this->closeEnoughDistance)
   {
+    // whether our robot should go to bottom
     const double shouldGoToBottom = ignition::math::Rand::DblUniform(0, 2);
     if (shouldGoToBottom > 1.0) {
-      newTarget.X(3.0); // (mean, sigma) for normal distribution
-      newTarget.Y(ignition::math::Rand::DblUniform(1, 60.0)); // (mean, sigma) for normal distribution
+      newTarget.X(3.0); // set x = 3.0 meaning at the bottom
+      newTarget.Y(ignition::math::Rand::DblUniform(1, 60.0)); // randomly chose y position
     } else {
-      newTarget.X(30.0); // (mean, sigma) for normal distribution
+      newTarget.X(30.0); // set x = 30.0 meaning at the top
       newTarget.Y(ignition::math::Rand::DblUniform(1, 60.0)); // (mean, sigma) for normal distribution
     }
 
