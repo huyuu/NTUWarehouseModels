@@ -15,6 +15,7 @@
  *
 */
 
+#include <functional>
 #include <limits>
 #include <string>
 
@@ -36,13 +37,10 @@ JointEventSource::JointEventSource(transport::PublisherPtr _pub,
 ////////////////////////////////////////////////////////////////////////////////
 void JointEventSource::Load(const sdf::ElementPtr _sdf)
 {
-  std::string topic;
-  std::string data;
-
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-      boost::bind(&JointEventSource::Update, this));
+      std::bind(&JointEventSource::Update, this));
 
   EventSource::Load(_sdf);
 
@@ -108,7 +106,9 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
     gzerr << this->name << " is missing a range element" << std::endl;
   }
 
+
   // Get the topic name
+  std::string topic;
   if (_sdf->HasElement("topic")) {
     topic = _sdf->Get<std::string>("topic");
   } else {
@@ -186,14 +186,14 @@ bool JointEventSource::LookupJoint()
 {
   if (!this->model)
   {
-    this->model = this->world->GetModel(this->modelName);
+    this->model = this->world->ModelByName(this->modelName);
     // if the model name is not found
     if (!this->model)
     {
       // look for a model with a name that starts with our model name
-      for (unsigned int i = 0; i < this->world->GetModelCount(); ++i)
+      for (unsigned int i = 0; i < this->world->ModelCount(); ++i)
       {
-        physics::ModelPtr m = this->world->GetModel(i);
+        physics::ModelPtr m = this->world->ModelByIndex(i);
         size_t pos = m->GetName().find(this->modelName);
         if (pos == 0)
         {
@@ -225,8 +225,8 @@ void JointEventSource::Update()
   bool oldState = this->isTriggered;
   double value = 0;
 
-  double position = this->joint->GetAngle(0).Radian();
-  math::Angle a = this->joint->GetAngle(0);
+  double position = this->joint->Position(0);
+  ignition::math::Angle a = this->joint->Position(0);
   // get a value between -PI and PI
   a.Normalize();
   double angle = a.Radian();
@@ -291,6 +291,7 @@ void JointEventSource::Update()
     this->Emit(json);
 
 
+    // publish msg about floor info
     msg.set_data(int(this->isTriggered))
     this->msgPub->Publish(msg);
   }
