@@ -26,7 +26,7 @@
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/util/system.hh>
 
-#include "plugins/events/EventSource.hh"
+#include "EventSource.hh"
 
 namespace gazebo
 {
