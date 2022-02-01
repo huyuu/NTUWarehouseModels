@@ -117,7 +117,7 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
   }
 
   this->node = transport::NodePtr(new transport::Node());
-  this->node->Init(this->world->GetName());
+  this->node->Init(this->world->Name());
   this->msgPub = this->node->Advertise<gazebo::msgs::GzString>(topic);
 }
 
