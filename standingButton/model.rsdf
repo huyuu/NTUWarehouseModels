@@ -9,12 +9,11 @@
 <!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
   # pillars
-  pillarRadius = 0.1 # [m]
+  pillarRadius = 0.05 # [m]
   pillarLength = 1.0 # [m]
 
   # wheel
   wheelRadius = 0.05 # [m]
-  wheelThickness = 0.1
 
   # lever
   leverHeight = 0.1 # [m]
@@ -26,12 +25,15 @@
 
 <!-- MARK: - Derived Secondary Variables -->
 <%
+  # wheel
+  wheelThickness = pillarRadius*2
+
   # supportLShape
   supportLShapeWidth = wheelRadius*1.75
-  supportLShapeHeight = wheelRadius
+  supportLShapeHeight = wheelRadius*2
 
   # lever
-  leverRadius = wheelThickness/2
+  leverRadius = wheelThickness/2*0.5
 %>
 
 
@@ -66,7 +68,7 @@
 
   <link name='wheel'>
     <self_collide>true</self_collide>
-    <pose>0 0 <%=pillarLength+wheelRadius%> <%=Math::PI/4%> 0 0</pose>
+    <pose>0 0 <%=pillarLength+wheelRadius%> <%=Math::PI/2%> 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
@@ -122,7 +124,7 @@
       <pose>0 0 0 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=supportLShapeThickness%> <%=supportLShapeWidth%> <%=supportLShapeHeight%></size>
+          <size><%=supportLShapeWidth%> <%=supportLShapeThickness%> <%=supportLShapeHeight%></size>
         </box>
       </geometry>
     </collision>
@@ -131,7 +133,7 @@
       <pose>0 0 0 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=supportLShapeThickness%> <%=supportLShapeWidth%> <%=supportLShapeHeight%></size>
+          <size><%=supportLShapeWidth%> <%=supportLShapeThickness%> <%=supportLShapeHeight%></size>
         </box>
       </geometry>
     </visual>
