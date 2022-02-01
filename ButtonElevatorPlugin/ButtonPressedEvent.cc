@@ -293,7 +293,7 @@ void JointEventSource::Update()
 
     const char _data = this->isTriggered ? '1' : '0';
     // publish msg about floor info
-    msg.set_data(_data);
+    msg.set_data(&_data);
     this->msgPub->Publish(msg);
   }
 }
