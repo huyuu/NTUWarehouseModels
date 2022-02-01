@@ -17,7 +17,7 @@
   wheelThickness = 0.1
 
   # lever
-  leverLength = 0.1 # [m]
+  leverHeight = 0.1 # [m]
 
   # supportLShape
   supportLShapeThickness = 0.05 # [m]
@@ -97,7 +97,7 @@
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
-          <length><%=leverLength%></length>
+          <length><%=leverHeight%></length>
         </cylinder>
       </geometry>
     </collision>
@@ -107,7 +107,7 @@
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
-          <length><%=leverLength%></length>
+          <length><%=leverHeight%></length>
         </cylinder>
       </geometry>
     </visual>
