@@ -141,9 +141,12 @@
   </link>
 
 
-  <joint name='supportLShape_wheel' type="fixed">
+  <joint name='supportLShape_wheel' type="revolute">
     <parent>supportLShape</parent>
     <child>wheel</child>
+    <axis>
+      <xyz>0 1 0</xyz>
+    </axis>
   </joint>
 
 
