@@ -26,7 +26,7 @@
 <!-- MARK: - Derived Secondary Variables -->
 <%
   # wheel
-  wheelThickness = pillarRadius*2
+  wheelThickness = pillarRadius*1.0
 
   # supportLShape
   supportLShapeThickness = (pillarRadius-wheelThickness/2)*0.8 # [m]
