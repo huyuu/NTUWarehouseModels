@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # pillars
+  pillarRadius = 0.1 # [m]
+  pillarLength = 1.0 # [m]
+
+  # wheel
+  wheelRadius = 0.05 # [m]
+  wheelThickness = 0.1
+
+  # lever
+  leverLength = 0.1 # [m]
+
+  # supportLShape
+  supportLShapeThickness = 0.05 # [m]
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+  # supportLShape
+  supportLShapeWidth = wheelRadius*1.75
+  supportLShapeHeight = wheelRadius
+
+  # lever
+  leverRadius = wheelThickness/2
+%>
+
+
+<sdf version='1.6'>
+<model name="standingButton">
+
+  <link name='pillar'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 0 <%=pillarLength/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=pillarRadius%></radius>
+          <length><%=pillarLength%></length>
+        </cylinder>
+      </geometry>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=pillarRadius%></radius>
+          <length><%=pillarLength%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='wheel'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 0 <%=pillarLength+wheelRadius%> 0 <%=Math::PI/4%> 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=wheelRadius%></radius>
+          <length><%=wheelThickness%></length>
+        </cylinder>
+      </geometry>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=wheelRadius%></radius>
+          <length><%=wheelThickness%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='lever'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 0 <%=pillarLength+wheelRadius*2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=leverRadius%></radius>
+          <length><%=leverLength%></length>
+        </cylinder>
+      </geometry>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=leverRadius%></radius>
+          <length><%=leverLength%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='supportLShape'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose><%=wheelThickness/2%> 0 <%=pillarLength+supportLShapeHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportLShapeThickness%> <%=supportLShapeWidth%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportLShapeThickness%> <%=supportLShapeWidth%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <joint name='supportLShape_wheel' type="fixed">
+    <parent>supportLShape</parent>
+    <child>wheel</child>
+  </joint>
+
+
+  <joint name='wheel_lever' type="fixed">
+    <parent>wheel</parent>
+    <child>lever</child>
+  </joint>
+
+</model>
+</sdf>

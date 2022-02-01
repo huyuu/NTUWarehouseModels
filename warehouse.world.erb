@@ -235,6 +235,7 @@
     </event>
   </plugin>
 
+
   <!-- The elevator car -->
   <model name="elevator">
     <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 0 <%=Math::PI/(-2)%></pose>
@@ -558,6 +559,26 @@
   </include>
 
 
+  
+  <!-- ButtonPressedEventPlugin -->
+  <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin">
+    <event>
+      <name>ButtonPressedEvent</name>
+      <type>joint</type>
+      <model>_revoluter_name</model>
+      <joint>_joint_name</joint>
+      <range>
+        <type>normalized_angle</type>
+        <min>3</min>
+        <max>3.1415926</max>
+      </range>
+      <topic>~/elevator</topic>
+      <msg_data>1</msg_data>
+    </event>
+  </plugin>
+
+
+  <!-- include people -->
   <% for personIndex in (0...peopleAmount) %>
   <%
     if rand(2) == 1 then
