@@ -145,7 +145,7 @@
     <parent>supportLShape</parent>
     <child>wheel</child>
     <axis>
-      <xyz>0 1 0</xyz>
+      <xyz>0 0 1</xyz>
     </axis>
   </joint>
 
