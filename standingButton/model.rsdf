@@ -19,7 +19,7 @@
   leverHeight = 0.1 # [m]
 
   # supportLShape
-  supportLShapeThickness = 0.05 # [m]
+
 %>
 
 
@@ -29,8 +29,9 @@
   wheelThickness = pillarRadius*2
 
   # supportLShape
-  supportLShapeWidth = wheelRadius*1.75
-  supportLShapeHeight = wheelRadius*2
+  supportLShapeThickness = (pillarRadius-wheelThickness/2)*0.8 # [m]
+  supportLShapeWidth = wheelRadius*1.0
+  supportLShapeHeight = wheelRadius*1.8
 
   # lever
   leverRadius = wheelThickness/2*0.5
@@ -119,7 +120,7 @@
   <link name='supportLShape'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose>0 <%=wheelThickness/2*(-1)%> <%=pillarLength+supportLShapeHeight/2%> 0 0 0</pose>
+    <pose>0 <%=wheelThickness/2*(-1)-supportLShapeThickness/2%> <%=pillarLength+supportLShapeHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
