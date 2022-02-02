@@ -116,11 +116,15 @@
   </link>
 
 
+  <%
+    adjustX = (-1) * (wheelRadius+leverHeight/2) * Math.sin(Math::PI/6)
+    adjustZ = pillarHeight + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(Math::PI/6)
+  %>
   <link name='lever'>
     <self_collide>true</self_collide>
-    <pose>0 0 <%=pillarLength+wheelRadius*2+leverHeight/2%> 0 0 0</pose>
+    <pose><%=adjustX%> 0 <%=adjustZ%> 0 <%=Math::PI/6*(-1)%> 0</pose>
     <collision name='collision'>
-      <pose>0 0 0 0 <%=Math::PI/6*(-1)%> 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
@@ -130,7 +134,7 @@
     </collision>
 
     <visual name='visual'>
-      <pose>0 0 0 0 <%=Math::PI/6%> 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
