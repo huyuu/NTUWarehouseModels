@@ -13,7 +13,7 @@
   pillarLength = 1.0 # [m]
 
   # wheel
-  wheelRadius = 0.05 # [m]
+
 
   # lever
   leverHeight = 0.1 # [m]
@@ -26,6 +26,7 @@
 <!-- MARK: - Derived Secondary Variables -->
 <%
   # wheel
+  wheelRadius = pillarRadius*0.5 # [m]
   wheelThickness = pillarRadius*1.0
 
   # supportLShape
