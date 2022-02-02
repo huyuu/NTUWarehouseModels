@@ -17,6 +17,7 @@
 
   # lever
   leverHeight = 0.1 # [m]
+  initAngle = Math::PI/8
 
   # supportLShape
 
@@ -117,12 +118,12 @@
 
 
   <%
-    adjustX = (-1) * (wheelRadius+leverHeight/2) * Math.sin(Math::PI/6)
-    adjustZ = pillarLength + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(Math::PI/6)
+    adjustX = (-1) * (wheelRadius+leverHeight/2) * Math.sin(initAngle)
+    adjustZ = pillarLength + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(initAngle)
   %>
   <link name='lever'>
     <self_collide>true</self_collide>
-    <pose><%=adjustX%> 0 <%=adjustZ%> 0 <%=Math::PI/6*(-1)%> 0</pose>
+    <pose><%=adjustX%> 0 <%=adjustZ%> 0 <%=initAngle*(-1)%> 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
