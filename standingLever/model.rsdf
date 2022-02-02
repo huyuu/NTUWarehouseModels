@@ -12,17 +12,35 @@
   pillarRadius = 0.05 # [m]
   pillarLength = 1.0 # [m]
 
-  # donuts
-  donutsThickness = 0.01
+  # wheel
+
+
+  # lever
+  leverHeight = 0.1 # [m]
+
+  # supportLShape
 
 %>
 
 
 <!-- MARK: - Derived Secondary Variables -->
 <%
-  # donuts
-  donutsOuterRadius = pillarRadius
-  donutsInnerRadius = donutsOuterRadius - donutsThickness
+  # wheel
+  wheelRadius = pillarRadius*0.5 # [m]
+  wheelThickness = pillarRadius*1.0
+
+  # supportLShape
+  supportLShapeThickness = (pillarRadius-wheelThickness/2)*0.8 # [m]
+  supportLShapeWidth = wheelRadius*1.0
+  supportLShapeHeight = wheelRadius*1.8
+
+  # lever
+  leverRadius = wheelThickness/2*0.5
+
+  # supportBack
+  supportBackThickness = supportLShapeThickness
+  supportBackWidth = supportLShapeWidth
+  supportBackHeight = supportLShapeHeight
 %>
 
 
@@ -41,6 +59,14 @@
           <length><%=pillarLength%></length>
         </cylinder>
       </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
     </collision>
 
     <visual name='visual'>
@@ -94,7 +120,7 @@
     <self_collide>true</self_collide>
     <pose>0 0 <%=pillarLength+wheelRadius*2+leverHeight/2%> 0 0 0</pose>
     <collision name='collision'>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0 0 <%=Math::PI/6%> 0</pose>
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
@@ -104,7 +130,7 @@
     </collision>
 
     <visual name='visual'>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 0 0 <%=Math::PI/6%> 0</pose>
       <geometry>
         <cylinder>
           <radius><%=leverRadius%></radius>
@@ -186,7 +212,7 @@
   <joint name='supportLShape_wheel' type="revolute">
     <parent>supportLShape</parent>
     <child>wheel</child>
-    <pose>0 0 0 0 0 <%=Math::PI/6%></pose>
+    <pose>0 0 0 0 0 0</pose>
     <axis>
       <xyz>0 0 1</xyz>
     </axis>
