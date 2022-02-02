@@ -118,7 +118,7 @@
 
   <%
     adjustX = (-1) * (wheelRadius+leverHeight/2) * Math.sin(Math::PI/6)
-    adjustZ = pillarHeight + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(Math::PI/6)
+    adjustZ = pillarLength + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(Math::PI/6)
   %>
   <link name='lever'>
     <self_collide>true</self_collide>
