@@ -169,7 +169,7 @@
   <link name='supportBack'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose><%=wheelThickness/2*(-1)-supportBack/2%> 0 <%=pillarLength+supportBack/2%> 0 0 0</pose>
+    <pose><%=wheelThickness/2*(-1)-supportBackThickness/2%> 0 <%=pillarLength+supportBackHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
