@@ -41,7 +41,7 @@
   # supportBack
   supportBackThickness = supportLShapeThickness
   supportBackWidth = supportLShapeWidth
-  supportBackHeight = supportLShapeHeight
+  supportBackHeight = wheelRadius*1.5
 %>
 
 
