@@ -197,7 +197,8 @@
   <include>
     <uri>model://standingLever</uri>
     <name>standingLever</name>
-    <pose><%=templateElevatorCenterX-3%> <%=templateElevatorCenterY%> 0.5 0 0 0</pose>
+    <!-- <pose><%=templateElevatorCenterX-3%> <%=templateElevatorCenterY%> 0.5 0 0 0</pose> -->
+    <pose>-3 -3 0 0 0 0</pose>
   </include>
 
   <!-- <plugin filename="libSimEventsPlugin.so" name="elevator_event_plugin">
@@ -565,11 +566,11 @@
             shelfName = "shelf_row#{rowIndex}_column#{columnIndex}"
             shelfNames.push(shelfName)
           %>
-          <include>
+          <!-- <include>
             <uri>model://shelf</uri>
             <name><%=shelfName%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
-          </include>
+          </include> -->
         <% end %>
         <!-- prepare for next row -->
         <%
