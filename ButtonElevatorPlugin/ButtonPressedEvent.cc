@@ -115,6 +115,7 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
     gzerr << "Missing <topic>, child of <event> with name[" << this->name
       << "]. This event will be skipped.\n";
   }
+  std::cout << "ButtonPressedEvent Loaded." << std::endl;
 
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->world->Name());
