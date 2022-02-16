@@ -566,12 +566,11 @@
             shelfName = "shelf_row#{rowIndex}_column#{columnIndex}"
             shelfNames.push(shelfName)
           %>
-          <!-- <include>
+          <include>
             <uri>model://shelf</uri>
             <name><%=shelfName%></name>
             <pose><%=cursorX+halfShelfWidth%> <%=cursorY+halfShelfLength%> 0 0 0 <%=initialYawAngle%></pose>
-          </include> -->
-          
+          </include>
         <% end %>
         <!-- prepare for next row -->
         <%
