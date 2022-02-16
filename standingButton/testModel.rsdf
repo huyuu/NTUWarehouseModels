@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # pillars
+  pillarRadius = 0.05 # [m]
+  pillarLength = 1.0 # [m]
+
+  # donuts
+  
+
+  # wheel
+
+
+  # lever
+  leverHeight = 0.1 # [m]
+  initAngle = Math::PI/8
+
+  # supportLShape
+
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+  # wheel
+  wheelRadius = pillarRadius*0.5 # [m]
+  wheelThickness = pillarRadius*1.0
+
+  # supportLShape
+  supportLShapeThickness = (pillarRadius-wheelThickness/2)*0.8 # [m]
+  supportLShapeWidth = wheelRadius*1.0
+  supportLShapeHeight = wheelRadius*1.8
+
+  # lever
+  leverRadius = wheelThickness/2*0.5
+
+  # supportBack
+  supportBackThickness = supportLShapeThickness
+  supportBackWidth = supportLShapeWidth
+  supportBackHeight = wheelRadius*1.2
+%>
+
+
+<sdf version='1.6'>
+<model name="standingButton">
+
+  <link name='pillar'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 0 <%=pillarLength/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=pillarRadius%></radius>
+          <length><%=pillarLength%></length>
+        </cylinder>
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=pillarRadius%></radius>
+          <length><%=pillarLength%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='wheel'>
+    <self_collide>true</self_collide>
+    <pose>0 0 <%=pillarLength+wheelRadius%> <%=Math::PI/2%> 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=wheelRadius%></radius>
+          <length><%=wheelThickness%></length>
+        </cylinder>
+      </geometry>
+      <!-- http://gazebosim.org/tutorials?tut=friction -->
+      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=wheelRadius%></radius>
+          <length><%=wheelThickness%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <%
+    adjustX = (-1) * (wheelRadius+leverHeight/2) * Math.sin(initAngle)
+    adjustZ = pillarLength + wheelRadius + (wheelRadius+leverHeight/2) * Math.cos(initAngle)
+  %>
+  <link name='lever'>
+    <self_collide>true</self_collide>
+    <pose><%=adjustX%> 0 <%=adjustZ%> 0 <%=initAngle*(-1)%> 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=leverRadius%></radius>
+          <length><%=leverHeight%></length>
+        </cylinder>
+      </geometry>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius><%=leverRadius%></radius>
+          <length><%=leverHeight%></length>
+        </cylinder>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='supportLShape'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 <%=wheelThickness/2*(-1)-supportLShapeThickness/2%> <%=pillarLength+supportLShapeHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportLShapeWidth%> <%=supportLShapeThickness%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+      <!-- http://gazebosim.org/tutorials?tut=friction -->
+      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportLShapeWidth%> <%=supportLShapeThickness%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='supportBack'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose><%=wheelThickness/2*(-1)-supportBackThickness/2%> 0 <%=pillarLength+supportBackHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportBackThickness%> <%=supportBackWidth%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+      <!-- http://gazebosim.org/tutorials?tut=friction -->
+      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=supportBackThickness%> <%=supportBackWidth%> <%=supportLShapeHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <joint name='supportLShape_wheel' type="revolute">
+    <parent>supportLShape</parent>
+    <child>wheel</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+      <xyz>0 0 1</xyz>
+    </axis>
+  </joint>
+
+
+  <joint name='wheel_lever' type="fixed">
+    <parent>wheel</parent>
+    <child>lever</child>
+  </joint>
+
+
+  <joint name='pillar_supportBack' type="fixed">
+    <parent>pillar</parent>
+    <child>supportBack</child>
+  </joint>
+
+
+  <joint name='pillar_supportLShape' type="fixed">
+    <parent>pillar</parent>
+    <child>supportLShape</child>
+  </joint>
+
+
+</model>
+</sdf>
