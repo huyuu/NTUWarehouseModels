@@ -47,7 +47,7 @@
 
 <sdf version='1.6'>
 <model name="standingLever">
-  <static>true</static>
+  <static>false</static>
 
   <link name='pillar'>
     <self_collide>true</self_collide>

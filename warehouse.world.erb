@@ -104,7 +104,7 @@
 
   # standingLever
   standingLeverCenterX = templateElevatorCenterX - 4
-  standingLeverCenterY = templateElevatorCenterY - 2.15
+  standingLeverCenterY = templateElevatorCenterY - 2
   standingLeverCenterZ = 0.5
 %>
 
@@ -202,7 +202,7 @@
   <include>
     <uri>model://standingLever</uri>
     <name>standingLever</name>
-    <pose><%=standingLeverCenterX%> <%=standingLeverCenterY%> <%=standingLeverCenterZ%> 0 0 0</pose>
+    <pose><%=standingLeverCenterX%> <%=standingLeverCenterY%> <%=standingLeverCenterZ%> 0 0 <%=Math::PI/2%></pose>
   </include>
 
   <!-- <plugin filename="libSimEventsPlugin.so" name="elevator_event_plugin">
