@@ -193,6 +193,13 @@
 
   <!-- MARK: - Template Elevator Models -->
 
+  <!-- Include standingLever -->
+  <include>
+    <uri>model://standingLever</uri>
+    <name>standingLever</name>
+    <pose><%=templateElevatorCenterX-3%> <%=templateElevatorCenterY%> 0.5 0 0 0</pose>
+  </include>
+
   <!-- <plugin filename="libSimEventsPlugin.so" name="elevator_event_plugin">
     <region>
       <name>region1</name>
@@ -228,16 +235,9 @@
   </plugin> -->
 
 
-  <!-- Include standingLever -->
-  <include>
-    <uri>model://standingLever</uri>
-    <name>standingLever</name>
-    <pose><%=templateElevatorCenterX-3%> <%=templateElevatorCenterY%> 0.5 0 0 0</pose>
-  </include>
-
 
   <!-- ButtonPressedEventPlugin -->
-  <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin_floor0">
+  <!-- <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin_floor0">
     <event>
       <name>ButtonPressedEvent</name>
       <type>joint</type>
@@ -267,7 +267,7 @@
       <topic>~/elevator</topic>
       <msg_data>1</msg_data>
     </event>
-  </plugin>
+  </plugin> -->
 
 
   <!-- The elevator car -->
