@@ -295,5 +295,6 @@ void JointEventSource::Update()
     // publish msg about floor info
     msg.set_data(&_data);
     this->msgPub->Publish(msg);
+    std::cout << "floor: " + _data + " published!" << std::endl;
   }
 }
