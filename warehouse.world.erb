@@ -243,9 +243,10 @@
 
 
   <!-- ButtonPressedEventPlugin -->
-  <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin_floor0">
+  <!-- <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin"> -->
+  <plugin filename="libSimEventsPlugin.so" name="elevator_event_plugin">
     <event>
-      <name>ButtonPressedEvent</name>
+      <name>ButtonPressedEvent_floor0</name>
       <type>joint</type>
       <model>standingLever::wheel</model>
       <joint>standingLever::supportLShape_wheel</joint>
@@ -257,11 +258,9 @@
       <topic>~/elevator</topic>
       <msg_data>0</msg_data>
     </event>
-  </plugin>
 
-  <plugin filename="libButtonPressedEvent.so" name="elevator_event_plugin_floor1">
     <event>
-      <name>ButtonPressedEvent</name>
+      <name>ButtonPressedEvent_floor1</name>
       <type>joint</type>
       <model>standingLever::wheel</model>
       <joint>standingLever::supportLShape_wheel</joint>
