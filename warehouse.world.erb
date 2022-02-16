@@ -101,6 +101,11 @@
   templateElevatorCenterX = roomLength - 5.0
   templateElevatorCenterY = roomWidth - 2.5
   templateElevatorHeight = shelfHeight / 2.0
+
+  # standingLever
+  standingLeverCenterX = roomLength - 1.0
+  standingLeverCenterY = roomWidth - 1.0
+  standingLeverCenterZ = 0.5
 %>
 
 
@@ -197,7 +202,7 @@
   <include>
     <uri>model://standingLever</uri>
     <name>standingLever</name>
-    <pose><%=templateElevatorCenterX-3%> <%=templateElevatorCenterY-3%> 0.5 0 0 0</pose>
+    <pose><%=standingLeverCenterX%> <%=standingLeverCenterY%> <%=standingLeverCenterZ%> 0 0 0</pose>
   </include>
 
   <!-- <plugin filename="libSimEventsPlugin.so" name="elevator_event_plugin">
