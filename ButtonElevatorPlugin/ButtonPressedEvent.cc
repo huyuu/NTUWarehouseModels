@@ -179,6 +179,7 @@ void JointEventSource::Info() const
       << " triggered: " << this->isTriggered
       << std::endl;
   gzmsg << ss.str();
+  std::cout << "Joint Event Initialized ..." << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
