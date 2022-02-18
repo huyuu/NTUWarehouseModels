@@ -15,11 +15,10 @@
  *
 */
 
-#ifndef _ButtonElevator_PLUGINS_EVENTS_JOINTEVENTSOURCE_HH_
-#define _ButtonElevator_PLUGINS_EVENTS_JOINTEVENTSOURCE_HH_
+#ifndef GAZEBO_PLUGINS_JOINTEVENTSOURCE_HH_
+#define GAZEBO_PLUGINS_JOINTEVENTSOURCE_HH_
 
 #include <string>
-#include <map>
 
 #include <sdf/sdf.hh>
 #include <gazebo/transport/TransportTypes.hh>
@@ -58,7 +57,7 @@ namespace gazebo
   ///  </event>
   ///
   /// \endverbatim
-  class GZ_PLUGIN_VISIBLE JointEventSource: public EventSource
+  class JointEventSource: public EventSource
   {
     /// \enum Range
     /// \brief The type of data range measured
@@ -140,10 +139,10 @@ namespace gazebo
     private: transport::NodePtr node;
 
     /// \brief Publisher that transmits the message when an event occurs.
-    public: transport::PublisherPtr msgPub;
+    private: transport::PublisherPtr msgPub;
 
     /// \brief String message that is transmitted when an event occurs.
-    public: msgs::GzString msg;
+    private: msgs::GzString msg;
   };
 }
 

@@ -19,7 +19,7 @@
 #include <limits>
 #include <string>
 
-#include "ButtonPressedEvent.hh"
+#include "JointEventSource.hh"
 
 using namespace gazebo;
 
@@ -32,8 +32,7 @@ JointEventSource::JointEventSource(transport::PublisherPtr _pub,
 {
   this->min = std::numeric_limits<double>::lowest();
   this->max = std::numeric_limits<double>::max();
-  this->msgPub = _pub;
-  std::cout << "ButtonPressedEvent Constructed." << std::endl;
+  std::cout << "JointEvent Constructed." << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +116,7 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
     gzerr << "Missing <topic>, child of <event> with name[" << this->name
       << "]. This event will be skipped.\n";
   }
-  std::cout << "ButtonPressedEvent Loaded." << std::endl;
+  std::cout << "JointEvent Loaded." << std::endl;
 
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->world->Name());
@@ -182,7 +181,6 @@ void JointEventSource::Info() const
       << " triggered: " << this->isTriggered
       << std::endl;
   gzmsg << ss.str();
-  std::cout << "Joint Event Initialized ..." << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
