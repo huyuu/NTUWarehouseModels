@@ -51,6 +51,6 @@ include_directories(
   ${GAZEBO_INCLUDE_DIRS}
 )
 
-add_library(SimEventForButtonPressedPlugin SHARED ${sim_event_src})
-target_link_libraries(SimEventForButtonPressedPlugin gazebo_physics gazebo_msgs)
+add_library(SimEventForButtonPressedPlugin SHARED ${sim_event_include} ${sim_event_src})
+target_link_libraries(SimEventForButtonPressedPlugin ${GAZEBO_LIBRARIES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
