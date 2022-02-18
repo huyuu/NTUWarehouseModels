@@ -22,8 +22,8 @@
 #include <string>
 #include <vector>
 
-#include "plugins/events/Region.hh"
-#include "plugins/events/EventSource.hh"
+#include "Region.hh"
+#include "EventSource.hh"
 
 namespace gazebo
 {
