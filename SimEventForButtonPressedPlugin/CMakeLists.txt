@@ -53,16 +53,4 @@ include_directories(
 
 add_library(SimEventForButtonPressedPlugin SHARED ${sim_event_src})
 target_link_libraries(SimEventForButtonPressedPlugin gazebo_physics gazebo_msgs)
-install (TARGETS SimEventForButtonPressedPlugin
-         LIBRARY DESTINATION ${GAZEBO_PLUGIN_LIB_INSTALL_DIR}
-         ARCHIVE DESTINATION ${GAZEBO_PLUGIN_LIB_INSTALL_DIR}
-         RUNTIME DESTINATION ${GAZEBO_PLUGIN_BIN_INSTALL_DIR})
-gz_install_includes("./" ${sim_event_include})
-
-add_library(RegionEventBoxPlugin SHARED ${src})
-target_link_libraries(RegionEventBoxPlugin gazebo_physics gazebo_msgs)
-install (TARGETS RegionEventBoxPlugin
-         LIBRARY DESTINATION ${GAZEBO_PLUGIN_LIB_INSTALL_DIR}
-         ARCHIVE DESTINATION ${GAZEBO_PLUGIN_LIB_INSTALL_DIR}
-         RUNTIME DESTINATION ${GAZEBO_PLUGIN_BIN_INSTALL_DIR})
-gz_install_includes("./" ${inc})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
