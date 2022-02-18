@@ -32,6 +32,8 @@ JointEventSource::JointEventSource(transport::PublisherPtr _pub,
 {
   this->min = std::numeric_limits<double>::lowest();
   this->max = std::numeric_limits<double>::max();
+  this->transport = transport;
+  std::cout << "ButtonPressedEvent Constructed." << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
