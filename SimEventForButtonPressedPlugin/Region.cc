@@ -16,7 +16,7 @@
 */
 
 #include <gazebo/common/Console.hh>
-#include "plugins/events/Region.hh"
+#include "Region.hh"
 
 using namespace gazebo;
 

@@ -28,7 +28,7 @@
 #include <gazebo/physics/World.hh>
 #include <gazebo/physics/Model.hh>
 
-#include "plugins/events/OccupiedEventSource.hh"
+#include "OccupiedEventSource.hh"
 
 using namespace gazebo;
 
