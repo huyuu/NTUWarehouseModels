@@ -221,6 +221,7 @@ bool JointEventSource::LookupJoint()
 ////////////////////////////////////////////////////////////////////////////////
 void JointEventSource::Update()
 {
+  std::cout << "Entered Update" << std::endl;
   if (!this->LookupJoint())
     return;
 
