@@ -292,14 +292,12 @@ void JointEventSource::Update()
     json += "\"model\":\"" + this->modelName + "\"";
     json += "}";
     this->Emit(json);
-
-
-    const char _data = this->isTriggered ? '1' : '0';
-    // publish msg about floor info
-    msg.set_data(&_data);
-    this->msgPub->Publish(msg);
-    std::cout << "floor: ";
-    std::cout << _data;
-    std::cout << " published!" << std::endl;
   }
+  const char _data = this->isTriggered ? '1' : '0';
+  // publish msg about floor info
+  msg.set_data(&_data);
+  this->msgPub->Publish(msg);
+  std::cout << "floor: ";
+  std::cout << _data;
+  std::cout << " published!" << std::endl;
 }
