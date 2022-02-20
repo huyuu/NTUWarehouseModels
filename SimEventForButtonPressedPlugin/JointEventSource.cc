@@ -188,10 +188,12 @@ bool JointEventSource::LookupJoint()
 {
   if (!this->model)
   {
+    std::cout << "we don't have a model" << std::endl;
     this->model = this->world->ModelByName(this->modelName);
     // if the model name is not found
     if (!this->model)
     {
+      std::cout << "the model name is not found" << std::endl;
       // look for a model with a name that starts with our model name
       for (unsigned int i = 0; i < this->world->ModelCount(); ++i)
       {
@@ -208,11 +210,13 @@ bool JointEventSource::LookupJoint()
   // if we have a model, let's look for the joint (full joint name only)
   if (this->model && !this->joint)
   {
+    std::cout << "look for the joint" << std::endl;
     this->joint = this->model->GetJoint(this->jointName);
   }
 
   if (!this->model || !this->joint)
   {
+    std::cout << "???" << std::endl;
     return false;
   }
   return true;
