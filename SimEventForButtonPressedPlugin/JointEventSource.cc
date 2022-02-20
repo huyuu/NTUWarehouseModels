@@ -121,6 +121,12 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->world->Name());
   this->msgPub = this->node->Advertise<gazebo::msgs::GzString>(topic);
+
+  if (_sdf->HasElement("msg_data"))
+  {
+    std::string data = _sdf->Get<std::string>("msg_data");
+    this->msg.set_data(data);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -276,7 +282,7 @@ void JointEventSource::Update()
 
   // check if the state has changed
   bool currentState = value >= this->min && value <= this->max;
-  if (oldState != currentState)
+  if (oldState != currentState && currentState == true)
   {
     this->isTriggered = currentState;
     std::string json = "{";
@@ -303,12 +309,10 @@ void JointEventSource::Update()
     json += "}";
     this->Emit(json);
 
-    const char _data = this->isTriggered ? '1' : '0';
     // publish msg about floor info
-    msg.set_data(&_data);
-    this->msgPub->Publish(msg);
+    this->msgPub->Publish(this->msg);
     std::cout << "floor: ";
-    std::cout << _data;
+    std::cout << this->msg;
     std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
   }
 }
