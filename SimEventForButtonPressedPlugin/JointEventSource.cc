@@ -283,7 +283,7 @@ void JointEventSource::Update()
 
   // check if the state has changed
   bool currentState = value >= this->min && value <= this->max;
-  if (oldState != currentState && currentState == true)
+  if (oldState != currentState)
   {
     this->isTriggered = currentState;
     // std::string json = "{";
@@ -310,10 +310,13 @@ void JointEventSource::Update()
     // json += "}";
     // this->Emit(json);
 
-    // publish msg about floor info
-    this->msgPub->Publish(this->msg);
-    std::cout << "floor: ";
-    std::cout << this->msg_data;
-    std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
+    if (currentState) {
+      // publish msg about floor info
+      this->msgPub->Publish(this->msg);
+      std::cout << "floor: ";
+      std::cout << this->msg_data;
+      std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
+    }
+
   }
 }
