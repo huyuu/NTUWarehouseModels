@@ -222,8 +222,10 @@ bool JointEventSource::LookupJoint()
 void JointEventSource::Update()
 {
   // std::cout << "Entered Update" << std::endl;
-  if (!this->LookupJoint())
+  if (!this->LookupJoint()) {
+    std::cout << "here!" << std::endl;
     return;
+  }
 
   bool oldState = this->isTriggered;
   double value = 0;
