@@ -283,33 +283,32 @@ void JointEventSource::Update()
 
   // check if the state has changed
   bool currentState = value >= this->min && value <= this->max;
-  // if (oldState != currentState && currentState == true)
-  if (currentState == true)
+  if (oldState != currentState && currentState == true)
   {
     this->isTriggered = currentState;
-    std::string json = "{";
-    if (currentState)
-    {
-      json += "\"state\":\"in_range\",";
-    }
-    else
-    {
-      json += "\"state\":\"out_of_range\",";
-    }
-    json += "\"joint\":\"" + this->jointName + "\", ";
-    json += "\"position\":\"" + std::to_string(position) + "\", ";
-    json += "\"velocity\":\"" + std::to_string(velocity) + "\", ";
-    json += "\"force\":\"" + std::to_string(force) + "\", ";
-    if (this->range == ANGLE)
-      json += "\"angle\":\"" + std::to_string(angle) + "\", ";
-
-    json += "\"range\":\"" + this->RangeAsString() + "\", ";
-    json += "\"min\":\"" + std::to_string(this->min) + "\", ";
-    json += "\"max\":\"" + std::to_string(this->max) + "\", ";
-    json += "\"value\":\"" + std::to_string(value) + "\", ";
-    json += "\"model\":\"" + this->modelName + "\"";
-    json += "}";
-    this->Emit(json);
+    // std::string json = "{";
+    // if (currentState)
+    // {
+    //   json += "\"state\":\"in_range\",";
+    // }
+    // else
+    // {
+    //   json += "\"state\":\"out_of_range\",";
+    // }
+    // json += "\"joint\":\"" + this->jointName + "\", ";
+    // json += "\"position\":\"" + std::to_string(position) + "\", ";
+    // json += "\"velocity\":\"" + std::to_string(velocity) + "\", ";
+    // json += "\"force\":\"" + std::to_string(force) + "\", ";
+    // if (this->range == ANGLE)
+    //   json += "\"angle\":\"" + std::to_string(angle) + "\", ";
+    //
+    // json += "\"range\":\"" + this->RangeAsString() + "\", ";
+    // json += "\"min\":\"" + std::to_string(this->min) + "\", ";
+    // json += "\"max\":\"" + std::to_string(this->max) + "\", ";
+    // json += "\"value\":\"" + std::to_string(value) + "\", ";
+    // json += "\"model\":\"" + this->modelName + "\"";
+    // json += "}";
+    // this->Emit(json);
 
     // publish msg about floor info
     this->msgPub->Publish(this->msg);
