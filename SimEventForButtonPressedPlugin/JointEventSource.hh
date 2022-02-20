@@ -143,6 +143,8 @@ namespace gazebo
 
     /// \brief String message that is transmitted when an event occurs.
     private: msgs::GzString msg;
+
+    private std::string msg_data;
   };
 }
 

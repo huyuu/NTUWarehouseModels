@@ -126,6 +126,7 @@ void JointEventSource::Load(const sdf::ElementPtr _sdf)
   {
     std::string data = _sdf->Get<std::string>("msg_data");
     this->msg.set_data(data);
+    this->msg_data = data;
   }
 }
 
@@ -312,7 +313,7 @@ void JointEventSource::Update()
     // publish msg about floor info
     this->msgPub->Publish(this->msg);
     std::cout << "floor: ";
-    std::cout << dynamic_cast<std::string>(this->msg);
+    std::cout << this->msg_data;
     std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
   }
 }
