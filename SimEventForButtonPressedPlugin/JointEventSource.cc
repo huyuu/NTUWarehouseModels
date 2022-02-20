@@ -283,7 +283,8 @@ void JointEventSource::Update()
 
   // check if the state has changed
   bool currentState = value >= this->min && value <= this->max;
-  if (oldState != currentState && currentState == true)
+  // if (oldState != currentState && currentState == true)
+  if (currentState == true)
   {
     this->isTriggered = currentState;
     std::string json = "{";
