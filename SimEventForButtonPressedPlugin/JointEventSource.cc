@@ -261,6 +261,7 @@ void JointEventSource::Update()
     default:
       // we can't do anything useful. Hopefully the error message during load
       // has attracted the attention of the user.
+      std::cout << "Return due to default" << std::endl;
       return;
   }
 
