@@ -310,9 +310,10 @@ void JointEventSource::Update()
     this->Emit(json);
 
     // publish msg about floor info
+    std::string data = _sdf->Get<std::string>("msg_data");
     this->msgPub->Publish(this->msg);
     std::cout << "floor: ";
-    std::cout << this->msg;
+    std::cout << data;
     std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
   }
 }
