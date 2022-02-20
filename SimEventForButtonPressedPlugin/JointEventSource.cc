@@ -201,8 +201,11 @@ bool JointEventSource::LookupJoint()
         size_t pos = m->GetName().find(this->modelName);
         if (pos == 0)
         {
+          std::cout << "Model Found!" << std::endl;
           this->model = m;
           break;
+        } else {
+          std::cout << "unmatched: " << m->GetName() << " != " << this->modelName << std::endl;
         }
       }
     }
