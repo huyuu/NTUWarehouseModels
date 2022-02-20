@@ -309,5 +309,5 @@ void JointEventSource::Update()
   this->msgPub->Publish(msg);
   std::cout << "floor: ";
   std::cout << _data;
-  std::cout << " published!" << std::endl;
+  std::cout << " published! since angle = " << std::to_string(angle) << std::endl;
 }
