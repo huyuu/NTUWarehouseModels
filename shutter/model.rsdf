@@ -62,7 +62,7 @@
 
   <link name='pillar_minus'>
     <self_collide>true</self_collide>
-    <pose>0 <%=-wallLength/2%> <%=pillarHeight/2%> 0 0 0</pose>
+    <pose>0 <%=-wallLength/2 - pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
@@ -95,7 +95,7 @@
 
   <link name='pillar_plus'>
     <self_collide>true</self_collide>
-    <pose>0 <%=wallLength/2%> <%=pillarHeight/2%> 0 0 0</pose>
+    <pose>0 <%=wallLength/2 + pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
@@ -137,7 +137,7 @@
       <upper><%=pillarHeight%></upper>
     </limit>
   </joint>
-  
+
 
   <joint name='movableWall_plusPillar' type="prismatic">
     <parent>supportLShape</parent>
