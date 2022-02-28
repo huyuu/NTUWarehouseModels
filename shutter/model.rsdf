@@ -126,8 +126,8 @@
   </link>
 
   <joint name='movableWall_minusPillar' type="prismatic">
-    <parent>supportLShape</parent>
-    <child>wheel</child>
+    <parent>pillar_minus</parent>
+    <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
     <axis>
       <xyz>0 0 1</xyz>
@@ -140,8 +140,8 @@
 
 
   <joint name='movableWall_plusPillar' type="prismatic">
-    <parent>supportLShape</parent>
-    <child>wheel</child>
+    <parent>pillar_plus</parent>
+    <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
     <axis>
       <xyz>0 0 -1</xyz>
