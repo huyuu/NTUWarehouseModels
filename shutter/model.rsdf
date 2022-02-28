@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # movableWall
+  wallHeight = 6.0 # [m]
+  wallLength = 4.0 # [m]
+  wallThickness = 0.3
+
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+  # pillar
+  pillarHeight = wallHeight
+  pillarWidth = wallThickness
+%>
+
+
+<sdf version='1.6'>
+<model name="shutter">
+  <static>false</static>
+
+  <link name='movableWall'>
+    <self_collide>true</self_collide>
+    <kinematic>false</kinematic>
+    <pose>0 0 <%=wallHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallThickness%> <%=wallLength%> <%=wallHeight%></size>
+        </box>
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=wallThickness%> <%=wallLength%> <%=wallHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='pillar_minus'>
+    <self_collide>true</self_collide>
+    <pose>0 <%=-wallLength/2%> <%=pillarHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=pillarWidth%> <%=pillarWidth%> <%=pillarHeight%></size>
+        </box>
+      </geometry>
+      <!-- http://gazebosim.org/tutorials?tut=friction -->
+      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=pillarWidth%> <%=pillarWidth%> <%=pillarHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+
+  <link name='pillar_plus'>
+    <self_collide>true</self_collide>
+    <pose>0 <%=wallLength/2%> <%=pillarHeight/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=pillarWidth%> <%=pillarWidth%> <%=pillarHeight%></size>
+        </box>
+      </geometry>
+      <!-- http://gazebosim.org/tutorials?tut=friction -->
+      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=pillarWidth%> <%=pillarWidth%> <%=pillarHeight%></size>
+        </box>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name='movableWall_minusPillar' type="prismatic">
+    <parent>supportLShape</parent>
+    <child>wheel</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+      <xyz>0 0 1</xyz>
+    </axis>
+    <limit>
+      <lower>0</lower>
+      <upper><%=pillarHeight%></upper>
+    </limit>
+  </joint>
+  
+
+  <joint name='movableWall_plusPillar' type="prismatic">
+    <parent>supportLShape</parent>
+    <child>wheel</child>
+    <pose>0 0 0 0 0 0</pose>
+    <axis>
+      <xyz>0 0 -1</xyz>
+    </axis>
+    <limit>
+      <lower>0</lower>
+      <upper><%=pillarHeight%></upper>
+    </limit>
+  </joint>
+
+
+</model>
+</sdf>
