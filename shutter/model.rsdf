@@ -13,6 +13,8 @@
   wallLength = 4.0 # [m]
   wallThickness = 0.3
 
+  pillarWeight = 10000
+
 %>
 
 
@@ -62,7 +64,6 @@
 
   <link name='pillar_minus'>
     <self_collide>true</self_collide>
-    <kinematic>true</kinematic>
     <pose>0 <%=-wallLength/2 - pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
@@ -91,12 +92,15 @@
         </box>
       </geometry>
     </visual>
+
+    <inertial>
+      <mass><%=pillarWeight%></mass>
+    </inertial>
   </link>
 
 
   <link name='pillar_plus'>
     <self_collide>true</self_collide>
-    <kinematic>true</kinematic>
     <pose>0 <%=wallLength/2 + pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
@@ -125,6 +129,10 @@
         </box>
       </geometry>
     </visual>
+
+    <inertial>
+      <mass><%=pillarWeight%></mass>
+    </inertial>
   </link>
 
   <joint name='movableWall_minusPillar' type="prismatic">
