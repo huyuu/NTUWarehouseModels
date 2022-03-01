@@ -154,7 +154,7 @@
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
     <axis>
-      <xyz>0 0 -1</xyz>
+      <xyz>0 0 1</xyz>
       <limit>
         <lower>0</lower>
         <upper><%=pillarHeight%></upper>
