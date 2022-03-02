@@ -180,13 +180,13 @@
         <upper><%=pillarHeight%></upper>
       </limit>
 
-      <dynamics>
+      <!-- <dynamics>
         <damping>50</damping>
-      </dynamics>
+      </dynamics> -->
     </axis>
     <physics>
       <ode>
-        <implicit_spring_damper>1</implicit_spring_damper>
+        <implicit_spring_damper>0</implicit_spring_damper>
       </ode>
     </physics>
   </joint>
@@ -195,7 +195,7 @@
   <!-- Plugin to control the shutter -->
   <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
   <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-    <lift_joint>movableWall_plusPillar</lift_joint>
+    <lift_joint>lift</lift_joint>
     <floor_height><%=wallHeight%></floor_height>
     <topic>~/shutter</topic>
   </plugin>
