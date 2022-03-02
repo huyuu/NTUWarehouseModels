@@ -106,6 +106,11 @@
   standingLeverCenterX = templateElevatorCenterX - 4
   standingLeverCenterY = templateElevatorCenterY - 2
   standingLeverCenterZ = 0.5
+
+  # standingLeverForShutter
+  standingLeverForShutterCenterX = templateElevatorCenterX - 4
+  standingLeverForShutterCenterY = templateElevatorCenterY - 20
+  standingLeverForShutterCenterZ = 0.5
 %>
 
 
@@ -556,149 +561,22 @@
 
 
 
-  <!-- The Shutter -->
-  <model name="elevator">
-    <pose><%=templateElevatorCenterX+0%> <%=templateElevatorCenterY+0%> 0.075 0 0 <%=Math::PI/(-2)%></pose>
-    <link name="link">
-      <inertial>
-        <mass>800</mass>
-      </inertial>
 
-      <collision name="floor_collision">
-        <geometry>
-          <box>
-            <size>2.25 2.25 0.15</size>
-          </box>
-        </geometry>
-      </collision>
-      <visual name="floor_visual">
-        <geometry>
-          <box>
-            <size>2.25 2.25 0.15</size>
-          </box>
-        </geometry>
-      </visual>
 
-      <!-- wall1_collision is the wall to the right of the door, when
-           facing the door -->
-      <collision name="wall1_collision">
-        <pose>1.0745 0.5725 1.125 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 1.15 2.25</size>
-          </box>
-        </geometry>
-      </collision>
-      <visual name="wall1_visual">
-        <pose>1.0745 0.5725 1.125 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 1.15 2.25</size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Red</name>
-          </script>
-        </material>
-      </visual>
+  <!-- Include standingLever -->
+  <include>
+    <uri>model://standingLever</uri>
+    <name>standingLever_forShutter</name>
+    <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY%> <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
+  </include>
 
-      <!-- wall2_collision is the wall to the left of the door, when
-           facing the door -->
-      <collision name="wall2_collision">
-        <pose>1.0745 -1.0625 1.125 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.125 2.25</size>
-          </box>
-        </geometry>
-      </collision>
-      <visual name="wall2_visual">
-        <pose>1.0745 -1.0625 1.125 0 0 0</pose>
-        <geometry>
-          <box>
-            <size>0.1 0.125 2.25</size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Red</name>
-          </script>
-        </material>
-      </visual>
-    </link>
+  <include>
+    <uri>model://shutter</uri>
+    <name>shutter</name>
+    <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY - 6%> <%=standingLeverForShutterCenterZ%> 0 0 0</pose>
+  </include>
 
-    <link name="door">
-      <pose>1.0745 -0.5 1.125 0 0 0</pose>
-      <collision name="collision">
-        <geometry>
-          <box>
-            <size>0.08 1.0 2.25</size>
-          </box>
-        </geometry>
-      </collision>
-      <visual name="visual">
-        <geometry>
-          <box>
-            <size>0.08 1.0 2.25</size>
-          </box>
-        </geometry>
-      </visual>
-    </link>
 
-    <joint name="door" type="prismatic">
-      <parent>link</parent>
-      <child>door</child>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>1</upper>
-          <effort>10</effort>
-        </limit>
-
-        <dynamics>
-          <damping>2</damping>
-        </dynamics>
-      </axis>
-    </joint>
-
-    <joint name="lift" type="prismatic">
-      <parent>world</parent>
-      <child>link</child>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper>10</upper>
-          <effort>100000</effort>
-        </limit>
-
-        <dynamics>
-          <damping>50</damping>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
-    </joint>
-
-    <!-- Plugin to control the elevator -->
-    <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
-    <plugin filename="libElevatorPlugin.so" name="elevator_plugin">
-      <lift_joint>elevator::lift</lift_joint>
-      <door_joint>elevator::door</door_joint>
-      <floor_height><%=templateElevatorHeight+0.075%></floor_height>
-
-      <!-- Time the elevator door will stay open in seconds -->
-      <door_wait_time>5</door_wait_time>
-
-      <!-- This topic is used to control the elevator -->
-      <topic>~/elevator</topic>
-    </plugin>
-  </model>
 
 
   <!-- include all the shelves -->
