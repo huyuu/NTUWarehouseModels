@@ -63,7 +63,7 @@ void ShutterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (this->dataPtr->sdf->HasElement("topic"))
     shutterTopic = this->dataPtr->sdf->Get<std::string>("topic");
 
-  float floorHeight = 3.0;
+  float floorHeight = 6.0;
   if (this->dataPtr->sdf->HasElement("floor_height"))
     floorHeight = this->dataPtr->sdf->Get<float>("floor_height");
   else
