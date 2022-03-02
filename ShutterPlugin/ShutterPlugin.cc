@@ -27,8 +27,8 @@
 #include <gazebo/physics/Model.hh>
 #include <gazebo/physics/Joint.hh>
 
-#include "plugins/ShutterPluginPrivate.hh"
-#include "plugins/ShutterPlugin.hh"
+#include "ShutterPluginPrivate.hh"
+#include "ShutterPlugin.hh"
 
 using namespace gazebo;
 
