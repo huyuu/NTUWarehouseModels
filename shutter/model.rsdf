@@ -107,6 +107,7 @@
 
   <link name='pillar_plus'>
     <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
     <pose>0 <%=wallLength/2 + pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
@@ -169,7 +170,7 @@
   </joint>
 
 
-  <!-- <joint name="lift" type="prismatic">
+  <joint name="lift" type="prismatic">
     <parent>world</parent>
     <child>movableWall</child>
     <axis>
@@ -188,15 +189,15 @@
         <implicit_spring_damper>1</implicit_spring_damper>
       </ode>
     </physics>
-  </joint> -->
+  </joint>
 
 
   <!-- Plugin to control the shutter -->
   <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
-  <!-- <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+  <plugin filename="libShutterPlugin.so" name="shutter_plugin">
     <lift_joint>movableWall_plusPillar</lift_joint>
     <floor_height><%=wallHeight%></floor_height>
     <topic>~/shutter</topic>
-  </plugin> -->
+  </plugin>
 </model>
 </sdf>
