@@ -38,7 +38,6 @@ GZ_REGISTER_MODEL_PLUGIN(ShutterPlugin)
 ShutterPlugin::ShutterPlugin()
   : dataPtr(new ShutterPluginPrivate)
 {
-  this->dataPtr->doorController = NULL;
   this->dataPtr->liftController = NULL;
 }
 
@@ -46,9 +45,6 @@ ShutterPlugin::ShutterPlugin()
 ShutterPlugin::~ShutterPlugin()
 {
   this->dataPtr->updateConnection.reset();
-
-  delete this->dataPtr->doorController;
-  this->dataPtr->doorController = NULL;
 
   delete this->dataPtr->liftController;
   this->dataPtr->liftController = NULL;
@@ -104,11 +100,11 @@ void ShutterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   // Subscribe to the elevator topic.
   this->dataPtr->elevatorSub = this->dataPtr->node->Subscribe(shutterTopic,
-      &ShutterPlugin::OnElevator, this);
+      &ShutterPlugin::OnShutter, this);
 }
 
 /////////////////////////////////////////////////
-void ShutterPlugin::OnElevator(ConstGzStringPtr &_msg)
+void ShutterPlugin::OnShutter(ConstGzStringPtr &_msg)
 {
   // Currently we only expect the message to contain a floor to move to.
   try
