@@ -58,6 +58,11 @@
           <size><%=wallThickness%> <%=wallLength%> <%=wallHeight%></size>
         </box>
       </geometry>
+      <material>
+        <script>
+          <name>Gazebo/Red</name>
+        </script>
+      </material>
     </visual>
   </link>
 
@@ -135,7 +140,7 @@
     </inertial>
   </link>
 
-  <joint name='movableWall_minusPillar' type="prismatic">
+  <!-- <joint name='movableWall_minusPillar' type="prismatic">
     <parent>pillar_minus</parent>
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
@@ -146,10 +151,10 @@
         <upper><%=pillarHeight%></upper>
       </limit>
     </axis>
-  </joint>
+  </joint> -->
 
 
-  <joint name='movableWall_plusPillar' type="prismatic">
+  <!-- <joint name='movableWall_plusPillar' type="prismatic">
     <parent>pillar_plus</parent>
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
@@ -160,8 +165,38 @@
         <upper><%=pillarHeight%></upper>
       </limit>
     </axis>
+  </joint> -->
+
+
+  <joint name="lift" type="prismatic">
+    <parent>world</parent>
+    <child>movableWall</child>
+    <axis>
+      <xyz>0 0 1</xyz>
+      <limit>
+        <lower>0</lower>
+        <upper><%=pillarHeight%></upper>
+      </limit>
+
+      <dynamics>
+        <damping>50</damping>
+      </dynamics>
+    </axis>
+    <physics>
+      <ode>
+        <implicit_spring_damper>1</implicit_spring_damper>
+      </ode>
+    </physics>
   </joint>
 
 
+  <!-- Plugin to control the shutter -->
+  <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
+  <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+    <lift_joint>shutter::lift</lift_joint>
+    <floor_height><%=wallHeight%></floor_height>
+    <!-- This topic is used to control the elevator -->
+    <topic>~/shutter</topic>
+  </plugin>
 </model>
 </sdf>
