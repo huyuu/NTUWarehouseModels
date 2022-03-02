@@ -1,4 +1,5 @@
 
+/// https://github.com/osrf/gazebo/tree/gazebo11/plugins
 
 #ifndef GAZEBO_PLUGINS_SHUTTERPLUGIN_HH_
 #define GAZEBO_PLUGINS_SHUTTERPLUGIN_HH_
