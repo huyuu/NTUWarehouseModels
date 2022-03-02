@@ -108,8 +108,8 @@
   standingLeverCenterZ = 0.5
 
   # standingLeverForShutter
-  standingLeverForShutterCenterX = templateElevatorCenterX - 4
-  standingLeverForShutterCenterY = templateElevatorCenterY - 20
+  standingLeverForShutterCenterX = standingLeverCenterX
+  standingLeverForShutterCenterY = standingLeverCenterY - 10
   standingLeverForShutterCenterZ = 0.5
 %>
 
@@ -573,7 +573,7 @@
   <include>
     <uri>model://shutter</uri>
     <name>shutter</name>
-    <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY - 6%> <%=standingLeverForShutterCenterZ%> 0 0 0</pose>
+    <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY%> <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
   </include>
 
 
