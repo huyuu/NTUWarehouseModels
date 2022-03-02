@@ -577,6 +577,38 @@
   </include>
 
 
+  <!-- ButtonPressedEventPlugin for Shutter -->
+  <plugin filename="libSimEventForButtonPressedPlugin.so" name="shutter_event_plugin_floor0">
+    <event>
+      <name>ButtonPressedEvent_floor0</name>
+      <type>joint</type>
+      <model>standingLeverForShutter</model>
+      <joint>standingLeverForShutter::supportLShape_wheel</joint>
+      <range>
+        <type>normalized_angle</type>
+        <min><%=-Math::PI/2.0 - Math::PI/12.0%></min>
+        <max><%=-Math::PI/2.0%></max>
+      </range>
+      <topic>~/shutter</topic>
+      <msg_data>0</msg_data>
+    </event>
+  </plugin>
+
+  <plugin filename="libSimEventForButtonPressedPlugin.so" name="shutter_event_plugin_floor1">
+    <event>
+      <name>ButtonPressedEvent_floor1</name>
+      <type>joint</type>
+      <model>standingLeverForShutter</model>
+      <joint>standingLeverForShutter::supportLShape_wheel</joint>
+      <range>
+        <type>normalized_angle</type>
+        <min>0</min>
+        <max><%=Math::PI/(12.0)%></max>
+      </range>
+      <topic>~/shutter</topic>
+      <msg_data>1</msg_data>
+    </event>
+  </plugin>
 
 
   <!-- include all the shelves -->
