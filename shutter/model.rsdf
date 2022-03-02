@@ -69,6 +69,7 @@
 
   <link name='pillar_minus'>
     <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
     <pose>0 <%=-wallLength/2 - pillarWidth/2%> <%=pillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
@@ -140,7 +141,7 @@
     </inertial>
   </link>
 
-  <!-- <joint name='movableWall_minusPillar' type="prismatic">
+  <joint name='movableWall_minusPillar' type="prismatic">
     <parent>pillar_minus</parent>
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
@@ -151,10 +152,10 @@
         <upper><%=pillarHeight%></upper>
       </limit>
     </axis>
-  </joint> -->
+  </joint>
 
 
-  <!-- <joint name='movableWall_plusPillar' type="prismatic">
+  <joint name='movableWall_plusPillar' type="prismatic">
     <parent>pillar_plus</parent>
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
@@ -165,7 +166,7 @@
         <upper><%=pillarHeight%></upper>
       </limit>
     </axis>
-  </joint> -->
+  </joint>
 
 
   <joint name="lift" type="prismatic">
