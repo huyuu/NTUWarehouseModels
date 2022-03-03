@@ -616,6 +616,14 @@
     </event>
   </plugin>
 
+  <!-- Plugin to control the shutter -->
+  <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
+  <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+    <lift_joint>lift</lift_joint>
+    <floor_height><%=wallHeight%></floor_height>
+    <topic>~/shutter</topic>
+  </plugin>
+  
 
   <!-- include all the shelves -->
   <% for columnInfo in columnInfos %>
