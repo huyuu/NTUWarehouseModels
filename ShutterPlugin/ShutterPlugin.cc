@@ -274,6 +274,7 @@ bool ShutterPluginPrivate::LiftController::Update(
 void ShutterPluginPrivate::LiftController::SetFloor(int _floor)
 {
   this->floor = _floor;
+  std::cout << "Set shutter to floor: " << _floor << std::endl;
 }
 
 /////////////////////////////////////////////////
