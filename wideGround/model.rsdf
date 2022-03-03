@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.guyuehome.com/7115 -->
+<!-- https://thevapourtrails.wordpress.com/2017/05/22/algorithmically-generating-worlds-in-gazebo/ -->
+
+
+<!-- Variables -->
+<!-- MARK: - Primary Variables -->
+<!-- https://qiita.com/yohm/items/91b60cde9a357ad4a3e5 -->
+<!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
+<%
+  # ground
+  groundWide = 200
+  groundThickness = 0.01
+%>
+
+
+<!-- MARK: - Derived Secondary Variables -->
+<%
+%>
+
+
+<sdf version='1.6'>
+<model name="wideGround">
+  <static>true</static>
+  <link name='_ground'>
+    <self_collide>true</self_collide>
+    <kinematic>true</kinematic>
+    <pose>0 0 <%=-groundThickness/2%> 0 0 0</pose>
+    <collision name='collision'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=groundWidth%> <%=groundWidth%> <%=groundThickness%></size>
+        </box>
+      </geometry>
+      <surface>
+        <friction>
+          <ode>
+            <mu>0.8</mu>
+            <mu2>0.8</mu2>
+          </ode>
+        </friction>
+      </surface>
+    </collision>
+
+    <visual name='visual'>
+      <pose>0 0 0 0 0 0</pose>
+      <geometry>
+        <box>
+          <size><%=groundWidth%> <%=groundWidth%> <%=groundThickness%></size>
+        </box>
+      </geometry>
+      <material>
+        <script>
+          <name>Gazebo/Blue</name>
+        </script>
+      </material>
+    </visual>
+  </link>
+
+
+</model>
+</sdf>

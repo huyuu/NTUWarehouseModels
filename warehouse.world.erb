@@ -211,7 +211,7 @@
 
   <!-- include ground plane -->
   <include>
-    <uri>model://ground_plane</uri>
+    <uri>model://wideGround</uri>
   </include>
 
   <include>
@@ -589,191 +589,19 @@
     <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY%> <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
   </include>
 
-  <!-- <include>
+  <include>
     <uri>model://shutter</uri>
     <name>shutter</name>
     <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
+    <!-- Plugin to control the shutter -->
+    <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
     <plugin filename="libShutterPlugin.so" name="shutter_plugin">
       <lift_joint>shutter::lift</lift_joint>
       <floor_height><%=shutterHeight%></floor_height>
       <topic>~/shutter</topic>
     </plugin>
-  </include> -->
+  </include>
 
-  <model name="shutter">
-    <static>false</static>
-
-    <link name='movableWall'>
-      <self_collide>true</self_collide>
-      <kinematic>false</kinematic>
-      <pose>0 0 <%=shutterWallHeight/2%> 0 0 0</pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Red</name>
-          </script>
-        </material>
-      </visual>
-    </link>
-
-
-    <link name='shutterPillar_minus'>
-      <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
-      <pose>0 <%=-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-        <!-- http://gazebosim.org/tutorials?tut=friction -->
-        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-      </visual>
-
-      <inertial>
-        <mass><%=shutterPillarWeight%></mass>
-      </inertial>
-    </link>
-
-
-    <link name='shutterPillar_plus'>
-      <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
-      <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-        <!-- http://gazebosim.org/tutorials?tut=friction -->
-        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-      </visual>
-
-      <inertial>
-        <mass><%=shutterPillarWeight%></mass>
-      </inertial>
-    </link>
-
-
-    <joint name='movableWall_minusShutterPillar' type="prismatic">
-      <parent>shutterPillar_minus</parent>
-      <child>movableWall</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-      </axis>
-    </joint>
-
-
-    <joint name='movableWall_plusShutterPillar' type="prismatic">
-      <parent>shutterPillar_plus</parent>
-      <child>movableWall</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-      </axis>
-    </joint>
-
-
-    <joint name="lift" type="prismatic">
-      <parent>world</parent>
-      <child>movableWall</child>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-
-        <dynamics>
-          <damping>50</damping>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
-    </joint>
-
-    <!-- Plugin to control the shutter -->
-    <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
-    <!-- <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-      <lift_joint>lift</lift_joint>
-      <floor_height><%=shutterHeight%></floor_height>
-      <topic>~/shutter</topic>
-    </plugin> -->
-
-  </model>
 
 
   <!-- ButtonPressedEventPlugin for Shutter -->
