@@ -10,6 +10,7 @@
 <%
   # movableWall
   wallHeight = 6.0 # [m]
+  shutterHeight = wallHeight
   wallLength = 4.0 # [m]
   wallThickness = 0.3
 
@@ -142,6 +143,7 @@
     </inertial>
   </link>
 
+
   <joint name='movableWall_minusPillar' type="prismatic">
     <parent>pillar_minus</parent>
     <child>movableWall</child>
@@ -190,5 +192,14 @@
       </ode>
     </physics>
   </joint>
+
+  <!-- Plugin to control the shutter -->
+  <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
+  <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+    <lift_joint>lift</lift_joint>
+    <floor_height><%=shutterHeight%></floor_height>
+    <topic>~/shutter</topic>
+  </plugin>
+
 </model>
 </sdf>
