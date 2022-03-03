@@ -581,6 +581,13 @@
     <uri>model://shutter</uri>
     <name>shutter</name>
     <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
+    <!-- Plugin to control the shutter -->
+    <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
+    <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+      <lift_joint>shutter::lift</lift_joint>
+      <floor_height><%=shutterHeight%></floor_height>
+      <topic>~/shutter</topic>
+    </plugin>
   </include>
 
 
@@ -616,14 +623,6 @@
       <msg_data>1</msg_data>
     </event>
   </plugin>
-
-  <!-- Plugin to control the shutter -->
-  <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
-  <!-- <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-    <lift_joint>shutter::lift</lift_joint>
-    <floor_height><%=shutterHeight%></floor_height>
-    <topic>~/shutter</topic>
-  </plugin> -->
 
 
   <!-- include all the shelves -->
