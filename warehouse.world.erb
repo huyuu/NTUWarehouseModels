@@ -590,26 +590,26 @@
     <pose>-5 -5 <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
   </include>
 
-  <!-- <include>
+  <include>
     <uri>model://shutter</uri>
     <name>shutter</name>
-    <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
+    <pose><%=shutterCenterX%> <%=shutterCenterY%> <%=shutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
 
     <plugin filename="libShutterPlugin.so" name="shutter_plugin">
       <lift_joint>shutter::lift</lift_joint>
       <floor_height><%=shutterHeight%></floor_height>
       <topic>~/shutter</topic>
     </plugin>
-  </include> -->
+  </include>
 
 
-  <model name="shutter">
+  <!-- <model name="shutter">
     <static>false</static>
 
     <link name='movableWall'>
       <self_collide>true</self_collide>
       <kinematic>false</kinematic>
-      <pose>0 0 <%=shutterWallHeight/2%> 0 0 0</pose>
+      <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -646,7 +646,7 @@
     <link name='shutterPillar_minus'>
       <self_collide>true</self_collide>
       <kinematic>true</kinematic>
-      <pose>0 <%=-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
+      <pose><%=shutterCenterX%> <%=shutterCenterY-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 <%=Math::PI/(-2)%></pose>
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -654,8 +654,6 @@
             <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
           </box>
         </geometry>
-        <!-- http://gazebosim.org/tutorials?tut=friction -->
-        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
         <surface>
           <friction>
             <ode>
@@ -684,6 +682,7 @@
     <link name='shutterPillar_plus'>
       <self_collide>true</self_collide>
       <kinematic>true</kinematic>
+
       <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
       <collision name='collision'>
         <pose>0 0 0 0 0 0</pose>
@@ -692,8 +691,6 @@
             <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
           </box>
         </geometry>
-        <!-- http://gazebosim.org/tutorials?tut=friction -->
-        <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
         <surface>
           <friction>
             <ode>
@@ -776,7 +773,7 @@
       <topic>~/shutter</topic>
     </plugin> -->
 
-  </model>
+  </model> -->
 
 
 
