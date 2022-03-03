@@ -9,10 +9,10 @@
 <!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
   # movableWall
-  wallHeight = 6.0 # [m]
-  shutterHeight = wallHeight
-  wallLength = 4.0 # [m]
-  wallThickness = 0.3
+  shutterWallHeight = 6.0 # [m]
+  shutterHeight = shutterWallHeight
+  shutterWallLength = 4.0 # [m]
+  shutterWallThickness = 0.3
 
   shutterPillarWeight = 10000
 
@@ -22,8 +22,8 @@
 <!-- MARK: - Derived Secondary Variables -->
 <%
   # shutterPillar
-  shutterPillarHeight = wallHeight
-  shutterPillarWidth = wallThickness
+  shutterPillarHeight = shutterWallHeight
+  shutterPillarWidth = shutterWallThickness
 %>
 
 
@@ -34,12 +34,12 @@
   <link name='movableWall'>
     <self_collide>true</self_collide>
     <kinematic>false</kinematic>
-    <pose>0 0 <%=wallHeight/2%> 0 0 0</pose>
+    <pose>0 0 <%=shutterWallHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=wallThickness%> <%=wallLength%> <%=wallHeight%></size>
+          <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
         </box>
       </geometry>
       <surface>
@@ -56,7 +56,7 @@
       <pose>0 0 0 0 0 0</pose>
       <geometry>
         <box>
-          <size><%=wallThickness%> <%=wallLength%> <%=wallHeight%></size>
+          <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
         </box>
       </geometry>
       <material>
@@ -71,7 +71,7 @@
   <link name='shutterPillar_minus'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose>0 <%=-wallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
+    <pose>0 <%=-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
@@ -109,7 +109,7 @@
   <link name='shutterPillar_plus'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
-    <pose>0 <%=wallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
+    <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
     <collision name='collision'>
       <pose>0 0 0 0 0 0</pose>
       <geometry>
