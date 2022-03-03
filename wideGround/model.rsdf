@@ -9,7 +9,7 @@
 <!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
   # ground
-  groundWide = 200
+  groundWidth = 200
   groundThickness = 0.01
 %>
 
