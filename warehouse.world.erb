@@ -109,9 +109,10 @@
 
 
   # shutter
+  shutterHeight = 6.0
   shutterCenterX = templateElevatorCenterX - 10
   shutterCenterY = templateElevatorCenterY
-  shutterCenterZ = 3.0
+  shutterCenterZ = shutterHeight / 3.0
 
   # standingLeverForShutter
   standingLeverForShutterCenterX = shutterCenterX - 2
@@ -619,11 +620,11 @@
   <!-- Plugin to control the shutter -->
   <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
   <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-    <lift_joint>lift</lift_joint>
-    <floor_height><%=wallHeight%></floor_height>
+    <lift_joint>shutter::lift</lift_joint>
+    <floor_height><%=shutterHeight%></floor_height>
     <topic>~/shutter</topic>
   </plugin>
-  
+
 
   <!-- include all the shelves -->
   <% for columnInfo in columnInfos %>
