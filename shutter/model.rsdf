@@ -104,7 +104,7 @@
   </link> -->
 
 
-  <!-- <link name='shutterPillar_plus'>
+  <link name='shutterPillar_plus'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
     <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
@@ -137,7 +137,7 @@
     <inertial>
       <mass><%=shutterPillarWeight%></mass>
     </inertial>
-  </link> -->
+  </link>
 
 
   <!-- <joint name='movableWall_minusShutterPillar' type="prismatic">
@@ -154,7 +154,7 @@
   </joint> -->
 
 
-  <!-- <joint name='movableWall_plusShutterPillar' type="prismatic">
+  <joint name='movableWall_plusShutterPillar' type="prismatic">
     <parent>shutterPillar_plus</parent>
     <child>movableWall</child>
     <pose>0 0 0 0 0 0</pose>
@@ -165,10 +165,10 @@
         <upper><%=shutterPillarHeight%></upper>
       </limit>
     </axis>
-  </joint> -->
+  </joint>
 
 
-  <joint name="lift" type="prismatic">
+  <!-- <joint name="lift" type="prismatic">
     <parent>world</parent>
     <child>movableWall</child>
     <axis>
@@ -187,12 +187,12 @@
         <implicit_spring_damper>1</implicit_spring_damper>
       </ode>
     </physics>
-  </joint>
+  </joint> -->
 
   <!-- Plugin to control the shutter -->
   <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
   <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-    <lift_joint>lift</lift_joint>
+    <lift_joint>shutterPillar_plus</lift_joint>
     <floor_height><%=shutterHeight%></floor_height>
     <topic>~/shutter</topic>
   </plugin>
