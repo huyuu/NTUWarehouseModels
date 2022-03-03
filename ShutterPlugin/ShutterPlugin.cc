@@ -81,7 +81,7 @@ void ShutterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (!this->dataPtr->liftJoint)
   {
     gzerr << "Unable to find lift joint[" << liftJointName << "].\n";
-    gzerr << "The elevator plugin is disabled.\n";
+    gzerr << "The shutter plugin is disabled.\n";
     return;
   }
 
@@ -109,6 +109,7 @@ void ShutterPlugin::OnShutter(ConstGzStringPtr &_msg)
   // Currently we only expect the message to contain a floor to move to.
   try
   {
+    std::cout << "Shutter moving to " << _msg->data() << std::endl;
     this->MoveToFloor(std::stoi(_msg->data()));
   }
   catch(...)
@@ -124,8 +125,10 @@ void ShutterPlugin::MoveToFloor(const int _floor)
   std::lock_guard<std::mutex> lock(this->dataPtr->stateMutex);
 
   // Ignore messages when the elevator is currently busy.
-  if (!this->dataPtr->states.empty())
+  if (!this->dataPtr->states.empty()) {
+    std::cout << "shutter is busy ..." << std::endl;
     return;
+  }
 
   // Move to the correct floor.
   this->dataPtr->states.push_back(new ShutterPluginPrivate::MoveState(
@@ -188,6 +191,7 @@ ShutterPluginPrivate::~ShutterPluginPrivate()
 ShutterPluginPrivate::MoveState::MoveState(int _floor, LiftController *_ctrl)
   : State(), floor(_floor), ctrl(_ctrl)
 {
+  std::cout << "MoveState created." << std::endl;
 }
 
 /////////////////////////////////////////////////
