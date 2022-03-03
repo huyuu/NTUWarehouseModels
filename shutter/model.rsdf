@@ -172,7 +172,7 @@
   </joint>
 
 
-  <joint name="lift" type="prismatic">
+  <!-- <joint name="lift" type="prismatic">
     <parent>world</parent>
     <child>movableWall</child>
     <axis>
@@ -191,12 +191,12 @@
         <implicit_spring_damper>1</implicit_spring_damper>
       </ode>
     </physics>
-  </joint>
+  </joint> -->
 
   <!-- Plugin to control the shutter -->
   <!-- https://github.com/osrf/gazebo/tree/gazebo6/plugins -->
   <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-    <lift_joint>lift</lift_joint>
+    <lift_joint>movableWall_plusShutterPillar</lift_joint>
     <floor_height><%=shutterHeight%></floor_height>
     <topic>~/shutter</topic>
   </plugin>
