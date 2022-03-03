@@ -239,7 +239,6 @@ void ShutterPluginPrivate::LiftController::Reset()
 bool ShutterPluginPrivate::LiftController::Update(
     const common::UpdateInfo &_info)
 {
-  std::cout << "Update";
   IGN_PROFILE("ShutterPlugin::LiftController");
   IGN_PROFILE_BEGIN("Update");
 
