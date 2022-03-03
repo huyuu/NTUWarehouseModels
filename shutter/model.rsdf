@@ -68,7 +68,7 @@
   </link>
 
 
-  <link name='shutterPillar_minus'>
+  <!-- <link name='shutterPillar_minus'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
     <pose>0 <%=-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
@@ -79,8 +79,6 @@
           <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
         </box>
       </geometry>
-      <!-- http://gazebosim.org/tutorials?tut=friction -->
-      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
       <surface>
         <friction>
           <ode>
@@ -103,10 +101,10 @@
     <inertial>
       <mass><%=shutterPillarWeight%></mass>
     </inertial>
-  </link>
+  </link> -->
 
 
-  <link name='shutterPillar_plus'>
+  <!-- <link name='shutterPillar_plus'>
     <self_collide>true</self_collide>
     <kinematic>true</kinematic>
     <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
@@ -117,8 +115,6 @@
           <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
         </box>
       </geometry>
-      <!-- http://gazebosim.org/tutorials?tut=friction -->
-      <!-- https://www.engineeringtoolbox.com/friction-coefficients-d_778.html -->
       <surface>
         <friction>
           <ode>
@@ -141,7 +137,7 @@
     <inertial>
       <mass><%=shutterPillarWeight%></mass>
     </inertial>
-  </link>
+  </link> -->
 
 
   <!-- <joint name='movableWall_minusShutterPillar' type="prismatic">
