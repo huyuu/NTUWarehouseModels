@@ -308,7 +308,7 @@ bool ShutterPluginPrivate::LiftController::Update(
   std::cout << "this->floor: " << this->floor << std::endl;
   std::cout << "error: " << error << std::endl;
 
-  double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime) / 1000000000.0;
+  double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime) / 10.0;
   std::cout << "_info.simTime" << _info.simTime << std::endl;
   std::cout << "this->prevSimTime" << this->prevSimTime << std::endl;
   std::cout << "Time delta: " << _info.simTime - this->prevSimTime << std::endl;
