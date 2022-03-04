@@ -204,7 +204,6 @@ void ShutterPluginPrivate::MoveState::Start()
 /////////////////////////////////////////////////
 bool ShutterPluginPrivate::MoveState::Update()
 {
-  std::cout << "Shutter Plugin Updated" << std::endl;
   IGN_PROFILE("ShutterPlugin::MoveState");
   IGN_PROFILE_BEGIN("Update");
 
@@ -245,7 +244,6 @@ void ShutterPluginPrivate::LiftController::Reset()
 bool ShutterPluginPrivate::LiftController::Update(
     const common::UpdateInfo &_info)
 {
-  std::cout << "Shutter Plugin LiftController Updated." << std::endl;
   IGN_PROFILE("ShutterPlugin::LiftController");
   IGN_PROFILE_BEGIN("Update");
 
@@ -258,6 +256,7 @@ bool ShutterPluginPrivate::LiftController::Update(
 
   double error = this->liftJoint->Position() -
     (this->floor * this->floorHeight);
+  std::cout << "Life Joint: " << this->dataPtr->sdf->Get<std::string>("lift_joint") << std::endl;
   std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
   std::cout << "this->floor: " << this->floor << std::endl;
   std::cout << "error: " << error << std::endl;
