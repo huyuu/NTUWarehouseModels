@@ -594,13 +594,7 @@
   <include>
     <uri>model://shutter</uri>
     <name>shutter</name>
-    <pose><%=shutterCenterX%> <%=shutterCenterY%> <%=shutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
-
-    <!-- <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-      <lift_joint>shutter::movableWall_plusShutterPillar</lift_joint>
-      <floor_height><%=shutterHeight%></floor_height>
-      <topic>~/shutter</topic>
-    </plugin> -->
+    <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
   </include>
 
 

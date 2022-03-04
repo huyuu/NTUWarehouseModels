@@ -9,9 +9,9 @@
 <!-- https://qiita.com/may88seiji/items/ce9396a4c267a3d449ae -->
 <%
   # movableWall
-  shutterWallHeight = 6.0 # [m]
+  shutterWallHeight = 4.0 # [m]
   shutterHeight = shutterWallHeight
-  shutterWallLength = 4.0 # [m]
+  shutterWallLength = 2.0 # [m]
   shutterWallThickness = 0.3
 
   shutterPillarWeight = 10000
@@ -67,7 +67,7 @@
     </visual>
 
     <inertial>
-      <mass>800</mass>
+      <mass>1000</mass>
     </inertial>
   </link>
 

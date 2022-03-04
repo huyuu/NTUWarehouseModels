@@ -40,7 +40,7 @@ ShutterPlugin::ShutterPlugin()
 {
   this->dataPtr->liftController = NULL;
   this->dataPtr->doorWaitTime = common::Time(1, 100);
-  std::cout << "Constructed 1 sec: " << this->dataPtr->doorWaitTime << " with nano sec = " << this->dataPtr->doorWaitTime.nsec << std::endl << std::endl;
+  // std::cout << "Constructed 1 sec: " << this->dataPtr->doorWaitTime << " with nano sec = " << this->dataPtr->doorWaitTime.nsec << std::endl << std::endl;
 }
 
 /////////////////////////////////////////////////
@@ -197,7 +197,7 @@ ShutterPluginPrivate::~ShutterPluginPrivate()
 ShutterPluginPrivate::MoveState::MoveState(int _floor, LiftController *_ctrl)
   : State(), floor(_floor), ctrl(_ctrl)
 {
-  std::cout << "MoveState created." << std::endl;
+  // std::cout << "MoveState created." << std::endl;
 }
 
 /////////////////////////////////////////////////
@@ -215,7 +215,7 @@ bool ShutterPluginPrivate::MoveState::Update()
 
   if (!this->started)
   {
-    std::cout << "Shutter started." << std::endl;
+    // std::cout << "Shutter started." << std::endl;
     this->Start();
     return false;
   }
@@ -301,32 +301,32 @@ bool ShutterPluginPrivate::LiftController::Update(
 
   double error = this->liftJoint->Position() -
     (this->floor * this->floorHeight);
-  std::cout << std::endl;
-  std::cout << "Life Joint: " << this->liftJoint->GetName() << std::endl;
-  std::cout << "Life Pose: " << this->liftJoint->WorldPose() << std::endl;
-  std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
-  std::cout << "this->floor: " << this->floor << std::endl;
-  std::cout << "error: " << error << std::endl;
+  // std::cout << std::endl;
+  // std::cout << "Life Joint: " << this->liftJoint->GetName() << std::endl;
+  // std::cout << "Life Pose: " << this->liftJoint->WorldPose() << std::endl;
+  // std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
+  // std::cout << "this->floor: " << this->floor << std::endl;
+  // std::cout << "error: " << error << std::endl;
 
   // double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime) / 1000000000.0 * 1000000.0;
   double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime);
-  std::cout << "_info.simTime" << _info.simTime << std::endl;
-  std::cout << "this->prevSimTime" << this->prevSimTime << std::endl;
-  std::cout << "Time delta: " << _info.simTime - this->prevSimTime << std::endl;
+  // std::cout << "_info.simTime" << _info.simTime << std::endl;
+  // std::cout << "this->prevSimTime" << this->prevSimTime << std::endl;
+  // std::cout << "Time delta: " << _info.simTime - this->prevSimTime << std::endl;
   this->prevSimTime = _info.simTime;
 
-  std::cout << "Lift set force: " << force <<std::endl;
+  // std::cout << "Lift set force: " << force <<std::endl;
   this->liftJoint->SetForce(0, force);
 
   if (std::abs(error) < 0.15)
   {
-    std::cout << "Lift Error <= 0.15 -> state to STATIONARY" << std::endl;
+    // std::cout << "Lift Error <= 0.15 -> state to STATIONARY" << std::endl;
     this->state = ShutterPluginPrivate::LiftController::STATIONARY;
     return true;
   }
   else
   {
-    std::cout << "Lift Error > 0.15 -> state to MOVING" << std::endl;
+    // std::cout << "Lift Error > 0.15 -> state to MOVING" << std::endl;
     this->state = ShutterPluginPrivate::LiftController::MOVING;
     return false;
   }
