@@ -39,6 +39,7 @@ ShutterPlugin::ShutterPlugin()
   : dataPtr(new ShutterPluginPrivate)
 {
   this->dataPtr->liftController = NULL;
+  this->dataPtr->doorWaitTime = common::Time(1, 0);
 }
 
 /////////////////////////////////////////////////
@@ -133,6 +134,10 @@ void ShutterPlugin::MoveToFloor(const int _floor)
   // Move to the correct floor.
   this->dataPtr->states.push_back(new ShutterPluginPrivate::MoveState(
         _floor, this->dataPtr->liftController));
+
+  // Step 4: Wait
+  this->dataPtr->states.push_back(new ShutterPluginPrivate::WaitState(
+        this->dataPtr->doorWaitTime));
 }
 
 /////////////////////////////////////////////////
@@ -223,6 +228,45 @@ bool ShutterPluginPrivate::MoveState::Update()
 
 
 ////////////////////////////////////////////////
+// WaitState Class
+
+/////////////////////////////////////////////////
+ShutterPluginPrivate::WaitState::WaitState(const common::Time &_waitTime)
+  : State(), waitTimer(_waitTime, true)
+{
+}
+
+/////////////////////////////////////////////////
+void ShutterPluginPrivate::WaitState::Start()
+{
+  this->waitTimer.Reset();
+  this->waitTimer.Start();
+  this->started = true;
+}
+
+/////////////////////////////////////////////////
+bool ShutterPluginPrivate::WaitState::Update()
+{
+  IGN_PROFILE("ElevatorPlugin::WaitState");
+  IGN_PROFILE_BEGIN("Update");
+
+  if (!this->started)
+  {
+    this->Start();
+    return false;
+  }
+  else
+  {
+    if (this->waitTimer.GetElapsed() == common::Time::Zero)
+      return true;
+    else
+      return false;
+  }
+  IGN_PROFILE_END();
+}
+
+
+////////////////////////////////////////////////
 // LiftController Class
 
 /////////////////////////////////////////////////
@@ -256,6 +300,7 @@ bool ShutterPluginPrivate::LiftController::Update(
 
   double error = this->liftJoint->Position() -
     (this->floor * this->floorHeight);
+  std::cout << std::endl;
   std::cout << "Life Joint: " << this->liftJoint->GetName() << std::endl;
   std::cout << "Life Pose: " << this->liftJoint->WorldPose() << std::endl;
   std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
@@ -265,7 +310,8 @@ bool ShutterPluginPrivate::LiftController::Update(
   double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime);
   this->prevSimTime = _info.simTime;
 
-  std::cout << "Lift set force: " << force <<std::endl;
+  std::cout << "Time delta: " << _info.simTime - this->prevSimTime << std::endl;
+  std::cout << "Lift set force: " <<std::endl;
   this->liftJoint->SetForce(0, force);
 
   if (std::abs(error) < 0.15)

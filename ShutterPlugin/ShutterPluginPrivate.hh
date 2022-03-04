@@ -136,6 +136,23 @@ namespace gazebo
     };
 
 
+    /// \brief State used to make the elevator wait.
+    public: class WaitState : public State
+    {
+      /// \brief Constructor
+      /// \param[in] _waitTime Length of the wait state
+      public: explicit WaitState(const common::Time &_waitTime);
+
+      // Documentation inherited
+      public: virtual void Start();
+
+      // Documentation inherited
+      public: virtual bool Update();
+
+      /// \brief Timer to hold the door open.
+      public: common::Timer waitTimer;
+    };
+
 
     /// \brief Pointer to the elevator model.
     public: physics::ModelPtr model;
@@ -167,6 +184,9 @@ namespace gazebo
 
     /// \brief Mutex to protect states.
     public: std::mutex stateMutex;
+
+    /// \brief Time to hold the door in the open state.
+    public: common::Time doorWaitTime;
 
     // Place ignition::transport objects at the end of this file to
     // guarantee they are destructed first.
