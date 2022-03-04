@@ -40,6 +40,7 @@ ShutterPlugin::ShutterPlugin()
 {
   this->dataPtr->liftController = NULL;
   this->dataPtr->doorWaitTime = common::Time(1, 0);
+  std::cout << "Constructed 1 sec: " << this->dataPtr->doorWaitTime << std::endl << std::endl;
 }
 
 /////////////////////////////////////////////////
