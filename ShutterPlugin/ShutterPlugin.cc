@@ -204,11 +204,13 @@ void ShutterPluginPrivate::MoveState::Start()
 /////////////////////////////////////////////////
 bool ShutterPluginPrivate::MoveState::Update()
 {
+  std::cout << "Shutter Plugin Updated" << std::endl;
   IGN_PROFILE("ShutterPlugin::MoveState");
   IGN_PROFILE_BEGIN("Update");
 
   if (!this->started)
   {
+    std::cout << "Shutter started." << std::endl;
     this->Start();
     return false;
   }
@@ -243,6 +245,7 @@ void ShutterPluginPrivate::LiftController::Reset()
 bool ShutterPluginPrivate::LiftController::Update(
     const common::UpdateInfo &_info)
 {
+  std::cout << "Shutter Plugin LiftController Updated." << std::endl;
   IGN_PROFILE("ShutterPlugin::LiftController");
   IGN_PROFILE_BEGIN("Update");
 
@@ -259,15 +262,18 @@ bool ShutterPluginPrivate::LiftController::Update(
   double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime);
   this->prevSimTime = _info.simTime;
 
+  std::cout << "Lift set force: " << force <<std::endl;
   this->liftJoint->SetForce(0, force);
 
   if (std::abs(error) < 0.15)
   {
+    std::cout << "Lift Error <= 0.15 -> state to STATIONARY" << std::endl;
     this->state = ShutterPluginPrivate::LiftController::STATIONARY;
     return true;
   }
   else
   {
+    std::cout << "Lift Error > 0.15 -> state to MOVING" << std::endl;
     this->state = ShutterPluginPrivate::LiftController::MOVING;
     return false;
   }
