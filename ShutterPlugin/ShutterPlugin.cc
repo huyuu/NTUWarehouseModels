@@ -311,7 +311,7 @@ bool ShutterPluginPrivate::LiftController::Update(
   std::cout << "Time delta: " << _info.simTime - this->prevSimTime << std::endl;
   this->prevSimTime = _info.simTime;
 
-  std::cout << "Lift set force: " <<std::endl;
+  std::cout << "Lift set force: " << force <<std::endl;
   this->liftJoint->SetForce(0, force);
 
   if (std::abs(error) < 0.15)
