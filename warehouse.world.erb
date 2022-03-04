@@ -117,7 +117,7 @@
 
 
   # shutter
-  shutterCenterXs = (1..shutterAmount).map { |index| index * spaceBetweenShutterHalls + shutterWidth/2 }
+  shutterCenterXs = (1..shutterAmount).map { |index| index * (spaceBetweenShutterHalls + shutterWidth) - shutterWidth/2 }
   shutterCenterY = roomWidth - shutterThickness/2
   shutterCenterZ = shutterHeight / 2.0
 
@@ -598,7 +598,7 @@
     <include>
       <uri>model://shutter</uri>
       <name><%=shutterName%></name>
-      <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
+      <pose><%=shutterCenterX%> <%=shutterCenterY%> <%=shutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
       <plugin filename="libShutterPlugin.so" name="shutter_plugin">
         <lift_joint><%="#{shutterName}::lift"%></lift_joint>
         <floor_height><%=shutterHeight%></floor_height>
