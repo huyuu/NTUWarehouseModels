@@ -122,6 +122,7 @@
   shutterCenterZ = shutterHeight / 2.0
 
   # standingLeverForShutter
+  standingLeverForShutterCenterXs = shutterCenterXs.map { |x| x - 0.4 }
   standingLeverForShutterCenterY = shutterCenterY - 2
   standingLeverForShutterCenterZ = 0.5
 %>
@@ -579,7 +580,7 @@
     <!-- Include standingLever -->
     <%
       shutterCenterX = shutterCenterXs[shutterIndex]
-      standingLeverForShutterCenterX = shutterCenterX - 0.4
+      standingLeverForShutterCenterX = standingLeverForShutterCenterXs[shutterIndex]
       leverName = "standingLeverForShutter_#{shutterIndex}"
     %>
     <include>
@@ -637,7 +638,7 @@
         <msg_data>1</msg_data>
       </event>
     </plugin>
-    
+
   <% end %>
 
 
