@@ -71,7 +71,7 @@
   shutterWidth = 4.0
   shutterThickness = 0.3
   spaceBetweenShutterHalls = 1.4
-  shutterAmount = 4
+  shutterAmount = 2
 
 %>
 
@@ -119,12 +119,12 @@
   # shutter
   shutterCenterXs = (1..shutterAmount).map { |index| index * (spaceBetweenShutterHalls + shutterWidth) - shutterWidth/2 }
   _wallThickness = 0.3
-  shutterCenterY = roomWidth - shutterThickness/2 - _wallThickness/2
+  shutterCenterY = roomWidth - shutterThickness/2 - _wallThickness
   shutterCenterZ = shutterHeight / 2.0
 
   # standingLeverForShutter
   standingLeverForShutterCenterXs = shutterCenterXs.map { |x| x - 0.4 }
-  standingLeverForShutterCenterY = shutterCenterY - 2
+  standingLeverForShutterCenterY = shutterCenterY - 1
   standingLeverForShutterCenterZ = 0.5
 %>
 
