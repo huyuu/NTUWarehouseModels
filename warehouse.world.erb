@@ -67,12 +67,12 @@
   peopleAmount = 30
 
   # shutter
-  # movableWall
-  shutterWallHeight = 6.0 # [m]
-  shutterHeight = shutterWallHeight
-  shutterWallLength = 4.0 # [m]
-  shutterWallThickness = 0.3
-  shutterPillarWeight = 10000
+  shutterHeight = 6.0
+  shutterWidth = 4.0
+  shutterThickness = 0.3
+  spaceBetweenShutterHalls = 1.4
+  shutterAmount = 4
+
 %>
 
 
@@ -117,19 +117,13 @@
 
 
   # shutter
-  shutterHeight = 6.0
-  shutterCenterX = templateElevatorCenterX - 10
-  shutterCenterY = templateElevatorCenterY
-  shutterCenterZ = shutterHeight / 3.0
+  shutterCenterXs = (1..shutterAmount).map { |index| index * spaceBetweenShutterHalls + shutterWidth/2 }
+  shutterCenterY = roomWidth - shutterThickness/2
+  shutterCenterZ = shutterHeight / 2.0
 
   # standingLeverForShutter
-  standingLeverForShutterCenterX = shutterCenterX - 2
   standingLeverForShutterCenterY = shutterCenterY - 2
   standingLeverForShutterCenterZ = 0.5
-
-  # shutterPillar
-  shutterPillarHeight = shutterWallHeight
-  shutterPillarWidth = shutterWallThickness
 %>
 
 
@@ -581,227 +575,72 @@
 
 
 
-
-  <!-- Include standingLever -->
-  <include>
-    <uri>model://standingLever</uri>
-    <name>standingLeverForShutter</name>
-    <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY%> <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
-    <!-- <pose>-5 -5 <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose> -->
-  </include>
-
-
-  <include>
-    <uri>model://shutter</uri>
-    <name>shutter</name>
-    <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
-  </include>
+  <% for shutterIndex in (1..shutterAmount) %>
+    <!-- Include standingLever -->
+    <%
+      shutterCenterX = shutterCenterXs[shutterIndex]
+      standingLeverForShutterCenterX = shutterCenterX - 0.4
+      leverName = "standingLeverForShutter_#{shutterIndex}"
+    %>
+    <include>
+      <uri>model://standingLever</uri>
+      <name><%=leverName%></name>
+      <pose><%=standingLeverForShutterCenterX%> <%=standingLeverForShutterCenterY%> <%=standingLeverForShutterCenterZ%> 0 0 <%=Math::PI/(-2)%></pose>
+    </include>
 
 
-  <!-- <model name="shutter">
-    <static>false</static>
-
-    <link name='movableWall'>
-      <self_collide>true</self_collide>
-      <kinematic>false</kinematic>
+    <%
+      shutterName = "shutter_#{shutterIndex}"
+      shutterTopic = "~/shutter_#{shutterIndex}"
+      leverPluginName = "leverPlugin_#{shutterIndex}"
+    %>
+    <include>
+      <uri>model://shutter</uri>
+      <name><%=shutterName%></name>
       <pose><%=shutterCenterX%> <%=shutterCenterY%> 0 0 0 <%=Math::PI/(-2)%></pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
+      <plugin filename="libShutterPlugin.so" name="shutter_plugin">
+        <lift_joint><%="#{shutterName}::lift"%></lift_joint>
+        <floor_height><%=shutterHeight%></floor_height>
+        <topic><%=shutterTopic%></topic>
+      </plugin>
+    </include>
 
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterWallThickness%> <%=shutterWallLength%> <%=shutterWallHeight%></size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <name>Gazebo/Red</name>
-          </script>
-        </material>
-      </visual>
-    </link>
-
-
-    <link name='shutterPillar_minus'>
-      <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
-      <pose><%=shutterCenterX%> <%=shutterCenterY-shutterWallLength/2 - shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 <%=Math::PI/(-2)%></pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-      </visual>
-
-      <inertial>
-        <mass><%=shutterPillarWeight%></mass>
-      </inertial>
-    </link>
-
-
-    <link name='shutterPillar_plus'>
-      <self_collide>true</self_collide>
-      <kinematic>true</kinematic>
-
-      <pose>0 <%=shutterWallLength/2 + shutterPillarWidth/2%> <%=shutterPillarHeight/2%> 0 0 0</pose>
-      <collision name='collision'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0.8</mu>
-              <mu2>0.8</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-
-      <visual name='visual'>
-        <pose>0 0 0 0 0 0</pose>
-        <geometry>
-          <box>
-            <size><%=shutterPillarWidth%> <%=shutterPillarWidth%> <%=shutterPillarHeight%></size>
-          </box>
-        </geometry>
-      </visual>
-
-      <inertial>
-        <mass><%=shutterPillarWeight%></mass>
-      </inertial>
-    </link>
-
-
-    <joint name='movableWall_minusShutterPillar' type="prismatic">
-      <parent>shutterPillar_minus</parent>
-      <child>movableWall</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-      </axis>
-    </joint>
-
-
-    <joint name='movableWall_plusShutterPillar' type="prismatic">
-      <parent>shutterPillar_plus</parent>
-      <child>movableWall</child>
-      <pose>0 0 0 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-      </axis>
-    </joint>
-
-
-    <joint name="lift" type="prismatic">
-      <parent>world</parent>
-      <child>movableWall</child>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>0</lower>
-          <upper><%=shutterPillarHeight%></upper>
-        </limit>
-
-        <dynamics>
-          <damping>50</damping>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <implicit_spring_damper>1</implicit_spring_damper>
-        </ode>
-      </physics>
-    </joint>
-
-    <plugin filename="libShutterPlugin.so" name="shutter_plugin">
-      <lift_joint>lift</lift_joint>
-      <floor_height><%=shutterHeight%></floor_height>
-      <topic>~/shutter</topic>
+    <!-- ButtonPressedEventPlugin for Shutter -->
+    <plugin filename="libSimEventForButtonPressedPlugin.so" name=<%="#{leverPluginName}_floor0"%>>
+      <event>
+        <name><%="#{leverPluginName}_floor0"%></name>
+        <type>joint</type>
+        <model><%=leverName%></model>
+        <joint><%="#{leverName}::supportLShape_wheel"%></joint>
+        <range>
+          <type>normalized_angle</type>
+          <min><%=-Math::PI/2.0 - Math::PI/12.0%></min>
+          <max><%=-Math::PI/2.0%></max>
+        </range>
+        <topic><%=shutterTopic%></topic>
+        <msg_data>0</msg_data>
+      </event>
     </plugin>
 
-  </model> -->
+    <plugin filename="libSimEventForButtonPressedPlugin.so" name=<%="#{leverPluginName}_floor1"%>>
+      <event>
+        <name><%="#{leverPluginName}_floor1"%></name>
+        <type>joint</type>
+        <model><%=leverName%></model>
+        <joint><%="#{leverName}::supportLShape_wheel"%></joint>
+        <range>
+          <type>normalized_angle</type>
+          <min>0</min>
+          <max><%=Math::PI/(12.0)%></max>
+        </range>
+        <topic><%=shutterTopic%></topic>
+        <msg_data>1</msg_data>
+      </event>
+    </plugin>
+    
+  <% end %>
 
 
-
-  <!-- ButtonPressedEventPlugin for Shutter -->
-  <plugin filename="libSimEventForButtonPressedPlugin.so" name="shutter_event_plugin_floor0">
-    <event>
-      <name>ButtonPressedEvent_floor0</name>
-      <type>joint</type>
-      <model>standingLeverForShutter</model>
-      <joint>standingLeverForShutter::supportLShape_wheel</joint>
-      <range>
-        <type>normalized_angle</type>
-        <min><%=-Math::PI/2.0 - Math::PI/12.0%></min>
-        <max><%=-Math::PI/2.0%></max>
-      </range>
-      <topic>~/shutter</topic>
-      <msg_data>0</msg_data>
-    </event>
-  </plugin>
-
-  <plugin filename="libSimEventForButtonPressedPlugin.so" name="shutter_event_plugin_floor1">
-    <event>
-      <name>ButtonPressedEvent_floor1</name>
-      <type>joint</type>
-      <model>standingLeverForShutter</model>
-      <joint>standingLeverForShutter::supportLShape_wheel</joint>
-      <range>
-        <type>normalized_angle</type>
-        <min>0</min>
-        <max><%=Math::PI/(12.0)%></max>
-      </range>
-      <topic>~/shutter</topic>
-      <msg_data>1</msg_data>
-    </event>
-  </plugin>
 
 
   <!-- include all the shelves -->
