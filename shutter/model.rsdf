@@ -11,7 +11,7 @@
   # movableWall
   shutterWallHeight = 4.0 # [m]
   shutterHeight = shutterWallHeight
-  shutterWallLength = 2.0 # [m]
+  shutterWallLength = 3.5 # [m]
   shutterWallThickness = 0.3
 
   shutterPillarWeight = 10000
