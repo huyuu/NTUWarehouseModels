@@ -257,7 +257,7 @@ bool ShutterPluginPrivate::LiftController::Update(
   double error = this->liftJoint->Position() -
     (this->floor * this->floorHeight);
   std::cout << "Life Joint: " << this->liftJoint->GetName() << std::endl;
-  std::cout << "Life Pose: " << this->liftJoint->Pose3d() << std::endl;
+  std::cout << "Life Pose: " << this->liftJoint->WorldPose() << std::endl;
   std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
   std::cout << "this->floor: " << this->floor << std::endl;
   std::cout << "error: " << error << std::endl;
