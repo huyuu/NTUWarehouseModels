@@ -258,6 +258,9 @@ bool ShutterPluginPrivate::LiftController::Update(
 
   double error = this->liftJoint->Position() -
     (this->floor * this->floorHeight);
+  std::cout << "Lift Position: " << this->liftJoint->Position() << std::endl;
+  std::cout << "this->floor: " << this->floor << std::endl;
+  std::cout << "error: " << error << std::endl;
 
   double force = this->liftPID.Update(error, _info.simTime - this->prevSimTime);
   this->prevSimTime = _info.simTime;
