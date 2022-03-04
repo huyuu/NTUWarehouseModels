@@ -65,6 +65,10 @@
         </script>
       </material>
     </visual>
+
+    <inertial>
+      <mass>800</mass>
+    </inertial>
   </link>
 
 
